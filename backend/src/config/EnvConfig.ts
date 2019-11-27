@@ -1,0 +1,15 @@
+import {Env} from "env-decorator";
+
+export class EnvConfig {
+    @Env({required: true, type: "string"})
+    SERVICE_NODE_API_URL: string;
+
+    @Env({required: true, type: "string"})
+    ELASTICSEARCH_HOST_URL;
+
+    @Env({required: true, type: "number"})
+    PORT: number;
+
+    @Env({required: true, type: "string"})
+    LOGGING_LEVEL: string
+}
