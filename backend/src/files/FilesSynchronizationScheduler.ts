@@ -8,6 +8,7 @@ import {ServiceNodeApiClient} from "../service-node-api";
 @Injectable()
 export class FilesSynchronizationScheduler extends NestSchedule {
     private currentPage: number = 0;
+    private readonly pageSize: number = 100;
 
     constructor(
         private readonly serviceNodeApiClient: ServiceNodeApiClient,
@@ -27,7 +28,7 @@ export class FilesSynchronizationScheduler extends NestSchedule {
 
         while (!done) {
             try {
-                const files = (await this.serviceNodeApiClient.getFiles({page: this.currentPage, size: 1000})).data;
+                const files = (await this.serviceNodeApiClient.getFiles({page: this.currentPage, size: this.pageSize})).data;
                 this.log.debug(`Retrieved files: ${JSON.stringify(files)}`);
 
                 if (files.length !== 0) {
@@ -36,6 +37,7 @@ export class FilesSynchronizationScheduler extends NestSchedule {
                     this.currentPage += 1;
                 } else {
                     this.log.info("No more files to retrieve");
+                    this.currentPage = this.currentPage - 1;
                     done = true;
                 }
             } catch (error) {
