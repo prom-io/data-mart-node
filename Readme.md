@@ -38,7 +38,7 @@ In order to run Data mart node, you need to install:
 
 - Start Elasticsearch
 - In order to run backend API, navigate to `backend` folder and do the following:
-  - Create and configure `env` file with the following variables:
+  - Create and configure `.env` file with the following variables:
     - `SERVICE_NODE_API_URL` - the URL of Service node to communicate with
     - `ELASTIC_SEARCH_HOST_URL` - the URL of Elasticsearch
     - `PORT` - the port number which will be used by application
