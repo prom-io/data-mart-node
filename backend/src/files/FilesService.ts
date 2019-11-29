@@ -1,12 +1,12 @@
 import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
 import {LoggerService} from "nest-logger";
 import {Response} from "express";
+import {AxiosError} from "axios";
 import {FilesRepository} from "./FilesRepository";
 import {fileToFileResponse} from "./file-mappers";
 import {ServiceNodeApiClient} from "../service-node-api";
-import {PurchaseFileRequest, ServiceNodePurchaseFileRequest} from "../model/api/request";
+import {PaginationRequest, PurchaseFileRequest, ServiceNodePurchaseFileRequest} from "../model/api/request";
 import {FileResponse, PurchaseFileResponse} from "../model/api/response";
-import {AxiosError} from "axios";
 import {File} from "../model/domain";
 
 @Injectable()
@@ -18,7 +18,14 @@ export class FilesService {
     ) {};
 
     public listAllFiles(): Promise<FileResponse[]> {
-        return this.filesRepository.listAllFiles()
+        return this.filesRepository
+            .findAll()
+            .then(files => files.map(file => fileToFileResponse(file)))
+    }
+
+    public listAllFilesPaginated(paginationRequest: PaginationRequest): Promise<FileResponse[]> {
+        return this.filesRepository
+            .findAllBy(paginationRequest)
             .then(files => files.map(file => fileToFileResponse(file)))
     }
 

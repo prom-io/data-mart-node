@@ -4,6 +4,8 @@ import {ElasticsearchService} from "@nestjs/elasticsearch";
 import {map} from "rxjs/operators";
 import {CreateDocumentResponse} from "elasticsearch";
 import {File} from "../model/domain";
+import {PaginationRequest} from "../model/api/request";
+import {calculateOffset} from "../utils/pagination";
 
 @Injectable()
 export class FilesRepository {
@@ -33,7 +35,7 @@ export class FilesRepository {
             .toPromise()
     }
 
-    public listAllFiles(): Promise<File[]> {
+    public findAll(): Promise<File[]> {
         return this.elasticSearchService.search<File>({
             index: "files",
             size: 500
@@ -42,6 +44,18 @@ export class FilesRepository {
                 return searchResponse[0].hits.hits.map(hit => {
                     return hit._source;
                 });
+            }))
+            .toPromise()
+    }
+
+    public findAllBy(paginationRequest: PaginationRequest): Promise<File[]> {
+        return this.elasticSearchService.search<File>({
+            index: "files",
+            from: calculateOffset(paginationRequest.page, paginationRequest.size),
+            size: paginationRequest.size
+        })
+            .pipe(map(searchResponse => {
+                return searchResponse[0].hits.hits.map(hit => hit._source)
             }))
             .toPromise()
     }

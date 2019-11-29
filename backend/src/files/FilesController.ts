@@ -1,9 +1,10 @@
 import {Body, Controller, Get, Param, Post, Query, Res} from "@nestjs/common";
+import {LoggerService} from "nest-logger";
 import {Response} from "express";
 import {FilesService} from "./FilesService";
 import {FileResponse, PurchaseFileResponse} from "../model/api/response";
 import {PurchaseFileRequest} from "../model/api/request";
-import {LoggerService} from "nest-logger";
+import {getValidPage, getValidPageSize} from "../utils/pagination";
 
 @Controller("api/v2/files")
 export class FilesController {
@@ -11,13 +12,25 @@ export class FilesController {
                 private readonly log: LoggerService) {}
 
     @Get()
-    public async getFilesOfDataValidator(@Query("dataValidator") dataValidatorAddress?: string): Promise<FileResponse[]> {
+    public async getFilesOfDataValidator(
+        @Query("dataValidator") dataValidatorAddress?: string,
+        @Query("page") page?: number,
+        @Query("size") size?: number
+    ): Promise<FileResponse[]> {
         if (dataValidatorAddress) {
             this.log.info(`Retrieving files of data validator ${dataValidatorAddress}`);
             return this.filesService.getFilesByDataValidator(dataValidatorAddress);
         } else {
-            this.log.info("Retrieving all files");
-            return this.filesService.listAllFiles();
+            if (page) {
+                page = getValidPage(page, 1);
+                size = getValidPageSize(size, 500);
+
+                this.log.info("Retrieving paginated files");
+                return this.filesService.listAllFilesPaginated({page, size})
+            } else {
+                this.log.info("Retrieving all files");
+                return this.filesService.listAllFiles();
+            }
         }
     }
 
