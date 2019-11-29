@@ -11,5 +11,8 @@ export class EnvConfig {
     PORT: number;
 
     @Env({required: true, type: "string"})
-    LOGGING_LEVEL: string
+    LOGGING_LEVEL: string;
+
+    @Env({required: true, type: "string"})
+    FILES_SYNCHRONIZATION_CRON: string;
 }

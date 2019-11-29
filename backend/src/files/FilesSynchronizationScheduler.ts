@@ -4,6 +4,7 @@ import {LoggerService} from "nest-logger";
 import {fileResponseToFile} from "./file-mappers";
 import {FilesRepository} from "./FilesRepository";
 import {ServiceNodeApiClient} from "../service-node-api";
+import {config} from "../config";
 
 @Injectable()
 export class FilesSynchronizationScheduler extends NestSchedule {
@@ -18,7 +19,7 @@ export class FilesSynchronizationScheduler extends NestSchedule {
         super()
     }
 
-    @Cron("*/10 * * * *", {
+    @Cron(config.FILES_SYNCHRONIZATION_CRON, {
         waiting: true,
         immediate: true
     })
