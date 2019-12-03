@@ -1,6 +1,6 @@
-import {Injectable, Inject} from "@nestjs/common";
+import {Inject, Injectable} from "@nestjs/common";
 import {AxiosInstance, AxiosPromise} from "axios";
-import {PaginationRequest, PurchaseFileRequest, ServiceNodePurchaseFileRequest} from "../model/api/request";
+import {PaginationRequest, ServiceNodePurchaseFileRequest} from "../model/api/request";
 import {FileResponse, PurchaseFileResponse} from "../model/api/response";
 
 @Injectable()

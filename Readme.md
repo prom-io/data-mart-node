@@ -1,48 +1,75 @@
-# Data mart node
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
+</p>
 
-## Table of contents
-
-- [Description](#description)
-- [How it works](#how-it-works)
-- [How to run](#how-to-run)
-    - [Prerequisites](#prerequisites)
-    - [Build and run process](#build-and-run-process)
+[travis-image]: https://api.travis-ci.org/nestjs/nest.svg?branch=master
+[travis-url]: https://travis-ci.org/nestjs/nest
+[linux-image]: https://img.shields.io/travis/nestjs/nest/master.svg?label=linux
+[linux-url]: https://travis-ci.org/nestjs/nest
+  
+  <p align="center">A progressive <a href="http://nodejs.org" target="blank">Node.js</a> framework for building efficient and scalable server-side applications, heavily inspired by <a href="https://angular.io" target="blank">Angular</a>.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/dm/@nestjs/core.svg" alt="NPM Downloads" /></a>
+<a href="https://travis-ci.org/nestjs/nest"><img src="https://api.travis-ci.org/nestjs/nest.svg?branch=master" alt="Travis" /></a>
+<a href="https://travis-ci.org/nestjs/nest"><img src="https://img.shields.io/travis/nestjs/nest/master.svg?label=linux" alt="Linux" /></a>
+<a href="https://coveralls.io/github/nestjs/nest?branch=master"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#5" alt="Coverage" /></a>
+<a href="https://gitter.im/nestjs/nestjs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge"><img src="https://badges.gitter.im/nestjs/nestjs.svg" alt="Gitter" /></a>
+<a href="https://opencollective.com/nest#backer"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec"><img src="https://img.shields.io/badge/Donate-PayPal-dc3d53.svg"/></a>
+  <a href="https://twitter.com/nestframework"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
 
-Data mart node is an application which is used by Data mart. 
-It exposed API for registering Data mart account, purchasing and downloading data, 
-as well as retrieving available files.
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-In future it will also have a client application which will consume above-mentioned API.
+## Installation
 
-## How it works
+```bash
+$ npm install
+```
 
-Data Mart node is a Node.js application built with Nest.js. It communicates with 
-[Service node](https://github.com/Prometeus-Network/service-node_net) and uses its API
-to synchronize, purchase and download files. 
+## Running the app
 
-Files synchronization is done by periods (every 10th minute by default). The information about
-files is stored in Elasticsearch.
+```bash
+# development
+$ npm run start
 
-## How to run
+# watch mode
+$ npm run start:dev
 
-### Prerequisites
+# production mode
+$ npm run start:prod
+```
 
-In order to run Data mart node, you need to install:
+## Test
 
-- Node.js. You can find installation instructions [here](https://nodejs.org/en/download/)
-- Elasticsearch, which can be found [here](https://www.elastic.co/downloads/elasticsearch)
+```bash
+# unit tests
+$ npm run test
 
-### Build and run process
+# e2e tests
+$ npm run test:e2e
 
-- Start Elasticsearch
-- In order to run backend API, navigate to `backend` folder and do the following:
-  - Create and configure `.env` file with the following variables:
-    - `SERVICE_NODE_API_URL` - the URL of Service node to communicate with
-    - `ELASTIC_SEARCH_HOST_URL` - the URL of Elasticsearch
-    - `PORT` - the port number which will be used by application
-    - `LOGGING_LEVEL` - logging verbosity level. Available values are `trace`, `debug`, `info`, `warning`, `error`
-    - `FILES_SYNCHRONIZATION_CRON` - cron expression which determines how often the information about files is synchronized with service node
-  - `npm install` to install all required dependencies
-  - `npm run start` to start the application
+# test coverage
+$ npm run test:cov
+```
+
+## Support
+
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+
+## Stay in touch
+
+- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
+
+## License
+
+  Nest is [MIT licensed](LICENSE).
