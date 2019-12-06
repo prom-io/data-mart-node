@@ -1,0 +1,5 @@
+export enum AccountType {
+    DATA_MART = "DATA_MART",
+    DATA_VALIDATOR = "DATA_VALIDATOR",
+    SERVICE_NODE = "SERVICE_NODE"
+}
