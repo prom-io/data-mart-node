@@ -17,7 +17,7 @@ const IGNORED_FILES: string[] = [
 
 @Injectable()
 export class FilesSynchronizationScheduler extends NestSchedule {
-    private currentPage: number = 0;
+    private currentPage: number = 1;
     private readonly pageSize: number = 100;
 
     constructor(
@@ -35,8 +35,9 @@ export class FilesSynchronizationScheduler extends NestSchedule {
     public async syncFiles() {
         this.log.info("Synchronizing files");
         let done: boolean = false;
-
+        console.log("START");
         while (!done) {
+            console.log("DONE!!!");
             try {
                 let files = (await this.serviceNodeApiClient.getFiles({page: this.currentPage, size: this.pageSize})).data;
                 this.log.debug(`Retrieved files: ${JSON.stringify(files)}`);

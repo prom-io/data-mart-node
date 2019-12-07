@@ -25,6 +25,7 @@ export class AccountsService {
             });
             return {address: registerAccountRequest.address};
         } catch (error) {
+            console.log(error);
             this.log.error("Error occurred when tried to register account");
             this.log.debug(error);
 

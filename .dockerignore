@@ -1,0 +1,10 @@
+backend/src
+backend/src/**/
+front-end/src
+front-end/src/**/
+front-end/tsconfig.json
+
+backend/node_modules
+backend/node_modules/**/
+front-end/node_modules
+front-end/node_modules/**/
