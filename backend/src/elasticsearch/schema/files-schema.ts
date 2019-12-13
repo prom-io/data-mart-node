@@ -6,11 +6,32 @@ export const filesSchema = {
                 index: true
             },
             name: {
-                type: "keyword",
+                type: "text",
                 index: true
             },
             metadata: {
-                type: "nested"
+                type: "nested",
+                properties: {
+                    briefDescription: {
+                        type: "text",
+                        index: true
+                    },
+                    fullDescription: {
+                        type: "text",
+                        index: true
+                    },
+                    userComment: {
+                        type: "text",
+                        index: true
+                    },
+                    author: {
+                        type: "text",
+                        index: true
+                    },
+                    hashTags: {
+                        type: "nested"
+                    }
+                }
             },
             dataValidator: {
                 type: "keyword",

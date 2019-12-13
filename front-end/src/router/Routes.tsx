@@ -17,7 +17,7 @@ export const Routes = {
         path: '/files',
         component: <FilesPage/>,
         beforeEnter: () => {
-            store.files.fetchFiles();
+            store.filesSearch.searchFiles()
         }
     }),
     dataMartRegistration: new Route({

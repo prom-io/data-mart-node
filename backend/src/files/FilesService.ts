@@ -18,6 +18,18 @@ export class FilesService {
         private readonly log: LoggerService
     ) {};
 
+    public searchFiles(query: string, paginationRequest: PaginationRequest): Promise<FileResponse[]> {
+        return this.filesRepository
+            .searchByQuery(query, paginationRequest)
+            .then(files => files.map(file => fileToFileResponse(file)));
+    }
+
+    public searchFilesByQueryAndTags(query: string, tags: string[], paginationRequest: PaginationRequest): Promise<FileResponse[]> {
+        return this.filesRepository
+            .searchByQueryAndTags(query, tags, paginationRequest)
+            .then(files => files.map(file => fileToFileResponse(file)));
+    }
+
     public listAllFiles(): Promise<FileResponse[]> {
         return this.filesRepository
             .findAll()
@@ -51,6 +63,7 @@ export class FilesService {
             dataMartAddress: purchaseFileRequest.dataMartAddress,
             dataValidatorAddress: file.dataValidator,
             serviceNodeAddress: config.SERVICE_NODE_ACCOUNT_ADDRESS,
+            dataOwnerAddress: file.dataOwner,
             fileId
         };
 

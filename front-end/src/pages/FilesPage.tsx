@@ -1,11 +1,11 @@
 import React, {FunctionComponent} from "react";
 import {Grid, Hidden} from "@material-ui/core";
-import {AllFilesList} from "../DataPurchase";
 import {AppBar} from "../AppBar";
 import {Layout} from "../Layout";
 import {NavigationMenu} from "../Navigation";
 import {Footer} from "../Footer";
 import {SelectedDataMartBalance} from "../Account";
+import {PurchasableFilesSearchList} from "../DataPurchase";
 
 export const FilesPage: FunctionComponent<{}> = () => (
     <Grid container>
@@ -19,7 +19,7 @@ export const FilesPage: FunctionComponent<{}> = () => (
         </Hidden>
         <Grid item xs={12} lg={10}>
             <Layout>
-                <AllFilesList/>
+                <PurchasableFilesSearchList/>
             </Layout>
         </Grid>
         <Grid item xs={12}>

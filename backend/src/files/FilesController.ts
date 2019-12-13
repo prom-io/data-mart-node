@@ -34,6 +34,28 @@ export class FilesController {
         }
     }
 
+    @Get("/search")
+    public async searchFiles(@Query("query") query?: string,
+                             @Query("tags") tags?: string,
+                             @Query("page") page?: number,
+                             @Query("size") size?: number): Promise<FileResponse[]> {
+        page = getValidPage(page);
+        size = getValidPageSize(size);
+
+        if (!query) {
+            query = "";
+        }
+
+        if (tags) {
+            console.log(tags);
+            const tagsToSearch: string[] = JSON.parse(tags);
+            console.log(tagsToSearch);
+            return this.filesService.searchFilesByQueryAndTags(query, tagsToSearch, {page, size})
+        } else {
+            return this.filesService.searchFiles(query, {page, size});
+        }
+    }
+
     @Get(":id")
     public async getFileById(@Param("id") fileId: string, @Res() response: Response): Promise<void> {
         return this.filesService.getFileById(fileId, response);

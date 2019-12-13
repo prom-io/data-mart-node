@@ -1,15 +1,16 @@
 import React, {FunctionComponent} from "react";
 import {Card, CardHeader, CardActions, CardContent, Button, Typography, CircularProgress} from "@material-ui/core";
-import prettyBytes from "pretty-bytes";
 import {FileInfoResponse} from "../../models";
 import {ApiError} from "../../api";
+import {FileHashTags} from "./FileHashTags";
 
 interface FileCardProps {
     fileInfo: FileInfoResponse,
     onPurchase?: (fileInfo: FileInfoResponse) => void,
     purchasePending?: boolean,
     purchaseError?: ApiError,
-    displayPurchaseButton?: boolean
+    displayPurchaseButton?: boolean,
+    onHashTagClick: (tag: string) => void
 }
 
 export const FileCard: FunctionComponent<FileCardProps> = ({
@@ -17,26 +18,25 @@ export const FileCard: FunctionComponent<FileCardProps> = ({
     onPurchase,
     purchasePending,
     purchaseError,
-    displayPurchaseButton = false
+    displayPurchaseButton = false,
+    onHashTagClick
 }) => (
-    <Card>
+    <Card style={{height: '100%'}}>
         <CardHeader title={(
             <Typography variant="h6" noWrap>
-                {fileInfo.name}.{fileInfo.extension}
+                {fileInfo.metadata.briefDescription ? fileInfo.metadata.briefDescription : `${fileInfo.name}.${fileInfo.extension}`}
             </Typography>
         )}/>
         <CardContent>
             <Typography variant="body1">
-                Price: {fileInfo.price} PROM
+                <b>Price</b>: {fileInfo.price} PROM
             </Typography>
+            {fileInfo.metadata.author && <Typography variant="body1"><b>Author</b>: ${fileInfo.metadata.author}</Typography>}
+            {fileInfo.metadata.hashTags && <FileHashTags hashTags={fileInfo.metadata.hashTags}
+                                                         onHashTagClick={onHashTagClick}
+            />}
             <Typography variant="body1">
-                Size: {prettyBytes(fileInfo.size)}
-            </Typography>
-            <Typography variant="body1">
-                Mime type: {fileInfo.mimeType}
-            </Typography>
-            <Typography variant="body1" noWrap>
-                Data validator: {fileInfo.dataValidator}
+                <b>Mime type:</b> {fileInfo.mimeType}
             </Typography>
         </CardContent>
         {displayPurchaseButton && (

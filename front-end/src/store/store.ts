@@ -6,7 +6,13 @@ import {
 } from "../Account";
 import {DrawerStore} from "../AppBar";
 import {SettingsStore} from "../Settings";
-import {FileInfoStore, FilesListStore, FilesOfDataValidatorStore, PurchaseFileStore} from "../DataPurchase";
+import {
+    FileInfoStore,
+    FilesListStore,
+    FilesOfDataValidatorStore,
+    FilesSearchStore,
+    PurchaseFileStore
+} from "../DataPurchase";
 import {AccountType} from "../models";
 
 const accounts = new AccountsStore();
@@ -20,6 +26,7 @@ const files = new FilesListStore();
 const filesOfDataValidator = new FilesOfDataValidatorStore();
 const filePurchase = new PurchaseFileStore(settings);
 const fileInfo = new FileInfoStore();
+const filesSearch = new FilesSearchStore();
 
 export const store: IAppState = {
     settings,
@@ -34,4 +41,5 @@ export const store: IAppState = {
     filesOfDataValidator,
     fileInfo,
     filePurchase,
+    filesSearch
 };

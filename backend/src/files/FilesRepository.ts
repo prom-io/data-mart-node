@@ -97,4 +97,47 @@ export class FilesRepository {
             .pipe(map(searchResponse => searchResponse[0].hits.hits.map(hit => hit._source)))
             .toPromise()
     }
+
+    public searchByQuery(query: string, paginationRequest: PaginationRequest): Promise<File[]> {
+        return this.elasticSearchService.search<File>({
+            index: "files",
+            from: calculateOffset(paginationRequest.page, paginationRequest.size),
+            size: paginationRequest.size,
+            body: {
+                query: {
+                    multi_match: {
+                        query
+                    }
+                }
+            }
+        })
+            .pipe(map(searchResponse => searchResponse[0].hits.hits.map(hit => hit._source)))
+            .toPromise()
+    }
+
+    public searchByQueryAndTags(query: string, hashTags: string[], paginationRequest: PaginationRequest): Promise<File[]> {
+        return this.elasticSearchService.search<File>({
+            index: "files",
+            from: calculateOffset(paginationRequest.page, paginationRequest.size),
+            size: paginationRequest.size,
+            body: {
+                query: {
+                    bool: {
+                        must: {
+                            multi_match: {
+                                query
+                            }
+                        },
+                        filter: {
+                            terms: {
+                                "metadata.hashTags": hashTags
+                            }
+                        }
+                    }
+                }
+            }
+        })
+            .pipe(map(searchResponse => searchResponse[0].hits.hits.map(hit => hit._source)))
+            .toPromise()
+    }
 }

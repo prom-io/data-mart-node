@@ -12,7 +12,8 @@ interface FilesListProps {
     onFilePurchase?: (file: FileInfoResponse) => void,
     purchasedFileId?: string,
     filePurchaseError?: ApiError,
-    purchasePending?: boolean
+    purchasePending?: boolean,
+    onHashTagClick: (hashTag: string) => void
 }
 
 const useStyles = makeStyles(() => createStyles({
@@ -30,12 +31,13 @@ export const FilesList: FunctionComponent<FilesListProps> = ({
     onFilePurchase,
     purchasedFileId,
     filePurchaseError,
-    purchasePending
+    purchasePending,
+    onHashTagClick
 }) => {
     const classes = useStyles();
     let content: ReactElement;
 
-    if (pending) {
+    if (pending && files.length === 0) {
         content = <CircularProgress size={50} color="primary" className={classes.centered}/>;
     } else if (filesFetchingError) {
         content = <Typography variant="h4">Error occurred when tried to fetch files</Typography>;
@@ -49,9 +51,11 @@ export const FilesList: FunctionComponent<FilesListProps> = ({
                                   displayPurchaseButton={displayPurchaseButtons}
                                   purchaseError={purchasedFileId === file.id ? filePurchaseError : undefined}
                                   purchasePending={purchasedFileId === file.id && purchasePending}
+                                  onHashTagClick={onHashTagClick}
                         />
                     </Grid>
                 ))}
+                {pending && <CircularProgress size={50} color="primary" className={classes.centered}/>}
             </Fragment>
         );
     }
