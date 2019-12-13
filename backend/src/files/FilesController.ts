@@ -47,9 +47,7 @@ export class FilesController {
         }
 
         if (tags) {
-            console.log(tags);
             const tagsToSearch: string[] = JSON.parse(tags);
-            console.log(tagsToSearch);
             return this.filesService.searchFilesByQueryAndTags(query, tagsToSearch, {page, size})
         } else {
             return this.filesService.searchFiles(query, {page, size});
