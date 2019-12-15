@@ -20,3 +20,4 @@ export * from "./PurchaseFileRequest";
 export * from "./PurchaseFileResponse";
 export * from "./TransactionResponse";
 export * from "./TransactionType";
+export * from "./FileMetadata";

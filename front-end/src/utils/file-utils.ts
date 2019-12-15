@@ -1,3 +1,5 @@
+import {FileMetadata} from "../models/FileMetadata";
+
 const FILE_EXTENSIONS_SUBSTITUTES = new Map<string, string>();
 
 FILE_EXTENSIONS_SUBSTITUTES.set(".document", "docx");
@@ -44,3 +46,20 @@ export const convertToBase64 = (blob: Blob): Promise<string> => new Promise<stri
 });
 
 export const removeBase64Header = (base64String: string): string => base64String.substring(base64String.indexOf(";base64,") + ";base64,".length);
+
+export const getMetadataKeyLabel = (key: keyof FileMetadata| string): string => {
+    switch (key) {
+        case "briefDescription":
+            return "Brief description";
+        case "fullDescription":
+            return "Full description";
+        case "userComment":
+            return "Comment";
+        case "hashTags":
+            return "Hash tags";
+        case "author":
+            return "Author";
+        default:
+            return key;
+    }
+};

@@ -21,7 +21,8 @@ interface PurchasableFilesSearchListMobxProps {
     filePurchaseResponse?: PurchaseFileResponse,
     setShowSnackbar: (showSnackbar: boolean) => void,
     addHashTag: (hashTag: string) => void,
-    search: () => void
+    search: () => void,
+    dataMartAccount: string | undefined
 }
 
 type PurchasableFilesSearchListProps = PurchasableFilesSearchListMobxProps & WithSnackbarProps;
@@ -38,7 +39,8 @@ const _PurchasableFilesSearchList: FunctionComponent<PurchasableFilesSearchListP
     setShowSnackbar,
     addHashTag,
     enqueueSnackbar,
-    search
+    search,
+    dataMartAccount
 }) => {
     const [purchasedFileId, setPurchasedFileId] = useState<string | undefined>(undefined);
     const [fileDisplayedInDialog, setFileDisplayedInDialog] = useState<FileInfoResponse | undefined>(undefined);
@@ -77,7 +79,7 @@ const _PurchasableFilesSearchList: FunctionComponent<PurchasableFilesSearchListP
                             <FilesList files={files}
                                        pending={pending}
                                        onHashTagClick={addHashTag}
-                                       displayPurchaseButtons
+                                       displayPurchaseButtons={Boolean(dataMartAccount)}
                                        filePurchaseError={filePurchaseError}
                                        filesFetchingError={error}
                                        onFilePurchase={handlePurchase}
@@ -99,6 +101,7 @@ const _PurchasableFilesSearchList: FunctionComponent<PurchasableFilesSearchListP
             </Grid>
             <FileDetailsDialog fileInfo={fileDisplayedInDialog}
                                onClose={() => setFileDisplayedInDialog(undefined)}
+                               displayPurchaseButton={Boolean(dataMartAccount)}
             />
         </Fragment>
     )
@@ -115,7 +118,8 @@ const mapMobxToProps = (state: IAppState): PurchasableFilesSearchListMobxProps =
     pending: state.filesSearch.pending,
     files: state.filesSearch.files,
     setShowSnackbar: state.filePurchase.setShowSnackbar,
-    showSnackbar: state.filePurchase.showSnackbar
+    showSnackbar: state.filePurchase.showSnackbar,
+    dataMartAccount: state.settings.selectedDataMartAccount
 });
 
 export const PurchasableFilesSearchList = withSnackbar(

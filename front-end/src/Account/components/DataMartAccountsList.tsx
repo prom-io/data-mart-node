@@ -17,11 +17,6 @@ export const DataMartAccountsList: FunctionComponent<DataMartAccountsListProps> 
     onDefaultAccountSelected
 }) => (
     <Grid container spacing={2}>
-        <Grid item xs={12}>
-            <Typography variant="subtitle1">
-                Data mart accounts
-            </Typography>
-        </Grid>
         {accounts.map(account => (
             <Grid item xs={12}>
                 <AccountCard selectedAsDefault={account.address === defaultAccount}

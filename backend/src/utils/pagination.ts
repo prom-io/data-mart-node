@@ -1,8 +1,14 @@
-export const getValidPage = (page?: string | number, fallback: number = 1): number => {
+export const getValidPage = (page?: string | number, fallback: number = 1, startFromZero: boolean = false): number => {
     let returnedPage = Number(page);
 
-    if (isNaN(returnedPage) || returnedPage < 1) {
-        returnedPage = fallback;
+    if (startFromZero) {
+        if (isNaN(returnedPage) || returnedPage < 1) {
+            returnedPage = 0;
+        }
+    } else {
+        if (isNaN(returnedPage) || returnedPage < 1) {
+            returnedPage = fallback;
+        }
     }
 
     return returnedPage;

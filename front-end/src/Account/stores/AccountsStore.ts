@@ -1,5 +1,5 @@
-import {action, computed, observable} from "mobx";
-import {AccountResponse, AccountType} from "../../models";
+import {action, observable} from "mobx";
+import {AccountResponse} from "../../models";
 import {AccountsService, ApiError, createErrorFromResponse} from "../../api";
 import {AxiosError} from "axios";
 

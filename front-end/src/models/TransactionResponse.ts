@@ -4,7 +4,7 @@ import {FileInfoResponse} from "./FileInfoResponse";
 export interface TransactionResponse {
     id: string,
     hash: string,
-    txType: TransactionType,
+    type: TransactionType,
     file: FileInfoResponse,
     dataOwner: string,
     dataMart: string,
@@ -12,7 +12,7 @@ export interface TransactionResponse {
     blockNumber: number,
     serviceNode: string,
     queueNumber: number,
-    value: string,
+    value: number,
     status: boolean,
     created_at: string
 }

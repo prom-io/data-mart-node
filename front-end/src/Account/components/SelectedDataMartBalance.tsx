@@ -17,7 +17,7 @@ const _SelectedDataMartBalance: FunctionComponent<SelectedDataMartBalanceProps> 
     ...rest
 }) => {
     return selectedDataMart
-        ? <AccountBalance balance={balance} {...rest}/>
+        ? <AccountBalance balance={balance} address={selectedDataMart} {...rest}/>
         : null;
 };
 

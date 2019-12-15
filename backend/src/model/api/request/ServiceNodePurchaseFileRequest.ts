@@ -3,5 +3,6 @@ export interface ServiceNodePurchaseFileRequest {
     dataValidatorAddress: string,
     fileId: string,
     serviceNodeAddress: string,
-    dataOwnerAddress: string
+    dataOwnerAddress: string,
+    price: number
 }

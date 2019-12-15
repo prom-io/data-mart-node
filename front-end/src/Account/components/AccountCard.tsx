@@ -37,13 +37,6 @@ export const AccountCard: React.FC<AccountCardProps> = ({
             )}
                         subheader={getBalanceLabel(balance)}
             />
-            {selectedAsDefault && (
-                <CardContent>
-                    <Typography variant="h6" color="textSecondary">
-                        Selected as default
-                    </Typography>
-                </CardContent>
-            )}
         </Card>
     )
 };

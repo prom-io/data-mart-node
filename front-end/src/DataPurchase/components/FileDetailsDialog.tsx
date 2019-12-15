@@ -61,6 +61,9 @@ const _FileDetailsDialog: FunctionComponent<FileDetailsDialogProps> = ({
                     <Typography variant="body1">
                         <b>Size:</b> {prettyBytes(Number(fileInfo?.size))}
                     </Typography>
+                    <Typography variant="body1">
+                        <b>Data validator:</b> {fileInfo?.dataValidator}
+                    </Typography>
                     {fileInfo?.metadata && fileInfo.metadata.fullDescription && (
                         <Typography variant="body1">
                             {fileInfo?.metadata.fullDescription}
@@ -73,7 +76,12 @@ const _FileDetailsDialog: FunctionComponent<FileDetailsDialogProps> = ({
                     )}
                 </DialogContent>
                 <DialogActions>
-                    {purchasePending && <CircularProgress color="primary" size={15}/>}
+                    <Button variant="outlined"
+                            color="secondary"
+                            onClick={onClose}
+                    >
+                        Close
+                    </Button>
                     {displayPurchaseButton && (
                         <Button variant="contained"
                                 color="primary"
@@ -83,12 +91,7 @@ const _FileDetailsDialog: FunctionComponent<FileDetailsDialogProps> = ({
                             Purchase
                         </Button>
                     )}
-                    <Button variant="outlined"
-                            color="secondary"
-                            onClick={onClose}
-                    >
-                        Close
-                    </Button>
+                    {purchasePending && <CircularProgress color="primary" size={15}/>}
                     {purchaseError && (
                         <Typography variant="body1"
                                     style={{color: 'red'}}

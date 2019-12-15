@@ -1,7 +1,7 @@
-import {observable, action, reaction, computed} from "mobx";
+import {action, computed, observable, reaction, toJS} from "mobx";
 import uniqBy from "lodash.uniqby";
 import {ApiError, createErrorFromResponse, TransactionsService} from "../../api";
-import {TransactionResponse} from "../../models";
+import {TransactionResponse, TransactionType} from "../../models";
 import {AccountsStore} from "../../Account";
 import {SettingsStore} from "../../Settings/stores";
 import {AxiosError} from "axios";
@@ -45,7 +45,7 @@ export class TransactionsStore {
         reaction(
             () => this.selectedAccount,
             () => {
-                this.page = 1;
+                this.page = 0;
                 this.fetchTransactions();
             }
         )
@@ -60,7 +60,9 @@ export class TransactionsStore {
             TransactionsService.getTransactionsByAddress(this.selectedAccount, this.page, PAGE_SIZE)
                 .then(({data}) => {
                     if (data.length !==0) {
+                        data = data.filter(transaction => transaction.type === TransactionType.DATA_PURCHASE);
                         this.transactions.push(...data);
+                        console.log(toJS(this.transactions));
                         this.transactions = uniqBy(this.transactions, "hash");
 
                         if (data.length === PAGE_SIZE) {

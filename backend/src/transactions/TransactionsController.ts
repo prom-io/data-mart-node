@@ -15,8 +15,8 @@ export class TransactionsController {
 
     @Get(":address")
     public getTransactionsByAddress(@Param("address") address: string,
-                                     @Query("page") page: number,
-                                     @Query("size") size: number): Promise<TransactionWithFileResponse[]> {
-        return this.transactionsService.getTransactionsByAddress(address, getValidPage(page), getValidPageSize(size));
+                                    @Query("page") page: number,
+                                    @Query("size") size: number): Promise<TransactionWithFileResponse[]> {
+        return this.transactionsService.getTransactionsByAddress(address, getValidPage(page, 0, true), getValidPageSize(size));
     }
 }

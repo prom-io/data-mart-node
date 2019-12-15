@@ -64,6 +64,7 @@ export class FilesService {
             dataValidatorAddress: file.dataValidator,
             serviceNodeAddress: config.SERVICE_NODE_ACCOUNT_ADDRESS,
             dataOwnerAddress: file.dataOwner,
+            price: file.price,
             fileId
         };
 
