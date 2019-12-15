@@ -5,7 +5,7 @@ import {
     ServiceNodeRegisterAccountRequest,
     ServiceNodePurchaseFileRequest
 } from "../model/api/request";
-import {BalanceResponse, FileResponse, PurchaseFileResponse} from "../model/api/response";
+import {BalanceResponse, FileResponse, PurchaseFileResponse, TransactionsCountResponse, TransactionResponse} from "../model/api/response";
 
 @Injectable()
 export class ServiceNodeApiClient {
@@ -29,5 +29,13 @@ export class ServiceNodeApiClient {
 
     public getBalanceOfAccount(address: string): AxiosPromise<BalanceResponse> {
         return this.axiosInstance.get(`/api/v1/accounts/${address}/balance`);
+    }
+
+    public getTransactionsOfAddress(address: string, page: number, pageSize: number): AxiosPromise<TransactionResponse[]> {
+        return this.axiosInstance.get(`/api/v1/transactions/${address}?page=${page}&pageSize=${pageSize}`);
+    }
+
+    public countTransactionsOfAddress(address: string): AxiosPromise<TransactionsCountResponse> {
+        return this.axiosInstance.get(`/api/v1/transactions/${address}/count`);
     }
 }

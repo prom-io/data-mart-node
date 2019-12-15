@@ -18,6 +18,7 @@ import {ServiceNodeApiClientModule} from "../service-node-api";
     imports: [
         ScheduleModule.register(),
         ServiceNodeApiClientModule
-    ]
+    ],
+    exports: [FilesService]
 })
 export class FilesModule {}

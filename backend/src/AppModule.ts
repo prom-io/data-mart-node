@@ -5,6 +5,7 @@ import {LoggerModule} from "./logging";
 import {ElasticsearchContainerModule} from "./elasticsearch";
 import {ElasticsearchInitializerModule} from "./elasticsearch/initializer";
 import {AccountsModule} from "./accounts";
+import {TransactionsModule} from "./transactions";
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import {AccountsModule} from "./accounts";
       FilesModule,
       ServiceNodeApiClientModule,
       LoggerModule,
-      AccountsModule
+      AccountsModule,
+      TransactionsModule
   ]
 })
 export class AppModule {}
