@@ -13,7 +13,8 @@ interface FilesListProps {
     purchasedFileId?: string,
     filePurchaseError?: ApiError,
     purchasePending?: boolean,
-    onHashTagClick: (hashTag: string) => void
+    onHashTagClick: (hashTag: string) => void,
+    onShowDetailsRequest: (file: FileInfoResponse) => void
 }
 
 const useStyles = makeStyles(() => createStyles({
@@ -32,7 +33,8 @@ export const FilesList: FunctionComponent<FilesListProps> = ({
     purchasedFileId,
     filePurchaseError,
     purchasePending,
-    onHashTagClick
+    onHashTagClick,
+    onShowDetailsRequest
 }) => {
     const classes = useStyles();
     let content: ReactElement;
@@ -52,6 +54,7 @@ export const FilesList: FunctionComponent<FilesListProps> = ({
                                   purchaseError={purchasedFileId === file.id ? filePurchaseError : undefined}
                                   purchasePending={purchasedFileId === file.id && purchasePending}
                                   onHashTagClick={onHashTagClick}
+                                  onDetailsRequest={file => onShowDetailsRequest(file)}
                         />
                     </Grid>
                 ))}
