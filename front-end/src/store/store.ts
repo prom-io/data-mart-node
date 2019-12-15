@@ -14,6 +14,7 @@ import {
     PurchaseFileStore
 } from "../DataPurchase";
 import {AccountType} from "../models";
+import {TransactionsStore} from "../Transactions/stores";
 
 const accounts = new AccountsStore();
 const balances = new AccountsBalanceStore(accounts);
@@ -27,6 +28,7 @@ const filesOfDataValidator = new FilesOfDataValidatorStore();
 const filePurchase = new PurchaseFileStore(settings);
 const fileInfo = new FileInfoStore();
 const filesSearch = new FilesSearchStore();
+const transactions = new TransactionsStore(settings, accounts);
 
 export const store: IAppState = {
     settings,
@@ -41,5 +43,6 @@ export const store: IAppState = {
     filesOfDataValidator,
     fileInfo,
     filePurchase,
-    filesSearch
+    filesSearch,
+    transactions
 };

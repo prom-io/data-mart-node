@@ -15,10 +15,10 @@ export class AccountsService {
     public async registerAccount(registerAccountRequest: RegisterAccountRequest): Promise<AccountResponse> {
         try {
             this.log.info("Trying to register account");
-            await this.serviceNodeApiClient.registerAccount({
+            /*await this.serviceNodeApiClient.registerAccount({
                 address: registerAccountRequest.address,
                 type: AccountType.DATA_MART
-            });
+            });*/
             await this.accountsRepository.save({
                 address: registerAccountRequest.address,
                 type: AccountType.DATA_MART

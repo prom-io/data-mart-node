@@ -27,7 +27,7 @@ export const FileCard: FunctionComponent<FileCardProps> = ({
     <Card style={{height: '100%'}}>
         <CardHeader title={(
             <Typography variant="h6" noWrap>
-                {fileInfo.metadata.briefDescription ? fileInfo.metadata.briefDescription : `${fileInfo.name}.${fileInfo.extension}`}
+                {fileInfo.metadata.briefDescription ? fileInfo.metadata.briefDescription : `${fileInfo.name}`}
             </Typography>
         )}
                     action={(
@@ -42,7 +42,7 @@ export const FileCard: FunctionComponent<FileCardProps> = ({
             <Typography variant="body1">
                 <b>Price</b>: {fileInfo.price} PROM
             </Typography>
-            {fileInfo.metadata.author && <Typography variant="body1"><b>Author</b>: ${fileInfo.metadata.author}</Typography>}
+            {fileInfo.metadata.author && <Typography variant="body1"><b>Author</b>: {fileInfo.metadata.author}</Typography>}
             {fileInfo.metadata.hashTags && <FileHashTags hashTags={fileInfo.metadata.hashTags}
                                                          onHashTagClick={onHashTagClick}
             />}

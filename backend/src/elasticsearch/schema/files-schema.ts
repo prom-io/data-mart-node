@@ -11,6 +11,7 @@ export const filesSchema = {
             },
             metadata: {
                 type: "nested",
+                index: true,
                 properties: {
                     briefDescription: {
                         type: "text",
@@ -29,7 +30,7 @@ export const filesSchema = {
                         index: true
                     },
                     hashTags: {
-                        type: "nested"
+                        type: "keyword"
                     }
                 }
             },

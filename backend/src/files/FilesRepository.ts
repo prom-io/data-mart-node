@@ -25,6 +25,7 @@ export class FilesRepository {
     }
 
     public saveAll(files: File[]): Promise<void> {
+        console.log(`Saving ${files.length} files`);
         return this.elasticSearchService.bulk({
             // have to use @ts-ignore because for some reason Intellij IDEA can't see that arrays actually have flatMap method
             // @ts-ignore

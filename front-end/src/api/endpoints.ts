@@ -7,3 +7,5 @@ export const DATA_OWNERS = "data-owners";
 export const INFO = "info";
 export const PURCHASE = "purchase";
 export const SEARCH = "search";
+export const TRANSACTIONS = "api/v2/transactions";
+export const COUNT = "count";

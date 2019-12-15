@@ -12,6 +12,7 @@ import {
     PurchaseFileStore,
     FilesSearchStore
 } from "../DataPurchase";
+import {TransactionsStore} from "../Transactions";
 
 export interface IAppState {
     store?: any, //needed for Mobx-router
@@ -27,5 +28,6 @@ export interface IAppState {
     filesOfDataValidator: FilesOfDataValidatorStore,
     filePurchase: PurchaseFileStore,
     fileInfo: FileInfoStore,
-    filesSearch: FilesSearchStore
+    filesSearch: FilesSearchStore,
+    transactions: TransactionsStore
 }

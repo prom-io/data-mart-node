@@ -37,13 +37,15 @@ const _FileDetailsDialog: FunctionComponent<FileDetailsDialogProps> = ({
             <Dialog open={Boolean(fileInfo)}
                     fullScreen={fullScreen}
                     onClose={onClose}
+                    fullWidth
+                    maxWidth="lg"
             >
                 <DialogTitle>
-                    {fileInfo?.metadata && fileInfo.metadata.briefDescription ? fileInfo.metadata.briefDescription : `${fileInfo?.name}.${fileInfo?.extension}`}
+                    {fileInfo?.metadata && fileInfo.metadata.briefDescription ? fileInfo.metadata.briefDescription : `${fileInfo?.name}`}
                 </DialogTitle>
                 <DialogContent>
                     <Typography variant="body1">
-                        <b>Price:</b>{fileInfo?.price} PROM
+                        <b>Price:</b> {fileInfo?.price} PROM
                     </Typography>
                     {fileInfo?.metadata && fileInfo.metadata.author && (
                         <Typography variant="body1">
@@ -57,7 +59,7 @@ const _FileDetailsDialog: FunctionComponent<FileDetailsDialogProps> = ({
                         <b>Mime type:</b> {fileInfo?.mimeType}
                     </Typography>
                     <Typography variant="body1">
-                        <b>Size:</b> {prettyBytes(fileInfo?.size)}
+                        <b>Size:</b> {prettyBytes(Number(fileInfo?.size))}
                     </Typography>
                     {fileInfo?.metadata && fileInfo.metadata.fullDescription && (
                         <Typography variant="body1">
