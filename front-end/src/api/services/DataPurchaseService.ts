@@ -1,6 +1,6 @@
 import {AxiosPromise} from "axios";
 import {axiosInstance} from "../api-client";
-import {FILES_V2, INFO, PURCHASE, SEARCH} from "../endpoints";
+import {FILES_V2, INFO, PURCHASE, REGAIN, SEARCH} from "../endpoints";
 import {FileInfoResponse, PurchaseFileRequest, PurchaseFileResponse} from "../../models";
 
 export class DataPurchaseService {
@@ -31,5 +31,9 @@ export class DataPurchaseService {
 
     public static purchaseFile(fileId: string, purchaseFileRequest: PurchaseFileRequest): AxiosPromise<PurchaseFileResponse> {
         return axiosInstance.post(`/${FILES_V2}/${fileId}/${PURCHASE}`, purchaseFileRequest);
+    }
+
+    public static regainFile(fileId: string): AxiosPromise<void> {
+        return axiosInstance.get(`/${FILES_V2}/${fileId}/${REGAIN}`);
     }
 }

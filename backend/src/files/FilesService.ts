@@ -1,6 +1,8 @@
 import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
 import {LoggerService} from "nest-logger";
+import fileSystem from "fs";
 import {Response} from "express";
+import path from "path";
 import {AxiosError} from "axios";
 import {FilesRepository} from "./FilesRepository";
 import {fileToFileResponse} from "./file-mappers";
@@ -101,11 +103,16 @@ export class FilesService {
             throw new HttpException(`Could not find file with id ${fileId}`, HttpStatus.NOT_FOUND);
         }
 
+        if (fileSystem.existsSync(path.join(config.PURCHASED_FILES_DIRECTORY, `${fileId}.${file.extension}`))) {
+            response.download(path.join(config.PURCHASED_FILES_DIRECTORY, `${fileId}.${file.extension}`));
+            return;
+        }
+
         return this.serviceNodeApiClient.getFile(fileId)
             .then(({data}) => {
                 this.log.info(`Retrieved file ${fileId} from service node`);
-                response.header("Content-Disposition", `attachment; fileName=${file.name}.${file.extension}`);
-                data.pipe(response);
+                data.pipe(fileSystem.createWriteStream(`${config.PURCHASED_FILES_DIRECTORY}/${fileId}.${file.extension}`));
+                response.download(path.join(config.PURCHASED_FILES_DIRECTORY, `${fileId}.${file.extension}`));
             })
             .catch((error: AxiosError) => {
                 this.log.error("Error occurred when tried to download file");

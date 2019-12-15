@@ -69,4 +69,9 @@ export class FilesController {
                               @Body() purchaseFileRequest: PurchaseFileRequest): Promise<PurchaseFileResponse> {
         return this.filesService.purchaseFile(fileId, purchaseFileRequest);
     }
+
+    @Get(":id/regain")
+    public async regainFile(@Param("id") fileId: string, @Res() response: Response): Promise<void> {
+        return this.filesService.getFileById(fileId, response);
+    }
 }

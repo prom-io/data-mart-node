@@ -2,6 +2,10 @@ import React, {FunctionComponent, Fragment} from "react";
 import {Dialog, DialogContent, DialogActions, DialogTitle, Button, Typography, Table, TableCell, TableBody, TableRow, TableHead} from "@material-ui/core";
 import {TransactionResponse, FileMetadata} from "../../models";
 import {getMetadataKeyLabel} from "../../utils";
+import {DataPurchaseService} from "../../api/services";
+import {response} from "express";
+
+const downloadFile = require("js-file-download");
 
 interface DataPurchaseTransactionDetailsDialog {
     transaction?: TransactionResponse,
@@ -12,6 +16,10 @@ export const DataPurchaseTransactionDetailsDialog: FunctionComponent<DataPurchas
     transaction,
     onClose
 }) => {
+    const regainFile = (fileId: string, extension: string) => {
+        DataPurchaseService.regainFile(fileId).then(response => downloadFile(response.data, `${fileId}.${extension}`));
+    };
+
     if (transaction) {
         return (
             <Dialog open={Boolean(transaction)}
@@ -71,6 +79,12 @@ export const DataPurchaseTransactionDetailsDialog: FunctionComponent<DataPurchas
                             onClick={onClose}
                     >
                         Close
+                    </Button>
+                    <Button variant="contained"
+                            color="primary"
+                            onClick={() => regainFile(transaction?.file.id, transaction?.file.extension)}
+                    >
+                        Regain file
                     </Button>
                 </DialogActions>
             </Dialog>

@@ -41,7 +41,7 @@ export class PurchaseFileStore {
                 .then(async ({data}) => {
                     this.response = data;
                     const fileData = (await DataPurchaseService.downloadFile(file.id)).data;
-                    downloadFile(fileData, `${file.name}.${file.extension}`);
+                    downloadFile(fileData, `${file.id}.${file.extension}`);
                 })
                 .catch((error: AxiosError) => this.error = createErrorFromResponse(error))
                 .finally(() => {

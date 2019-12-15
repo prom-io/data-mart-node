@@ -21,4 +21,7 @@ export class EnvConfig {
 
     @Env({required: true, type: "string"})
     KIBANA_HOST_URL: string;
+
+    @Env({required: true, type: "string"})
+    PURCHASED_FILES_DIRECTORY;
 }
