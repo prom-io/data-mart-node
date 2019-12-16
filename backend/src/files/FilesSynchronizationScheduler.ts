@@ -8,7 +8,7 @@ import {config} from "../config";
 
 @Injectable()
 export class FilesSynchronizationScheduler extends NestSchedule {
-    private currentPage: number = 1;
+    private currentPage: number = 0;
     private readonly pageSize: number = 100;
 
     constructor(
