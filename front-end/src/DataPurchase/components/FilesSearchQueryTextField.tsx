@@ -19,7 +19,6 @@ const _FilesSearchQueryTextField: FunctionComponent<FilesSearchQueryTextFieldMob
     return (
         <div style={{display: "inline"}}>
             <TextField label="Search"
-                       margin="dense"
                        fullWidth
                        value={searchQuery}
                        onChange={event => updateSearchQuery(event.target.value as string)}

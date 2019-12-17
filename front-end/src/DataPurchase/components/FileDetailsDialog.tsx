@@ -38,7 +38,7 @@ const _FileDetailsDialog: FunctionComponent<FileDetailsDialogProps> = ({
                     fullScreen={fullScreen}
                     onClose={onClose}
                     fullWidth
-                    maxWidth="lg"
+                    maxWidth="md"
             >
                 <DialogTitle>
                     {fileInfo?.metadata && fileInfo.metadata.briefDescription ? fileInfo.metadata.briefDescription : `${fileInfo?.name}`}

@@ -64,10 +64,14 @@ const _PurchasableFilesSearchList: FunctionComponent<PurchasableFilesSearchListP
     return (
         <Fragment>
             <Grid container spacing={2}>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} md={3} style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    flexDirection: "column"
+                }}>
                     <SearchHashTags/>
                 </Grid>
-                <Hidden smUp>
+                <Hidden smDown>
                     <Grid item md={3}/>
                 </Hidden>
                 <Grid item xs={12} md={6}>

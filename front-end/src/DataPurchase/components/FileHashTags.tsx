@@ -10,7 +10,7 @@ export const FileHashTags: FunctionComponent<FileHashTagsProps> = ({hashTags, on
     const handleHashTagClick = (hashTag: string): void => onHashTagClick(hashTag);
 
     return (
-        <Typography variant="body1">
+        <Typography variant="body1" style={{cursor: "pointer"}}>
             {hashTags.map(hashTag => (<span onClick={() => handleHashTagClick(hashTag)}><u>#{hashTag}</u> </span>))}
         </Typography>
     )

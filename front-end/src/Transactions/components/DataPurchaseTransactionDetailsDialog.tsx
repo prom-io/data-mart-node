@@ -1,9 +1,20 @@
-import React, {FunctionComponent, Fragment} from "react";
-import {Dialog, DialogContent, DialogActions, DialogTitle, Button, Typography, Table, TableCell, TableBody, TableRow, TableHead} from "@material-ui/core";
-import {TransactionResponse, FileMetadata} from "../../models";
+import React, {Fragment, FunctionComponent} from "react";
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    Typography
+} from "@material-ui/core";
+import {FileMetadata, TransactionResponse} from "../../models";
 import {getMetadataKeyLabel} from "../../utils";
 import {DataPurchaseService} from "../../api/services";
-import {response} from "express";
 
 const downloadFile = require("js-file-download");
 
@@ -25,27 +36,39 @@ export const DataPurchaseTransactionDetailsDialog: FunctionComponent<DataPurchas
             <Dialog open={Boolean(transaction)}
                     onClose={onClose}
                     fullWidth
-                    maxWidth="lg"
+                    maxWidth="md"
             >
                 <DialogTitle>
                     Data Purchase Info
                 </DialogTitle>
                 <DialogContent>
-                    <Typography variant="body1">
-                        <b>Data owner:</b> {transaction?.dataOwner}
-                    </Typography>
-                    <Typography variant="body1">
-                        <b>Sum:</b> {transaction?.value} PROM
-                    </Typography>
-                    <Typography variant="body1">
-                        <b>Purchase date:</b> {transaction?.created_at}
-                    </Typography>
-                    <Typography variant="body1">
-                        <b>Trx ID:</b> {transaction?.hash}
-                    </Typography>
-                    <Typography variant="body1">
-                        <b>Data validator:</b> {transaction?.dataValidator}
-                    </Typography>
+                   <Table>
+                       <TableRow>
+                           <TableCell>Data owner</TableCell>
+                           <TableCell>{transaction?.dataOwner}</TableCell>
+                       </TableRow>
+                       <TableRow>
+                           <TableCell>Sum</TableCell>
+                           <TableCell>{transaction?.value}</TableCell>
+                       </TableRow>
+                       <TableRow>
+                           <TableCell>Purchase date</TableCell>
+                           <TableCell>{transaction?.created_at}</TableCell>
+                       </TableRow>
+                       <TableRow>
+                           <TableCell>Txn Hash</TableCell>
+                           <TableCell>{transaction?.hash}</TableCell>
+                       </TableRow>
+                       <TableRow>
+                           <TableCell>Data validator</TableCell>
+                           <TableCell>{transaction?.dataValidator}</TableCell>
+                       </TableRow>
+                       <TableRow>
+                           <TableCell>File ID</TableCell>
+                           <TableCell>{transaction?.file.id}</TableCell>
+                       </TableRow>
+                   </Table>
+                    <br/>
                     {transaction?.file.metadata && (
                         <Fragment>
                             <Typography variant="body1">
@@ -54,8 +77,8 @@ export const DataPurchaseTransactionDetailsDialog: FunctionComponent<DataPurchas
                             <Table>
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Metadata key</TableCell>
-                                        <TableCell>Metadata value</TableCell>
+                                        <TableCell><b>Metadata key</b></TableCell>
+                                        <TableCell><b>Metadata value</b></TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>

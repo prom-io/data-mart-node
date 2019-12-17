@@ -16,11 +16,12 @@ const _SearchHashTags: FunctionComponent<SearchHashTagsMobxProps> = ({
     clearTags
 }) => {
     return (
-        <Fragment>
+        <div>
             {tags.map((tag, index) => (
                 <Chip label={tag}
                       onDelete={() => removeTag(index)}
                       key={index}
+                      size="medium"
                 />
             ))}
             {tags.length !== 0 && (
@@ -28,7 +29,7 @@ const _SearchHashTags: FunctionComponent<SearchHashTagsMobxProps> = ({
                     <CloseIcon/>
                 </IconButton>
             )}
-        </Fragment>
+        </div>
     )
 };
 

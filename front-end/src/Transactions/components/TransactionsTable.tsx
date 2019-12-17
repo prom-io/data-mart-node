@@ -28,7 +28,7 @@ export const TransactionsTable: FunctionComponent<TransactionsTableProps> = ({
                                 <TableCell>Sum</TableCell>
                                 <TableCell>Date</TableCell>
                                 <TableCell>Data Validator</TableCell>
-                                <TableCell>Txn ID</TableCell>
+                                <TableCell>Txn Hash</TableCell>
                                 <TableCell>File ID</TableCell>
                             </TableRow>
                         </TableHead>
@@ -48,15 +48,13 @@ export const TransactionsTable: FunctionComponent<TransactionsTableProps> = ({
                                         {transaction.dataValidator}
                                     </TableCell>
                                     <TableCell>
-                                        {shortenString(transaction.hash, 16)}
-                                    </TableCell>
-                                    <TableCell>
                                         <Typography style={{cursor: 'pointer'}}
                                                     onClick={() => setSelectedTransaction(transaction)}
                                         >
-                                            <u>{transaction.file.id}</u>
+                                            <u>{shortenString(transaction.hash, 16)}</u>
                                         </Typography>
                                     </TableCell>
+                                    <TableCell>{transaction.file.id}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
