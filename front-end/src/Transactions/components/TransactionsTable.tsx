@@ -24,12 +24,12 @@ export const TransactionsTable: FunctionComponent<TransactionsTableProps> = ({
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Data Owner (Wallet ID)</TableCell>
-                                <TableCell>Sum</TableCell>
-                                <TableCell>Date</TableCell>
-                                <TableCell>Data Validator</TableCell>
-                                <TableCell>Txn Hash</TableCell>
-                                <TableCell>File ID</TableCell>
+                                <TableCell><b>Data Owner (Wallet ID)</b></TableCell>
+                                <TableCell><b>Sum</b></TableCell>
+                                <TableCell><b>Date</b></TableCell>
+                                <TableCell><b>Data Validator</b></TableCell>
+                                <TableCell><b>Txn Hash</b></TableCell>
+                                <TableCell><b>File ID</b></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
