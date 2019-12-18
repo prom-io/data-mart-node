@@ -29,8 +29,8 @@ export const DataPurchaseTransactionDetailsDialog: FunctionComponent<DataPurchas
     onClose,
     open
 }) => {
-    const regainFile = (fileId: string, extension: string) => {
-        DataPurchaseService.regainFile(fileId).then(response => downloadFile(response.data, `${fileId}.${extension}`));
+    const regainFile = (fileId: string, extension: string, mimeType: string) => {
+        DataPurchaseService.regainFile(fileId).then(response => downloadFile(response.data, `${fileId}.${extension}`, mimeType));
     };
 
     const dialogOpen = open === undefined
@@ -113,7 +113,7 @@ export const DataPurchaseTransactionDetailsDialog: FunctionComponent<DataPurchas
                     </Button>
                     <Button variant="contained"
                             color="primary"
-                            onClick={() => regainFile(transaction?.file.id, transaction?.file.extension)}
+                            onClick={() => regainFile(transaction?.file.id, transaction?.file.extension, transaction?.file.mimeType)}
                     >
                         Regain file
                     </Button>

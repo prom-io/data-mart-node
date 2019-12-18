@@ -34,7 +34,7 @@ export class DataPurchaseService {
     }
 
     public static regainFile(fileId: string): AxiosPromise<void> {
-        return axiosInstance.get(`/${FILES_V2}/${fileId}/${REGAIN}`);
+        return axiosInstance.get(`/${FILES_V2}/${fileId}/${REGAIN}`, {responseType: "blob"});
     }
 
     public static checkFilePurchaseStatus(dataMartAddress: string, fileId: string): AxiosPromise<FilePurchaseStatusResponse> {
