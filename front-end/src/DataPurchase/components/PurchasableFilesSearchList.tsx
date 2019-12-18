@@ -113,6 +113,8 @@ const _PurchasableFilesSearchList: FunctionComponent<PurchasableFilesSearchListP
             <FileDetailsDialog fileInfo={fileDisplayedInDialog}
                                onClose={() => setFileDisplayedInDialog(undefined)}
                                displayPurchaseButton={Boolean(dataMartAccount)}
+                               onPurchase={handlePurchase}
+                               purchasePending={purchasePending}
             />
             <DataPurchaseTransactionDetailsDialog transaction={purchaseTransaction}
                                                   onClose={() => setTransactionDialogOpen(false)}

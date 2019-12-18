@@ -13,8 +13,8 @@ import {
     Typography
 } from "@material-ui/core";
 import {FileMetadata, TransactionResponse} from "../../models";
-import {getMetadataKeyLabel} from "../../utils";
-import {DataPurchaseService} from "../../api/services";
+import {getMetadataKeyLabel, makePreciseNumberString} from "../../utils";
+import {DataPurchaseService} from "../../api";
 
 const downloadFile = require("js-file-download");
 
@@ -55,7 +55,7 @@ export const DataPurchaseTransactionDetailsDialog: FunctionComponent<DataPurchas
                        </TableRow>
                        <TableRow>
                            <TableCell>Sum</TableCell>
-                           <TableCell>{transaction?.value}</TableCell>
+                           <TableCell>{makePreciseNumberString(transaction?.value)}</TableCell>
                        </TableRow>
                        <TableRow>
                            <TableCell>Purchase date</TableCell>

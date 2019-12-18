@@ -1,8 +1,8 @@
 import React, {FunctionComponent, Fragment, useState} from "react";
 import {Table, TableHead, TableRow, TableCell, TableBody, Grid, Button, CircularProgress, Typography} from "@material-ui/core";
-import {TransactionResponse} from "../../models";
-import {shortenString} from "../../utils";
 import {DataPurchaseTransactionDetailsDialog} from "./DataPurchaseTransactionDetailsDialog";
+import {TransactionResponse} from "../../models";
+import {shortenString, makePreciseNumberString} from "../../utils";
 
 interface TransactionsTableProps {
     transactions: TransactionResponse[],
@@ -39,7 +39,7 @@ export const TransactionsTable: FunctionComponent<TransactionsTableProps> = ({
                                         {transaction.dataOwner}
                                     </TableCell>
                                     <TableCell>
-                                        {transaction.value}
+                                        {makePreciseNumberString(transaction.value)}
                                     </TableCell>
                                     <TableCell>
                                         {transaction.created_at}

@@ -13,9 +13,10 @@ import {
     Typography
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import {FileHashTags} from "./FileHashTags";
 import {FileInfoResponse} from "../../models";
 import {ApiError} from "../../api";
-import {FileHashTags} from "./FileHashTags";
+import {makePreciseNumberString} from "../../utils";
 
 interface FileCardProps {
     fileInfo: FileInfoResponse,
@@ -72,7 +73,7 @@ export const FileCard: FunctionComponent<FileCardProps> = ({
             />
             <CardContent className={classes.fileCardContent}>
                 <Typography variant="body1">
-                    <b>Price</b>: {fileInfo.price} PROM
+                    <b>Price</b>: {makePreciseNumberString(fileInfo.price)} PROM
                 </Typography>
                 {fileInfo.metadata.author && <Typography variant="body1"><b>Author</b>: {fileInfo.metadata.author}</Typography>}
                 {fileInfo.metadata.hashTags && <FileHashTags hashTags={fileInfo.metadata.hashTags}
