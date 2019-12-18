@@ -6,10 +6,10 @@ import {FilesList} from "./FilesList";
 import {SearchHashTags} from "./SearchHashTags";
 import {FilesSearchQueryTextField} from "./FilesSearchQueryTextField";
 import {FileDetailsDialog} from "./FileDetailsDialog";
+import {DataPurchaseTransactionDetailsDialog} from "../../Transaction";
 import {FileInfoResponse, PurchaseFileResponse, TransactionResponse} from "../../models";
 import {ApiError} from "../../api";
 import {IAppState} from "../../store";
-import {DataPurchaseTransactionDetailsDialog} from "../../Transactions/components";
 
 interface PurchasableFilesSearchListMobxProps {
     files: FileInfoResponse[],
@@ -110,7 +110,7 @@ const _PurchasableFilesSearchList: FunctionComponent<PurchasableFilesSearchListP
                     </Grid>
                 </Grid>
             </Grid>
-            <FileDetailsDialog fileInfo={fileDisplayedInDialog}
+            <FileDetailsDialog fileInfo={purchaseTransaction ? undefined : fileDisplayedInDialog}
                                onClose={() => setFileDisplayedInDialog(undefined)}
                                displayPurchaseButton={Boolean(dataMartAccount)}
                                onPurchase={handlePurchase}

@@ -5,7 +5,7 @@ import {Layout} from "../Layout";
 import {Footer} from "../Footer";
 import {NavigationMenu} from "../Navigation";
 import {SelectedDataMartBalance} from "../Account";
-import {TransactionsCard} from "../Transactions";
+import {TransactionsCard} from "../Transaction";
 
 export const TransactionsPage: FunctionComponent<{}> = () => (
     <Grid container>

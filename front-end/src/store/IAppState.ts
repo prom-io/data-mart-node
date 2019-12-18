@@ -12,7 +12,7 @@ import {
     PurchaseFileStore,
     FilesSearchStore
 } from "../DataPurchase";
-import {TransactionsStore} from "../Transactions";
+import {TransactionsStore} from "../Transaction";
 
 export interface IAppState {
     store?: any, //needed for Mobx-router

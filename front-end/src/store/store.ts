@@ -14,7 +14,7 @@ import {
     PurchaseFileStore
 } from "../DataPurchase";
 import {AccountType} from "../models";
-import {TransactionsStore} from "../Transactions/stores";
+import {TransactionsStore} from "../Transaction/stores";
 
 const accounts = new AccountsStore();
 const balances = new AccountsBalanceStore(accounts);
