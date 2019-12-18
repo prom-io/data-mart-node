@@ -1,5 +1,5 @@
-import React, {FunctionComponent, Fragment} from "react";
-import {Select, InputLabel, MenuItem} from "@material-ui/core";
+import React, {Fragment, FunctionComponent} from "react";
+import {InputLabel, MenuItem, Select} from "@material-ui/core";
 
 interface DataMartAccountSelectProps {
     accounts: string[],
@@ -14,7 +14,7 @@ export const DataMartAccountSelect: FunctionComponent<DataMartAccountSelectProps
 }) => (
     <Fragment>
         <InputLabel htmlFor="dataMartAccountSelect">
-            Data mart account
+            Wallet
         </InputLabel>
         <Select onChange={event => onSelect(event.target.value as string)}
                 value={selectedAccount}

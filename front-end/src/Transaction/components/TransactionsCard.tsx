@@ -14,6 +14,7 @@ interface TransactionsCardMobxProps {
     error?: ApiError,
     transactions: TransactionResponse[],
     selectAccount: (address: string) => void,
+    setDefaultAccount: (address: string) => void,
     fetchTransactions: () => void
 }
 
@@ -59,7 +60,8 @@ const mapMobxToProps = (state: IAppState): TransactionsCardMobxProps => ({
     selectedAccount: state.transactions.selectedAccount,
     error: state.transactions.error,
     selectAccount: state.transactions.setSelectedAccount,
-    fetchTransactions: state.transactions.fetchTransactions
+    fetchTransactions: state.transactions.fetchTransactions,
+    setDefaultAccount: state.settings.selectDataMartAccount
 });
 
 export const TransactionsCard = inject(mapMobxToProps)(observer(_TransactionsCard) as FunctionComponent<{}>);

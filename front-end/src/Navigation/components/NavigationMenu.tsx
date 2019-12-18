@@ -5,7 +5,6 @@ import HomeIcon from "@material-ui/icons/Home";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import DashboardIcon from "@material-ui/icons/Dashboard";
-import HistoryIcon from "@material-ui/icons/History";
 import {IAppState} from "../../store";
 import {Routes} from "../../router";
 
@@ -55,22 +54,6 @@ const _DataValidatorNavigationMenu: FunctionComponent<NavigationMenuProps> = ({
                 </ListItemIcon>
                 <ListItemText>
                     Explore files
-                </ListItemText>
-            </MenuItem>
-        </Link>
-        <Link store={store}
-              view={Routes.transactions}
-              style={{
-                  textDecoration: 'none',
-                  color: 'inherit'
-              }}
-        >
-            <MenuItem onClick={() => onItemClick && onItemClick()}>
-                <ListItemIcon>
-                    <HistoryIcon/>
-                </ListItemIcon>
-                <ListItemText>
-                    Data purchases
                 </ListItemText>
             </MenuItem>
         </Link>

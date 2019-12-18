@@ -1,5 +1,5 @@
-import * as React from "react";
-import {DataMartRegistrationPage, FilesPage, HomePage, NotFoundPage, TransactionsPage} from "../pages";
+import React from "react";
+import {DataMartRegistrationPage, FilesPage, NotFoundPage, TransactionsPage} from "../pages";
 import {store} from "../store";
 
 const Route = require("mobx-router").Route;
@@ -7,7 +7,10 @@ const Route = require("mobx-router").Route;
 export const Routes = {
     home: new Route({
         path: '/',
-        component: <HomePage/>
+        component: <TransactionsPage/>,
+        beforeEnter: () => {
+            store.transactions.fetchTransactions();
+        }
     }),
     notFound: new Route({
         path: '/404',
