@@ -6,9 +6,10 @@ import {FilesList} from "./FilesList";
 import {SearchHashTags} from "./SearchHashTags";
 import {FilesSearchQueryTextField} from "./FilesSearchQueryTextField";
 import {FileDetailsDialog} from "./FileDetailsDialog";
-import {FileInfoResponse, PurchaseFileResponse} from "../../models";
+import {FileInfoResponse, PurchaseFileResponse, TransactionResponse} from "../../models";
 import {ApiError} from "../../api";
 import {IAppState} from "../../store";
+import {DataPurchaseTransactionDetailsDialog} from "../../Transactions/components";
 
 interface PurchasableFilesSearchListMobxProps {
     files: FileInfoResponse[],
@@ -22,7 +23,10 @@ interface PurchasableFilesSearchListMobxProps {
     setShowSnackbar: (showSnackbar: boolean) => void,
     addHashTag: (hashTag: string) => void,
     search: () => void,
-    dataMartAccount: string | undefined
+    dataMartAccount: string | undefined,
+    purchaseTransaction?: TransactionResponse,
+    transactionDialogOpen: boolean,
+    setTransactionDialogOpen: (open: boolean) => void
 }
 
 type PurchasableFilesSearchListProps = PurchasableFilesSearchListMobxProps & WithSnackbarProps;
@@ -40,7 +44,10 @@ const _PurchasableFilesSearchList: FunctionComponent<PurchasableFilesSearchListP
     addHashTag,
     enqueueSnackbar,
     search,
-    dataMartAccount
+    dataMartAccount,
+    purchaseTransaction,
+    setTransactionDialogOpen,
+    transactionDialogOpen
 }) => {
     const [purchasedFileId, setPurchasedFileId] = useState<string | undefined>(undefined);
     const [fileDisplayedInDialog, setFileDisplayedInDialog] = useState<FileInfoResponse | undefined>(undefined);
@@ -107,6 +114,10 @@ const _PurchasableFilesSearchList: FunctionComponent<PurchasableFilesSearchListP
                                onClose={() => setFileDisplayedInDialog(undefined)}
                                displayPurchaseButton={Boolean(dataMartAccount)}
             />
+            <DataPurchaseTransactionDetailsDialog transaction={purchaseTransaction}
+                                                  onClose={() => setTransactionDialogOpen(false)}
+                                                  open={transactionDialogOpen}
+            />
         </Fragment>
     )
 };
@@ -123,7 +134,10 @@ const mapMobxToProps = (state: IAppState): PurchasableFilesSearchListMobxProps =
     files: state.filesSearch.files,
     setShowSnackbar: state.filePurchase.setShowSnackbar,
     showSnackbar: state.filePurchase.showSnackbar,
-    dataMartAccount: state.settings.selectedDataMartAccount
+    dataMartAccount: state.settings.selectedDataMartAccount,
+    purchaseTransaction: state.filePurchase.filePurchaseStatus && state.filePurchase.filePurchaseStatus.transaction,
+    transactionDialogOpen: state.filePurchase.showFilePurchaseDetailsDialog,
+    setTransactionDialogOpen: state.filePurchase.setShowFilePurchaseDetailsDialog
 });
 
 export const PurchasableFilesSearchList = withSnackbar(

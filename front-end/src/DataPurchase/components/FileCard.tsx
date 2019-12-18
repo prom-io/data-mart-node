@@ -84,14 +84,16 @@ export const FileCard: FunctionComponent<FileCardProps> = ({
             </CardContent>
             {displayPurchaseButton && (
                 <CardActions className={classes.fileCardActions}>
-                    <Button variant="contained"
-                            color="primary"
-                            disabled={purchasePending}
-                            onClick={() => onPurchase && onPurchase(fileInfo)}
-                    >
-                        Purchase
-                    </Button>
-                    {purchasePending && <CircularProgress size={15} color="primary"/>}
+                    <div>
+                        <Button variant="contained"
+                                color="primary"
+                                disabled={purchasePending}
+                                onClick={() => onPurchase && onPurchase(fileInfo)}
+                        >
+                            Purchase
+                        </Button>
+                        {purchasePending && <CircularProgress size={15} color="primary"/>}
+                    </div>
                 </CardActions>
             )}
         </Card>

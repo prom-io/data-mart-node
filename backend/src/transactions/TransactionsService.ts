@@ -1,7 +1,13 @@
 import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
 import {FilesService} from "../files";
 import {ServiceNodeApiClient} from "../service-node-api";
-import {FileResponse, TransactionResponse, TransactionsCountResponse, TransactionWithFileResponse} from "../model/api/response";
+import {
+    FilePurchaseStatusResponse,
+    FileResponse,
+    TransactionResponse,
+    TransactionsCountResponse,
+    TransactionWithFileResponse
+} from "../model/api/response";
 import {LoggerService} from "nest-logger";
 
 @Injectable()
@@ -47,6 +53,48 @@ export class TransactionsService {
         } catch (error) {
             if (error instanceof HttpException) {
                 throw error;
+            }
+        }
+    }
+
+    public async checkFilePurchaseStatus(fileId: string, dataMartAddress: string): Promise<FilePurchaseStatusResponse> {
+        const file = await this.filesService.getFileInfoById(fileId);
+        let fetchedAllTransactions = false;
+        let transactionFound = false;
+        let targetTransaction: TransactionResponse | undefined;
+        let currentPage = 0;
+        const pageSize = 100;
+
+        while (!fetchedAllTransactions || !transactionFound) {
+            let transactions = (await this.serviceNodeApiClient.getTransactionsOfAddress(dataMartAddress, currentPage, pageSize)).data;
+
+            if (transactions.length === 0) {
+                fetchedAllTransactions = true;
+                break;
+            }
+
+            transactions = transactions.filter(transaction => transaction.dataMart === dataMartAddress && transaction.id === fileId);
+
+            if (transactions.length !== 0) {
+                targetTransaction = transactions[0];
+                transactionFound = true;
+                break;
+            }
+
+            currentPage += 1;
+        }
+
+        if (transactionFound) {
+            return {
+                purchased: true,
+                transaction: {
+                    ...targetTransaction!,
+                    file
+                }
+            }
+        } else {
+            return {
+                purchased: false
             }
         }
     }

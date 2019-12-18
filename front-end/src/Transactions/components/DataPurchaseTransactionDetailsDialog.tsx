@@ -20,20 +20,26 @@ const downloadFile = require("js-file-download");
 
 interface DataPurchaseTransactionDetailsDialog {
     transaction?: TransactionResponse,
+    open?: boolean,
     onClose: () => void
 }
 
 export const DataPurchaseTransactionDetailsDialog: FunctionComponent<DataPurchaseTransactionDetailsDialog> = ({
     transaction,
-    onClose
+    onClose,
+    open
 }) => {
     const regainFile = (fileId: string, extension: string) => {
         DataPurchaseService.regainFile(fileId).then(response => downloadFile(response.data, `${fileId}.${extension}`));
     };
 
+    const dialogOpen = open === undefined
+        ? Boolean(transaction)
+        : Boolean(transaction) && open;
+
     if (transaction) {
         return (
-            <Dialog open={Boolean(transaction)}
+            <Dialog open={dialogOpen}
                     onClose={onClose}
                     fullWidth
                     maxWidth="md"
@@ -63,13 +69,15 @@ export const DataPurchaseTransactionDetailsDialog: FunctionComponent<DataPurchas
                            <TableCell>Data validator</TableCell>
                            <TableCell>{transaction?.dataValidator}</TableCell>
                        </TableRow>
-                       <TableRow>
-                           <TableCell>File ID</TableCell>
-                           <TableCell>{transaction?.file.id}</TableCell>
-                       </TableRow>
+                       {transaction?.file && (
+                           <TableRow>
+                               <TableCell>File ID</TableCell>
+                               <TableCell>{transaction?.file.id}</TableCell>
+                           </TableRow>
+                       )}
                    </Table>
                     <br/>
-                    {transaction?.file.metadata && (
+                    {transaction?.file && transaction?.file.metadata && (
                         <Fragment>
                             <Typography variant="body1">
                                 File metadata

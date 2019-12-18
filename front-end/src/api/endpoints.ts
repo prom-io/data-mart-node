@@ -10,3 +10,4 @@ export const SEARCH = "search";
 export const TRANSACTIONS = "api/v2/transactions";
 export const COUNT = "count";
 export const REGAIN = "regain";
+export const PURCHASE_STATUS = "purchase-status";

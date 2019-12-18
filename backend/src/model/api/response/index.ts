@@ -6,3 +6,4 @@ export * from "./BalancesResponse";
 export * from "./TransactionsCountResponse";
 export * from "./TransactionWithFileResponse";
 export * from "./TransactionResponse";
+export * from "./FilePurchaseStatusResponse";
