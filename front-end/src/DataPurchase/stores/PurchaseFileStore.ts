@@ -42,6 +42,7 @@ export class PurchaseFileStore {
             this.pending = true;
             this.error = undefined;
             this.response = undefined;
+            this.filePurchaseStatus = undefined;
 
             this.filePurchaseStatus = (await DataPurchaseService.checkFilePurchaseStatus(this.dataMartAddress, file.id)).data;
 
@@ -78,5 +79,6 @@ export class PurchaseFileStore {
     @action
     setShowFilePurchaseDetailsDialog = (showFilePurchaseDetailsDialog: boolean): void => {
         this.showFilePurchaseDetailsDialog = showFilePurchaseDetailsDialog;
+        this.filePurchaseStatus = undefined;
     }
 }

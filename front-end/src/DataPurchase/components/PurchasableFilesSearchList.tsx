@@ -66,8 +66,7 @@ const _PurchasableFilesSearchList: FunctionComponent<PurchasableFilesSearchListP
 
         setShowSnackbar(false);
     }
-
-
+    
     return (
         <Fragment>
             <Grid container spacing={2}>
