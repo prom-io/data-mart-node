@@ -11,8 +11,7 @@
 
 ## Description
 
-Data Validator node is an application which is responsible for aggregation and validation of the data from the Data Owners and provide 
-it to Prometeus ecosystem.
+Data Mart node is an application which is used for purchasing data and proceeding it to the buyer (end user: some brand or agency outside the System). 
 
 Here you can find the [sequence diagram](https://github.com/Prometeus-Network/prometeus/wiki/Data-Purchase-Diagram) illustrates the data purchase process and it's actors.
 
