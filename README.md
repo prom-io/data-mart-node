@@ -34,9 +34,7 @@ and then makes another request to download purchased file.
 
 ## How to test
 
-Demo client application can be found [here](http://178.62.207.53:3008/)
-
-It is an instance of app, which is alreay deployed at the stage environent for the demo purposes. 
+[Here](http://178.62.207.53:3008/) is an instance of app, which is alreay deployed at the stage environent for the demo purposes. 
 So you can test all the essence features of the application using UI: 
 - explore Data Owners' files with their metadata;
 - select / purchase any of them;
@@ -44,7 +42,7 @@ So you can test all the essence features of the application using UI:
 - select PROM wallet as the default for the purchases;
 - browse the purchase trancastions list.
 
-Here is a manual with screenshots: testing guideline for the operations listed above.
+Here is a [manual](https://github.com/Prometeus-Network/data-mart-node/blob/master/test.md) with screenshots: testing guideline for the operations listed above.
 
 ## License
 
