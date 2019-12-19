@@ -36,6 +36,16 @@ and then makes another request to download purchased file.
 
 Demo client application can be found [here](http://178.62.207.53:3008/)
 
+It is an instance of app, which is alreay deployed at the stage environent for the demo purposes. 
+So you can test all the essence features of the application using UI: 
+- explore Data Owners' files with their metadata;
+- select / purchase any of them;
+- get the decrypted file after purchase;
+- select PROM wallet as the default for the purchases;
+- browse the purchase trancastions list.
+
+Here is a manual with screenshots: testing guideline for the operations listed above.
+
 ## License
 
 Prometeus Network is licensed under the Apache software license (see LICENSE [file](https://github.com/Prometeus-Network/prometeus/blob/master/LICENSE)). Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either \express or implied.
