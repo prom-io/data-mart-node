@@ -137,12 +137,12 @@ export class FilesRepository {
                             terms: {
                                 "metadata.hashTags": hashTags
                             }
-                        },
-                        sort: {
-                            savedAt: {
-                                order: "desc"
-                            }
                         }
+                    }
+                },
+                sort: {
+                    savedAt: {
+                        order: "desc"
                     }
                 }
             }
