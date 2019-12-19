@@ -16,7 +16,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {FileHashTags} from "./FileHashTags";
 import {FileInfoResponse} from "../../models";
 import {ApiError} from "../../api";
-import {makePreciseNumberString} from "../../utils";
+import {makePreciseNumberString, shortenString} from "../../utils";
 
 interface FileCardProps {
     fileInfo: FileInfoResponse,
@@ -61,7 +61,7 @@ export const FileCard: FunctionComponent<FileCardProps> = ({
     return (
         <Card className={classes.fileCard}>
             <CardHeader title={(
-                <Typography variant="h6" noWrap>
+                <Typography variant="h6">
                     {fileInfo.metadata.briefDescription ? fileInfo.metadata.briefDescription : `${fileInfo.name}`}
                 </Typography>
             )}
