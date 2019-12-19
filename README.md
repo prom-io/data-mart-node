@@ -3,6 +3,7 @@
 ## Table of contents
 
 - [Description](#description)
+- [How to test](#how-to-test)
 - [License](#license)
 - [How it works](#how-it-works)
 - [How to run](#how-to-run)
@@ -13,7 +14,6 @@
     - [Environmental variables](#environmental-variables)
         - [Bakcend](#backend)
         - [Front-end](#front-end)
-- [How to test](#how-to-test)
 - [Stages of project](#stages-of-project)
     - [What Data Mart node can do now](#what-data-mart-node-can-do-now)
     - [What Data mart node will do in the future](#what-data-mart-node-will-do-in-the-future)
@@ -32,6 +32,9 @@ and becomes available to Data Marts via RESTful API or user interface.
 Upon data purchasing, Data Mart node makes request to Service Node which processes payment, 
 and then makes another request to download purchased file.
 
+## How to test
+
+Demo client application can be found [here](http://178.62.207.53:3008/)
 
 ## License
 
@@ -125,11 +128,6 @@ If you want to run Data Mart node outside Docker, you will need to to the follow
 |---------------------------------------|------------------------------------------------------------------|
 | REACT_APP_DATA_MART_NODE_API_BASE_URL | URL of backend API                                               |
 | REACT_APP_PRODUCTION_PORT             | Port which will be used by client application in production mode |
-
-
-## How to test
-
-Demo client application can be found [here](http://178.62.207.53:3008/)
 
 ## Stages of project
 
