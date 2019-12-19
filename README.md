@@ -12,7 +12,7 @@
         - [Running inside Docker](#running-inside-docker)
         - [Running outside Docker](#running-outside-docker)
     - [Environmental variables](#environmental-variables)
-        - [Bakcend](#backend)
+        - [Baсkend](#backend)
         - [Front-end](#front-end)
 - [Stages of project](#stages-of-project)
     - [What Data Mart node can do now](#what-data-mart-node-can-do-now)
