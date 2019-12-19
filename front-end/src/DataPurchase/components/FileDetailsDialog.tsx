@@ -5,6 +5,7 @@ import prettyBytes from "pretty-bytes";
 import {FileInfoResponse} from "../../models";
 import {ApiError} from "../../api";
 import {FileHashTags} from "./FileHashTags";
+import {makePreciseNumberString} from "../../utils";
 
 interface FileDetailsDialogOwnProps {
     fileInfo?: FileInfoResponse,
@@ -45,7 +46,7 @@ const _FileDetailsDialog: FunctionComponent<FileDetailsDialogProps> = ({
                 </DialogTitle>
                 <DialogContent>
                     <Typography variant="body1">
-                        <b>Price:</b> {fileInfo?.price} PROM
+                        <b>Price:</b> {makePreciseNumberString(fileInfo?.price)} PROM
                     </Typography>
                     {fileInfo?.metadata && fileInfo.metadata.author && (
                         <Typography variant="body1">
