@@ -55,8 +55,7 @@ export class PurchaseFileStore {
             DataPurchaseService.purchaseFile(file.id, {dataMartAddress: this.dataMartAddress})
                 .then(async ({data}) => {
                     this.response = data;
-                    const fileData = (await DataPurchaseService.downloadFile(file.id)).data;
-                    downloadFile(fileData, `${file.id}.${file.extension}`);
+                    DataPurchaseService.downloadFile(file.id).then(response => downloadFile(response.data, `${file.id}.${file.extension}`));
 
                     DataPurchaseService.checkFilePurchaseStatus(this.dataMartAddress!, file.id).then(({data}) => {
                         this.filePurchaseStatus = data;
