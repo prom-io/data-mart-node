@@ -25,7 +25,8 @@ interface FileCardProps {
     purchaseError?: ApiError,
     displayPurchaseButton?: boolean,
     onHashTagClick: (tag: string) => void,
-    onDetailsRequest: () => void
+    onDetailsRequest: () => void,
+    disablePurchaseButton: boolean
 }
 
 const useStyles = makeStyles(() => createStyles({
@@ -51,6 +52,7 @@ export const FileCard: FunctionComponent<FileCardProps> = ({
     purchasePending,
     purchaseError,
     displayPurchaseButton = false,
+    disablePurchaseButton,
     onHashTagClick,
     onDetailsRequest
 }) => {
@@ -88,7 +90,7 @@ export const FileCard: FunctionComponent<FileCardProps> = ({
                     <div>
                         <Button variant="contained"
                                 color="primary"
-                                disabled={purchasePending}
+                                disabled={disablePurchaseButton}
                                 onClick={() => onPurchase && onPurchase(fileInfo)}
                         >
                             Purchase

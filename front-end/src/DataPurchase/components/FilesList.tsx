@@ -52,9 +52,10 @@ export const FilesList: FunctionComponent<FilesListProps> = ({
                                   onPurchase={onFilePurchase}
                                   displayPurchaseButton={displayPurchaseButtons}
                                   purchaseError={purchasedFileId === file.id ? filePurchaseError : undefined}
-                                  purchasePending={purchasedFileId === file.id && purchasePending}
+                                  purchasePending={purchasePending && purchasedFileId === file.id}
                                   onHashTagClick={onHashTagClick}
                                   onDetailsRequest={() => onShowDetailsRequest(file)}
+                                  disablePurchaseButton={purchasePending === undefined ? false : purchasePending}
                         />
                     </Grid>
                 ))}
