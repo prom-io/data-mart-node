@@ -1,7 +1,7 @@
 import React, {FunctionComponent} from "react";
 import {inject} from "mobx-react";
 import {List, ListItemIcon, ListItemText, MenuItem} from "@material-ui/core";
-import HomeIcon from "@material-ui/icons/Home";
+import HistoryIcon from "@material-ui/icons/History"
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import DashboardIcon from "@material-ui/icons/Dashboard";
@@ -34,10 +34,10 @@ const _DataValidatorNavigationMenu: FunctionComponent<NavigationMenuProps> = ({
         >
             <MenuItem onClick={() => onItemClick && onItemClick()}>
                 <ListItemIcon>
-                    <HomeIcon/>
+                    <HistoryIcon/>
                 </ListItemIcon>
                 <ListItemText>
-                    Home
+                    Data purchases
                 </ListItemText>
             </MenuItem>
         </Link>
