@@ -135,7 +135,7 @@ export class FilesRepository {
                         },
                         filter: {
                             terms: {
-                                "metadata.hashTags": hashTags
+                                "metadata.hashTags": hashTags.map(hashTag => hashTag.toLocaleLowerCase())
                             }
                         }
                     }
