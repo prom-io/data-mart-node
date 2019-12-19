@@ -16,9 +16,6 @@ export class TransactionsStore {
     transactions: TransactionResponse[] = [];
 
     @observable
-    selectedAccount: string | undefined = undefined;
-
-    @observable
     page: number = 0;
 
     @observable
@@ -28,23 +25,24 @@ export class TransactionsStore {
     error?: ApiError = undefined;
 
     @computed
-    get defaultDataMartAccount(): string | undefined {
-        return this.settingsStore.selectedDataMartAccount;
+    get accounts(): string[] {
+        return this.accountsStore.accounts.map(account => account.address);
     }
 
     @computed
-    get accounts(): string[] {
-        return this.accountsStore.accounts.map(account => account.address);
+    get selectedAccount(): string | undefined {
+        return this.settingsStore.selectedDataMartAccount;
     }
 
     constructor(settingsStore: SettingsStore, accountsStore: AccountsStore) {
         this.settingsStore = settingsStore;
         this.accountsStore = accountsStore;
-        this.selectedAccount = this.defaultDataMartAccount;
 
         reaction(
             () => this.selectedAccount,
             () => {
+                console.log("reacting");
+                this.transactions = [];
                 this.page = 0;
                 this.fetchTransactions();
             }
@@ -74,9 +72,4 @@ export class TransactionsStore {
                 .finally(() => this.pending = false);
         }
     };
-
-    @action
-    setSelectedAccount = (account: string): void => {
-        this.selectedAccount = account;
-    }
 }

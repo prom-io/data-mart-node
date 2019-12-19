@@ -13,7 +13,6 @@ interface TransactionsCardMobxProps {
     pending: boolean,
     error?: ApiError,
     transactions: TransactionResponse[],
-    selectAccount: (address: string) => void,
     setDefaultAccount: (address: string) => void,
     fetchTransactions: () => void
 }
@@ -23,14 +22,14 @@ const _TransactionsCard: FunctionComponent<TransactionsCardMobxProps> = ({
     selectedAccount,
     pending,
     error,
-    selectAccount,
+    setDefaultAccount,
     transactions,
     fetchTransactions
 }) => (
     <Grid container spacing={2}>
         <Grid item xs={12}>
             <DataMartAccountSelect accounts={accounts}
-                                   onSelect={selectAccount}
+                                   onSelect={setDefaultAccount}
                                    selectedAccount={selectedAccount}
             />
         </Grid>
@@ -59,7 +58,6 @@ const mapMobxToProps = (state: IAppState): TransactionsCardMobxProps => ({
     pending: state.transactions.pending,
     selectedAccount: state.transactions.selectedAccount,
     error: state.transactions.error,
-    selectAccount: state.transactions.setSelectedAccount,
     fetchTransactions: state.transactions.fetchTransactions,
     setDefaultAccount: state.settings.selectDataMartAccount
 });
