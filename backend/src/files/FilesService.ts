@@ -3,6 +3,7 @@ import {LoggerService} from "nest-logger";
 import fileSystem from "fs";
 import {Response} from "express";
 import path from "path";
+import {promisify} from "util";
 import {AxiosError} from "axios";
 import {FilesRepository} from "./FilesRepository";
 import {fileToFileResponse} from "./file-mappers";
@@ -108,20 +109,28 @@ export class FilesService {
             return;
         }
 
-        return this.serviceNodeApiClient.getFile(fileId)
-            .then(async ({data}) => {
-                this.log.info(`Retrieved file ${fileId} from service node`);
-                await data.pipeLine(fileSystem.createWriteStream(`${config.PURCHASED_FILES_DIRECTORY}/${fileId}.${file.extension}`));
-                response.download(path.join(config.PURCHASED_FILES_DIRECTORY, `${fileId}.${file.extension}`));
-            })
-            .catch((error: AxiosError) => {
-                this.log.error("Error occurred when tried to download file");
-                this.log.debug(error.stack);
+        return new Promise((resolve, reject) => {
+            this.serviceNodeApiClient.getFile(fileId)
+                .then(({data}) => {
+                    this.log.info(`Retrieved file ${fileId} from service node`);
+                    const fileStream = fileSystem.createWriteStream(`${config.PURCHASED_FILES_DIRECTORY}/${fileId}.${file.extension}`);
+                    data.pipe(fileStream);
+                    fileStream.on("finish", () => {
+                        response.download(path.join(config.PURCHASED_FILES_DIRECTORY, `${fileId}.${file.extension}`));
+                        resolve();
+                    })
+                })
+                .catch((error: AxiosError) => {
+                    this.log.error("Error occurred when tried to download file");
+                    this.log.debug(error.stack);
 
-                if (error.response) {
-                    this.log.error(`Service node responded with ${error.response.status} status`);
-                    this.log.debug(`The following response has been received: ${JSON.stringify(error.response.data)}`);
-                }
-            })
+                    if (error.response) {
+                        this.log.error(`Service node responded with ${error.response.status} status`);
+                        this.log.debug(`The following response has been received: ${JSON.stringify(error.response.data)}`);
+                    }
+
+                    reject(error);
+                })
+        })
     }
 }
