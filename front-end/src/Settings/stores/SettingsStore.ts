@@ -1,7 +1,7 @@
-import {action, computed, observable} from "mobx";
+import {action, computed, observable, reaction} from "mobx";
 import {AccountResponse} from "../../models";
 import {ApiError} from "../../api";
-import {AccountsStore} from "../../Account/stores";
+import {AccountsStore} from "../../Account";
 
 export class SettingsStore {
     private readonly accountsStore: AccountsStore;
@@ -28,6 +28,15 @@ export class SettingsStore {
 
     constructor(accountsStore: AccountsStore) {
         this.accountsStore = accountsStore;
+
+        reaction(
+            () => this.accountsStore.accounts,
+            accounts => {
+                if (accounts && accounts.length !== 0 && !this.selectedDataMartAccount) {
+                    this.selectDataMartAccount(accounts[0].address);
+                }
+            }
+        )
     }
 
     @action

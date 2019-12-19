@@ -17,7 +17,7 @@ export const DataMartAccountSelect: FunctionComponent<DataMartAccountSelectProps
             Wallet
         </InputLabel>
         <Select onChange={event => onSelect(event.target.value as string)}
-                value={selectedAccount}
+                value={selectedAccount || ""}
         >
             {accounts.map(account => (
                 <MenuItem key={account}
