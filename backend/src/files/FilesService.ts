@@ -109,9 +109,9 @@ export class FilesService {
         }
 
         return this.serviceNodeApiClient.getFile(fileId)
-            .then(({data}) => {
+            .then(async ({data}) => {
                 this.log.info(`Retrieved file ${fileId} from service node`);
-                data.pipe(fileSystem.createWriteStream(`${config.PURCHASED_FILES_DIRECTORY}/${fileId}.${file.extension}`));
+                await data.pipeLine(fileSystem.createWriteStream(`${config.PURCHASED_FILES_DIRECTORY}/${fileId}.${file.extension}`));
                 response.download(path.join(config.PURCHASED_FILES_DIRECTORY, `${fileId}.${file.extension}`));
             })
             .catch((error: AxiosError) => {
