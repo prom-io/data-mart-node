@@ -108,6 +108,11 @@ export class FilesRepository {
                     multi_match: {
                         query
                     }
+                },
+                sort: {
+                    savedAt: {
+                        order: "desc"
+                    }
                 }
             }
         })
@@ -131,6 +136,11 @@ export class FilesRepository {
                         filter: {
                             terms: {
                                 "metadata.hashTags": hashTags
+                            }
+                        },
+                        sort: {
+                            savedAt: {
+                                order: "desc"
                             }
                         }
                     }

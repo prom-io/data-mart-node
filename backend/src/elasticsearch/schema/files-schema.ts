@@ -11,7 +11,7 @@ export const filesSchema = {
             },
             metadata: {
                 type: "nested",
-                index: true,
+                // index: true,
                 properties: {
                     briefDescription: {
                         type: "text",
@@ -49,6 +49,9 @@ export const filesSchema = {
             price: {
                 type: "double",
                 index: false
+            },
+            savedAt: {
+                type: "number"
             }
         }
     }

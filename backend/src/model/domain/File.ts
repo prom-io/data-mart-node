@@ -3,6 +3,7 @@ import {FileMetadata} from "./FileMetadata";
 export interface File {
     id: string,
     metadata: FileMetadata,
+    savedAt: number,
     dataValidator: string,
     dataOwner: string,
     serviceNode: string,

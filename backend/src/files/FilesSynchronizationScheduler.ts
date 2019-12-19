@@ -33,7 +33,11 @@ export class FilesSynchronizationScheduler extends NestSchedule {
 
                 if (files.length !== 0) {
                     this.log.info("Saving files");
-                    await this.filesRepository.saveAll(files.map(fileResponse => fileResponseToFile(fileResponse)));
+                    const filesToSave = files.map((fileResponse, index) => fileResponseToFile(
+                        fileResponse,
+                        new Date().getTime() + (index * 1000)
+                    ));
+                    await this.filesRepository.saveAll(filesToSave);
                     this.currentPage += 1;
                 } else {
                     this.log.info("No more files to retrieve");

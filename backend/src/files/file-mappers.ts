@@ -16,7 +16,7 @@ export const fileToFileResponse = (file: File): FileResponse => ({
     name: file.name
 });
 
-export const fileResponseToFile = (fileResponse: FileResponse): File => ({
+export const fileResponseToFile = (fileResponse: FileResponse, timestamp: number | undefined = new Date().getTime()): File => ({
     id: fileResponse.id,
     size: fileResponse.size,
     serviceNode: fileResponse.serviceNode,
@@ -27,5 +27,6 @@ export const fileResponseToFile = (fileResponse: FileResponse): File => ({
     extension: fileResponse.extension,
     dataValidator: fileResponse.dataValidator,
     dataOwner: fileResponse.dataOwner,
-    name: fileResponse.name
+    name: fileResponse.name,
+    savedAt: timestamp
 });
