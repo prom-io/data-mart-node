@@ -1,4 +1,4 @@
-import React, {FunctionComponent, Fragment, useState} from "react";
+import React, {FunctionComponent, Fragment, useState, useEffect} from "react";
 import {inject, observer} from "mobx-react";
 import {Grid, Button, Hidden} from "@material-ui/core";
 import {withSnackbar, WithSnackbarProps} from "notistack";
@@ -51,6 +51,14 @@ const _PurchasableFilesSearchList: FunctionComponent<PurchasableFilesSearchListP
 }) => {
     const [purchasedFileId, setPurchasedFileId] = useState<string | undefined>(undefined);
     const [fileDisplayedInDialog, setFileDisplayedInDialog] = useState<FileInfoResponse | undefined>(undefined);
+
+    useEffect(
+        () => {
+            if (purchaseTransaction) {
+                setFileDisplayedInDialog(undefined);
+            }
+        }, [purchaseTransaction]
+    );
 
     const handlePurchase = (file: FileInfoResponse) => {
         setPurchasedFileId(file.id);
