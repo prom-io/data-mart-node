@@ -6,7 +6,7 @@
 - [1. Explore Data Owners' files / metadata](#explore-data-owners-info)
 - [2. Purchase Data Owners' files](#data-owners-info-purchase)
 - [3. Browse the purchase trancastions list](#how-to-prolomg-the-storage-term)
-- [4. Registration of the wallet] (#wallet-registration)
+- [4. Registration of the wallet](#wallet-registration)
 
 
 ## Description
