@@ -45,14 +45,15 @@ The [transaction](https://github.com/Prometeus-Network/prometeus/blob/master/doc
 
 ## Purchase trancastions list
 
-All the transactions concerning the Data Owners, which were purchased using the default wallet.
-You can choose another default wallet (see list of registered wallets) with the dropdown control above the Data Purchases' grid. It will show you the the list of Data Owners, purchased using that wallet.
+The home screen of Data Mart is the list of all the transactions concerning the Data Owners, which were purchased using the default wallet. You can choose another default wallet (see list of registered wallets) with the dropdown control above the Data Purchases' grid. It will show you the the list of Data Owners, purchased using that wallet.
 
 <img src="https://github.com/Prometeus-Network/prometeus/blob/master/docs/purchases1.png" alt="Purchased file">
+
+Clicking on Txn Hash of any transaction will display the transaction detals (the same screen that is displayed when the purchase transaction is completed).
 
 All the transactions are also viewable in [Prom Blockchain explorer](http://178.62.211.224/).
 
 ## Wallet Registration
 
-Please register the wallet on the 'Register' page to asscoiate it with the this instance of Data Mart Node. You could chooose it as a default wallet later and use it to buy Data Owners' files.
+Please register the wallet on the 'Register' page to asscoiate it with the this instance of Data Mart Node. You could choose it as a default wallet later and use it to buy Data Owners' files.
 
