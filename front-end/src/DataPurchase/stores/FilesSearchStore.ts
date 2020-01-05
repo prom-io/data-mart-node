@@ -1,8 +1,8 @@
+import {AxiosError} from "axios";
 import {observable, action, reaction} from "mobx";
 import uniqBy from "lodash.uniqby";
 import {createErrorFromResponse, ApiError, DataPurchaseService} from "../../api";
 import {FileInfoResponse} from "../../models";
-import {AxiosError} from "axios";
 
 const PAGE_SIZE = 30;
 

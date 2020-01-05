@@ -64,7 +64,6 @@ export class FilesService {
         const serviceNodePurchaseFileRequest: ServiceNodePurchaseFileRequest = {
             dataMartAddress: purchaseFileRequest.dataMartAddress,
             dataValidatorAddress: file.dataValidator,
-            serviceNodeAddress: config.SERVICE_NODE_ACCOUNT_ADDRESS,
             dataOwnerAddress: file.dataOwner,
             price: file.price,
             fileId
