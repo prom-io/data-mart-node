@@ -36,7 +36,7 @@ export const TransactionsTable: FunctionComponent<TransactionsTableProps> = ({
                             {transactions.map(transaction => (
                                 <TableRow>
                                     <TableCell>
-                                        {transaction.dataOwner}
+                                        {shortenString(transaction.dataOwner, 16)}
                                     </TableCell>
                                     <TableCell>
                                         {makePreciseNumberString(transaction.value)}
@@ -45,7 +45,7 @@ export const TransactionsTable: FunctionComponent<TransactionsTableProps> = ({
                                         {transaction.created_at}
                                     </TableCell>
                                     <TableCell>
-                                        {transaction.dataValidator}
+                                        {shortenString(transaction.dataValidator, 16)}
                                     </TableCell>
                                     <TableCell>
                                         <Typography style={{cursor: 'pointer'}}

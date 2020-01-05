@@ -1,6 +1,6 @@
 import React, {FunctionComponent} from "react";
 import {inject, observer} from "mobx-react";
-import {Card, CardContent, CardHeader, Grid, Typography} from "@material-ui/core";
+import {Card, CardContent, CardHeader, Grid, Typography, createStyles, makeStyles} from "@material-ui/core";
 import {TransactionsTable} from "./TransactionsTable";
 import {DataMartAccountSelect} from "../../Account";
 import {ApiError} from "../../api";
@@ -17,6 +17,12 @@ interface TransactionsCardMobxProps {
     fetchTransactions: () => void
 }
 
+const useStyles = makeStyles(() => createStyles({
+    transactionsCard: {
+        overflowX: "auto"
+    }
+}));
+
 const _TransactionsCard: FunctionComponent<TransactionsCardMobxProps> = ({
     accounts,
     selectedAccount,
@@ -25,32 +31,36 @@ const _TransactionsCard: FunctionComponent<TransactionsCardMobxProps> = ({
     setDefaultAccount,
     transactions,
     fetchTransactions
-}) => (
-    <Grid container spacing={2}>
-        <Grid item xs={12}>
-            <DataMartAccountSelect accounts={accounts}
-                                   onSelect={setDefaultAccount}
-                                   selectedAccount={selectedAccount}
-            />
+}) => {
+    const classes = useStyles();
+
+    return (
+        <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <DataMartAccountSelect accounts={accounts}
+                                       onSelect={setDefaultAccount}
+                                       selectedAccount={selectedAccount}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                {transactions.length === 0 && error && (
+                    <Typography variant="h1">
+                        Error occurred when tried to fetch transactions
+                    </Typography>
+                )}
+                <Card className={classes.transactionsCard}>
+                    <CardHeader title="Data Purchases"/>
+                    <CardContent>
+                        <TransactionsTable transactions={transactions}
+                                           pending={pending}
+                                           onFetchMoreRequest={fetchTransactions}
+                        />
+                    </CardContent>
+                </Card>
+            </Grid>
         </Grid>
-        <Grid item xs={12}>
-            {transactions.length === 0 && error && (
-                <Typography variant="h1">
-                    Error occurred when tried to fetch transactions
-                </Typography>
-            )}
-            <Card>
-                <CardHeader title="Data Purchases"/>
-                <CardContent>
-                    <TransactionsTable transactions={transactions}
-                                       pending={pending}
-                                       onFetchMoreRequest={fetchTransactions}
-                    />
-                </CardContent>
-            </Card>
-        </Grid>
-    </Grid>
-);
+    )
+};
 
 const mapMobxToProps = (state: IAppState): TransactionsCardMobxProps => ({
     accounts: state.transactions.accounts,
