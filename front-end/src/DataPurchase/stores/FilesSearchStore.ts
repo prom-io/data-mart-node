@@ -69,10 +69,9 @@ export class FilesSearchStore {
 
     @action
     searchFiles = (): void => {
-        console.log(this.shouldResetResults);
         if (this.shouldResetResults) {
-            console.log("Resetting search results");
             this.files = [];
+            this.currentPage = 1;
             this.shouldResetResults = false;
         }
 
