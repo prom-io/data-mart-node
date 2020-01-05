@@ -3,7 +3,6 @@ import {LoggerService} from "nest-logger";
 import fileSystem from "fs";
 import {Response} from "express";
 import path from "path";
-import {promisify} from "util";
 import {AxiosError} from "axios";
 import {FilesRepository} from "./FilesRepository";
 import {fileToFileResponse} from "./file-mappers";
