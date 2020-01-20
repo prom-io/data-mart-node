@@ -5,6 +5,7 @@ import {FilesService} from "./FilesService";
 import {FilesRepository} from "./FilesRepository";
 import {FilesSynchronizationScheduler} from "./FilesSynchronizationScheduler";
 import {ServiceNodeApiClientModule} from "../service-node-api";
+import {DiscoveryModule} from "../discovery";
 
 @Module({
     controllers: [
@@ -17,7 +18,8 @@ import {ServiceNodeApiClientModule} from "../service-node-api";
     ],
     imports: [
         ScheduleModule.register(),
-        ServiceNodeApiClientModule
+        ServiceNodeApiClientModule,
+        DiscoveryModule
     ],
     exports: [FilesService]
 })

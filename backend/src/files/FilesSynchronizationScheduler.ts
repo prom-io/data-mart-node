@@ -5,6 +5,7 @@ import {fileResponseToFile} from "./file-mappers";
 import {FilesRepository} from "./FilesRepository";
 import {ServiceNodeApiClient} from "../service-node-api";
 import {config} from "../config";
+import {RoundRobinLoadBalancerClient} from "../discovery";
 
 @Injectable()
 export class FilesSynchronizationScheduler extends NestSchedule {
@@ -14,16 +15,23 @@ export class FilesSynchronizationScheduler extends NestSchedule {
     constructor(
         private readonly serviceNodeApiClient: ServiceNodeApiClient,
         private readonly filesRepository: FilesRepository,
-        private readonly log: LoggerService
+        private readonly log: LoggerService,
+        private readonly loadBalancerClient: RoundRobinLoadBalancerClient
     ) {
         super()
     }
 
     @Cron(config.FILES_SYNCHRONIZATION_CRON, {
         waiting: true,
-        immediate: true
+        immediate: true,
     })
-    public async syncFiles() {
+    public async syncFiles(): Promise<void> {
+        if (!this.loadBalancerClient.isLoadBalancerInitialized()) {
+            this.log.info("Deferring file initialization because load balancer client is not yet initialized. Retrying in 3 seconds");
+            setTimeout(() => this.syncFiles(), 3000);
+            return ;
+        }
+
         this.log.info("Synchronizing files");
         let done: boolean = false;
         while (!done) {

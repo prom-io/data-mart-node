@@ -1,18 +1,19 @@
 import {Global, Module} from "@nestjs/common";
 import Axios from "axios";
 import {ServiceNodeApiClient} from "./ServiceNodeApiClient";
-import {config} from "../config";
+import {DiscoveryModule} from "../discovery";
 
 @Global()
 @Module({
     providers: [
         {
             provide: "serviceNodeApiAxios",
-            useValue: Axios.create({
-                baseURL: config.SERVICE_NODE_API_URL
-            })
+            useValue: Axios.create()
         },
         ServiceNodeApiClient
+    ],
+    imports: [
+        DiscoveryModule
     ],
     exports: [
         ServiceNodeApiClient
