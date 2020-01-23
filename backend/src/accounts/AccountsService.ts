@@ -21,6 +21,7 @@ export class AccountsService {
             });
             await this.accountsRepository.save({
                 address: registerAccountRequest.address,
+                privateKey: registerAccountRequest.privateKey,
                 type: AccountType.DATA_MART
             });
             return {address: registerAccountRequest.address};
