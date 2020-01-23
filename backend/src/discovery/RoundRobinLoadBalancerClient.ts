@@ -20,7 +20,6 @@ export class RoundRobinLoadBalancerClient extends NestSchedule implements OnModu
 
     public getServiceNodeInstance(): RegisteredNodeInstance {
         const serviceNodes = this.nodeInstances.filter(instance => instance.type === NodeType.SERVICE_NODE);
-        console.log(serviceNodes);
 
         if (this.selectedNodeIndex < serviceNodes.length) {
             const result: RegisteredNodeInstance = serviceNodes[this.selectedNodeIndex];
