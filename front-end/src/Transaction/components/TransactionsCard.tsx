@@ -44,7 +44,7 @@ const _TransactionsCard: FunctionComponent<TransactionsCardMobxProps> = ({
             </Grid>
             <Grid item xs={12}>
                 {transactions.length === 0 && error && (
-                    <Typography variant="h1">
+                    <Typography variant="h4">
                         Error occurred when tried to fetch transactions
                     </Typography>
                 )}

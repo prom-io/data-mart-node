@@ -3,7 +3,7 @@ FROM node:10
 WORKDIR /usr/src/app
 
 COPY ./front-end .
-RUN npm install
+RUN yarn install
 
 EXPOSE 3008
-CMD ["npm", "run", "production"]
+CMD ["yarn", "run", "production"]

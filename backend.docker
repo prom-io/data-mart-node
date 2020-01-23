@@ -6,4 +6,4 @@ COPY ./backend .
 RUN yarn install
 
 EXPOSE 3005
-CMD ["npm", "run", "start:prod"]
+CMD ["yarn", "run", "start:prod"]

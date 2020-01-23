@@ -1,5 +1,5 @@
 import React, {FunctionComponent, Fragment, useState} from "react";
-import {Table, TableHead, TableRow, TableCell, TableBody, Grid, Button, CircularProgress, Typography} from "@material-ui/core";
+import {Table, TableHead, TableRow, TableCell, TableBody, Grid, Button, CircularProgress, Typography, createStyles, makeStyles} from "@material-ui/core";
 import {DataPurchaseTransactionDetailsDialog} from "./DataPurchaseTransactionDetailsDialog";
 import {TransactionResponse} from "../../models";
 import {shortenString, makePreciseNumberString} from "../../utils";
@@ -9,6 +9,12 @@ interface TransactionsTableProps {
     pending: boolean,
     onFetchMoreRequest: () => void
 }
+
+const useStyles = makeStyles(() => createStyles({
+    centered: {
+        
+    }
+}))
 
 export const TransactionsTable: FunctionComponent<TransactionsTableProps> = ({
     transactions,
