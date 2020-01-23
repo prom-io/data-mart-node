@@ -12,9 +12,11 @@ interface TransactionsTableProps {
 
 const useStyles = makeStyles(() => createStyles({
     centered: {
-        
+        marginLeft: "auto",
+        marginRight: "auto",
+        display: "table"
     }
-}))
+}));
 
 export const TransactionsTable: FunctionComponent<TransactionsTableProps> = ({
     transactions,
@@ -22,6 +24,7 @@ export const TransactionsTable: FunctionComponent<TransactionsTableProps> = ({
     onFetchMoreRequest
 }) => {
     const [selectedTransaction, setSelectedTransaction] = useState<TransactionResponse | undefined>(undefined);
+    const classes = useStyles();
 
     return (
         <Fragment>
@@ -65,15 +68,16 @@ export const TransactionsTable: FunctionComponent<TransactionsTableProps> = ({
                             ))}
                         </TableBody>
                     </Table>
+                    {pending && <CircularProgress size={50} color="primary" className={classes.centered}/>}
                 </Grid>
                 <Grid item xs={12}>
                     <Button variant="outlined"
                             color="primary"
                             onClick={onFetchMoreRequest}
+                            disabled={pending}
                     >
                         Load more
                     </Button>
-                    {pending && <CircularProgress size={15} color="primary"/>}
                 </Grid>
             </Grid>
             <DataPurchaseTransactionDetailsDialog onClose={() => setSelectedTransaction(undefined)}
