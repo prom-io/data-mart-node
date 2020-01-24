@@ -71,6 +71,11 @@ const _AccountRegistrationDialog: FunctionComponent<AccountRegistrationDialogPro
                            helperText={formErrors.privateKey && formErrors.privateKey}
                            multiline
                 />
+                {submissionError && (
+                    <Typography variant="body1" style={{color: "red"}}>
+                        Error occurred when tried to register account. Server responded with {submissionError?.status} status
+                    </Typography>
+                )}
             </DialogContent>
             <DialogActions>
                 <Button variant="outlined"
@@ -87,11 +92,6 @@ const _AccountRegistrationDialog: FunctionComponent<AccountRegistrationDialogPro
                     Register
                 </Button>
                 {pending && <CircularProgress color="primary" size={15}/>}
-                {submissionError && (
-                    <Typography variant="body1" style={{color: "red"}}>
-                        Error occurred when tried to register account. Server responded with {submissionError?.status} status
-                    </Typography>
-                )}
             </DialogActions>
         </Dialog>
     )
