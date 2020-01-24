@@ -14,11 +14,23 @@ export class AccountsBalanceStore {
 
         reaction(
             () => this.accountsStore.accounts,
-            () => this.fetchBalancesOfAllAccounts()
+            () => {
+                this.setInitialBalances();
+                this.fetchBalancesOfAllAccounts();
+            }
         );
 
         setInterval(this.fetchBalancesOfAllAccounts, 10000);
     }
+
+    @action
+    setInitialBalances = (): void => {
+        this.accountsStore.accounts.forEach(account => {
+            if (this.accountsBalances[account.address] === undefined) {
+                this.accountsBalances[account.address] = 0;
+            }
+        })
+    };
 
     @action
     fetchBalancesOfAllAccounts = (): void => {

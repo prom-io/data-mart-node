@@ -1,10 +1,10 @@
 import React, {FunctionComponent} from "react";
 import {inject} from "mobx-react";
-import {List, ListItemIcon, ListItemText, MenuItem, createStyles, makeStyles} from "@material-ui/core";
+import {createStyles, List, ListItemIcon, ListItemText, makeStyles, MenuItem} from "@material-ui/core";
 import HistoryIcon from "@material-ui/icons/History"
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import DashboardIcon from "@material-ui/icons/Dashboard";
+import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
 import {IAppState} from "../../store";
 import {Routes} from "../../router";
 
@@ -62,15 +62,15 @@ const _DataValidatorNavigationMenu: FunctionComponent<NavigationMenuProps> = ({
                 </MenuItem>
             </Link>
             <Link store={store}
-                  view={Routes.dataMartRegistration}
+                  view={Routes.wallets}
                   className={classes.undecoratedLink}
             >
                 <MenuItem onClick={() => onItemClick && onItemClick()}>
                     <ListItemIcon>
-                        <AccountCircleIcon/>
+                        <AccountBalanceWalletIcon/>
                     </ListItemIcon>
                     <ListItemText>
-                        Register
+                        Wallets
                     </ListItemText>
                 </MenuItem>
             </Link>

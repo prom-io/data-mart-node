@@ -1,9 +1,22 @@
+import Web3 from "web3"
 import {isStringEmpty} from "../../utils";
 import {AccountType} from "../../models";
 
-export const validatePrivateKey = (privateKey?: string): string | undefined => {
+export const validatePrivateKey = (address: string, web3: Web3, privateKey?: string): string | undefined => {
     if (isStringEmpty(privateKey)) {
         return "Private key is required"
+    }
+
+    try {
+        const account = web3.eth.accounts.privateKeyToAccount(privateKey!);
+
+        if (account.address !== address) {
+            return "Invalid private key";
+        }
+
+        return undefined;
+    } catch (error) {
+        return "Invalid private key";
     }
 };
 

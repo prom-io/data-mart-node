@@ -4,9 +4,14 @@ import {AppBar} from "../AppBar";
 import {Layout} from "../Layout";
 import {Footer} from "../Footer";
 import {NavigationMenu} from "../Navigation";
-import {DataMartRegistrationForm, SelectedDataMartBalance} from "../Account";
+import {
+    AccountRegistrationDialog,
+    AccountsTable,
+    OpenAccountRegistrationDialogButton,
+    SelectedDataMartBalance
+} from "../Account";
 
-export const DataMartRegistrationPage: FunctionComponent<{}> = () => (
+export const WalletsPage: FunctionComponent = () => (
     <Grid container>
         <Grid item xs={12}>
             <AppBar sideBarItem={<SelectedDataMartBalance/>}/>
@@ -17,9 +22,17 @@ export const DataMartRegistrationPage: FunctionComponent<{}> = () => (
             </Grid>
         </Hidden>
         <Grid item xs={12} lg={10}>
-            <Layout>
-                <DataMartRegistrationForm/>
-            </Layout>
+           <Layout>
+               <Grid container>
+                   <Grid item xs={12}>
+                       <OpenAccountRegistrationDialogButton/>
+                   </Grid>
+                   <Grid item xs={12}>
+                       <AccountsTable/>
+                   </Grid>
+                   <AccountRegistrationDialog/>
+               </Grid>
+           </Layout>
         </Grid>
         <Grid item xs={12}>
             <Footer/>

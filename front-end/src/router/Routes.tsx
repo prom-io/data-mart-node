@@ -1,37 +1,37 @@
 import React from "react";
-import {DataMartRegistrationPage, FilesPage, NotFoundPage, TransactionsPage} from "../pages";
+import {FilesPage, NotFoundPage, TransactionsPage, WalletsPage} from "../pages";
 import {store} from "../store";
 
 const Route = require("mobx-router").Route;
 
 export const Routes = {
     home: new Route({
-        path: '/',
+        path: "/",
         component: <TransactionsPage/>,
         beforeEnter: () => {
             store.transactions.fetchTransactions();
         }
     }),
     notFound: new Route({
-        path: '/404',
+        path: "/404",
         component: <NotFoundPage/>
     }),
     files: new Route({
-        path: '/files',
+        path: "/files",
         component: <FilesPage/>,
         beforeEnter: () => {
             store.filesSearch.searchFiles()
         }
     }),
-    dataMartRegistration: new Route({
-        path: '/registration',
-        component: <DataMartRegistrationPage/>
-    }),
     transactions: new Route({
-        path: '/data-purchases',
+        path: "/data-purchases",
         component: <TransactionsPage/>,
         beforeEnter: () => {
             store.transactions.fetchTransactions();
         }
+    }),
+    wallets: new Route({
+        path: "/wallets",
+        component: <WalletsPage/>
     })
 };
