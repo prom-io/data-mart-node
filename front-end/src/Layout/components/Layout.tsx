@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, {FunctionComponent} from "react";
 import {createStyles, Grid, makeStyles} from "@material-ui/core";
 
 const useStyles = makeStyles(() => createStyles({
@@ -9,7 +9,7 @@ const useStyles = makeStyles(() => createStyles({
     }
 }));
 
-export const Layout: React.FC = ({children}) => {
+export const Layout: FunctionComponent = ({children}) => {
     const classes = useStyles();
 
     return (
