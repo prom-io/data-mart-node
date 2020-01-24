@@ -28,6 +28,10 @@ export const Routes = {
         component: <TransactionsPage/>,
         beforeEnter: () => {
             store.transactions.fetchTransactions();
+            store.transactions.setRefreshOnDefaultAccountChange(true);
+        },
+        onExit: () => {
+            store.transactions.setRefreshOnDefaultAccountChange(false);
         }
     }),
     wallets: new Route({
