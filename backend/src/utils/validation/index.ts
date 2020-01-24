@@ -1,1 +1,1 @@
-export * from "./IsValidEthereumPrivateKey";
+export * from "./IsValidEthereumPrivateKeyFor";
