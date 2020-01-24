@@ -121,7 +121,7 @@ export class AccountRegistrationStore {
             }
         }
 
-        return !(Boolean(this.formErrors.address || this.formErrors.type))
+        return !(Boolean(this.formErrors.address || this.formErrors.type || this.formErrors.privateKey))
     };
 
     @action
