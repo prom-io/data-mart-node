@@ -15,6 +15,16 @@ export class AccountsService {
     public async registerAccount(registerAccountRequest: RegisterAccountRequest): Promise<AccountResponse> {
         try {
             this.log.info("Trying to register account");
+
+            const existingAccounts = await this.accountsRepository.findAll();
+
+            if (existingAccounts.map(account => account.address).includes(registerAccountRequest.address)) {
+                throw new HttpException(
+                    `Account with ${registerAccountRequest.address} has already been registered`,
+                    HttpStatus.CONFLICT
+                );
+            }
+
             const accountStatus = (await this.serviceNodeApiClient.getAccountRegistrationStatus(registerAccountRequest.address)).data;
 
             if (accountStatus.registered) {
@@ -27,7 +37,7 @@ export class AccountsService {
                 } else {
                     throw new HttpException(
                         `This account has already been registered with ${accountStatus.role} status`,
-                        HttpStatus.CONFLICT
+                        HttpStatus.FORBIDDEN
                     )
                 }
             } else {

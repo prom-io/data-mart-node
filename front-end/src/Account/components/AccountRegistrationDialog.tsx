@@ -14,7 +14,7 @@ import withMobileDialog, {WithMobileDialog} from "@material-ui/core/withMobileDi
 import {withSnackbar, WithSnackbarProps} from "notistack";
 import {RegisterAccountRequest} from "../../models";
 import {FormErrors} from "../../utils";
-import {ApiError} from "../../api";
+import {ApiError, DATA_MART_API_UNREACHABLE_CODE} from "../../api";
 import {IAppState} from "../../store";
 
 interface AccountRegistrationDialogMobxProps {
@@ -33,6 +33,18 @@ interface AccountRegistrationDialogMobxProps {
 type AccountRegistrationDialogInjectedProps = WithMobileDialog & WithSnackbarProps;
 
 type AccountRegistrationDialogProps = AccountRegistrationDialogMobxProps & AccountRegistrationDialogInjectedProps;
+
+const getSubmissionErrorLabel = (error: ApiError): string => {
+    if (error.status === 403) {
+        return "Account with such address has already been registered and it's not data mart";
+    } else if (error.status === 409) {
+        return "Account with such address has already been registered to this node";
+    } else if (error.status === DATA_MART_API_UNREACHABLE_CODE) {
+        return "Data Mart API could not be reached. Make sure that it's running"
+    } else {
+        return `Unknown error occurred when tried to register account. Server responded with ${error.status} status`;
+    }
+};
 
 const _AccountRegistrationDialog: FunctionComponent<AccountRegistrationDialogProps> = ({
     registrationForm,
@@ -82,7 +94,7 @@ const _AccountRegistrationDialog: FunctionComponent<AccountRegistrationDialogPro
                 />
                 {submissionError && (
                     <Typography variant="body1" style={{color: "red"}}>
-                        Error occurred when tried to register account. Server responded with {submissionError?.status} status
+                        {getSubmissionErrorLabel(submissionError)}
                     </Typography>
                 )}
             </DialogContent>

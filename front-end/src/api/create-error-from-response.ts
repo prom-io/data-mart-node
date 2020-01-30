@@ -1,5 +1,5 @@
 import {AxiosError} from "axios";
-import {ApiError, SERVICE_NODE_API_UNREACHABLE_CODE} from "./ApiError";
+import {ApiError, DATA_MART_API_UNREACHABLE_CODE} from "./ApiError";
 
 export const createErrorFromResponse = (axiosError: AxiosError): ApiError => {
     if (axiosError.response) {
@@ -8,7 +8,7 @@ export const createErrorFromResponse = (axiosError: AxiosError): ApiError => {
         }
     } else {
         return {
-            status: SERVICE_NODE_API_UNREACHABLE_CODE
+            status: DATA_MART_API_UNREACHABLE_CODE
         }
     }
 };
