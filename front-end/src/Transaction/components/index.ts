@@ -1,3 +1,3 @@
-export * from "./TransactionsTable";
-export * from "./TransactionsCard";
+export * from "./DataPurchasesTransactionsTable";
+export * from "./DataPurchasesTransactionsCard";
 export * from "./DataPurchaseTransactionDetailsDialog";

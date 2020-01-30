@@ -5,7 +5,14 @@ import {
     ServiceNodeRegisterAccountRequest,
     ServiceNodePurchaseFileRequest
 } from "../model/api/request";
-import {BalanceResponse, FileResponse, PurchaseFileResponse, TransactionsCountResponse, TransactionResponse} from "../model/api/response";
+import {
+    BalanceResponse,
+    FileResponse,
+    PurchaseFileResponse,
+    TransactionsCountResponse,
+    TransactionResponse,
+    AccountRegistrationStatusResponse
+} from "../model/api/response";
 import {RoundRobinLoadBalancerClient} from "../discovery";
 
 @Injectable()
@@ -39,6 +46,10 @@ export class ServiceNodeApiClient {
 
     public countTransactionsOfAddress(address: string): AxiosPromise<TransactionsCountResponse> {
         return this.axiosInstance.get(`${this.getUrl()}/api/v1/transactions/${address}/count`);
+    }
+
+    public getAccountRegistrationStatus(address: string): AxiosPromise<AccountRegistrationStatusResponse> {
+        return this.axiosInstance.get(`${this.getUrl()}/api/v1/accounts/${address}/is-registered`);
     }
 
     private getUrl(): string {

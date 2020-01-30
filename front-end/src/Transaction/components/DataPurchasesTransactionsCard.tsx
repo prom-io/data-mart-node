@@ -1,7 +1,7 @@
 import React, {FunctionComponent} from "react";
 import {inject, observer} from "mobx-react";
 import {Card, CardContent, CardHeader, Grid, Typography, createStyles, makeStyles} from "@material-ui/core";
-import {TransactionsTable} from "./TransactionsTable";
+import {TransactionsTable} from "./DataPurchasesTransactionsTable";
 import {DataMartAccountSelect} from "../../Account";
 import {ApiError} from "../../api";
 import {IAppState} from "../../store";
@@ -72,5 +72,5 @@ const mapMobxToProps = (state: IAppState): TransactionsCardMobxProps => ({
     setDefaultAccount: state.settings.selectDataMartAccount
 });
 
-export const TransactionsCard = inject(mapMobxToProps)(observer(_TransactionsCard) as FunctionComponent<{}>);
+export const DataPurchasesTransactionsCard = inject(mapMobxToProps)(observer(_TransactionsCard) as FunctionComponent<{}>);
 

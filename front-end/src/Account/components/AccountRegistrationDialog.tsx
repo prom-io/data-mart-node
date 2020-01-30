@@ -1,6 +1,15 @@
 import React, {FunctionComponent} from "react";
 import {inject, observer} from "mobx-react";
-import {Dialog, DialogTitle, DialogContent, DialogActions, Button, CircularProgress, TextField, Typography} from "@material-ui/core";
+import {
+    Button,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    TextField,
+    Typography
+} from "@material-ui/core";
 import withMobileDialog, {WithMobileDialog} from "@material-ui/core/withMobileDialog";
 import {withSnackbar, WithSnackbarProps} from "notistack";
 import {RegisterAccountRequest} from "../../models";
@@ -52,7 +61,7 @@ const _AccountRegistrationDialog: FunctionComponent<AccountRegistrationDialogPro
                 maxWidth="md"
                 onClose={() => setRegistrationDialogOpen(false)}
         >
-            <DialogTitle>Register account</DialogTitle>
+            <DialogTitle>Add wallet</DialogTitle>
             <DialogContent>
                 <TextField label="Address"
                            value={registrationForm.address}

@@ -63,7 +63,7 @@ export const TransactionsTable: FunctionComponent<TransactionsTableProps> = ({
                                             <u>{shortenString(transaction.hash, 16)}</u>
                                         </Typography>
                                     </TableCell>
-                                    <TableCell>{transaction.file.id}</TableCell>
+                                    <TableCell>{shortenString(transaction.file.id, 16)}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

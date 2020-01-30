@@ -5,7 +5,7 @@ import {Layout} from "../Layout";
 import {Footer} from "../Footer";
 import {NavigationMenu} from "../Navigation";
 import {SelectedDataMartBalance} from "../Account";
-import {TransactionsCard} from "../Transaction";
+import {DataPurchasesTransactionsCard} from "../Transaction";
 
 export const TransactionsPage: FunctionComponent<{}> = () => (
     <Grid container>
@@ -19,7 +19,7 @@ export const TransactionsPage: FunctionComponent<{}> = () => (
         </Hidden>
         <Grid item xs={12} lg={10}>
             <Layout>
-                <TransactionsCard/>
+                <DataPurchasesTransactionsCard/>
             </Layout>
         </Grid>
         <Grid item xs={12}>

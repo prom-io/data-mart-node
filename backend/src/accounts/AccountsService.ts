@@ -1,10 +1,10 @@
 import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
+import {LoggerService} from "nest-logger";
 import {AccountsRepository} from "./AccountsRepository";
 import {AccountType} from "../model/domain";
 import {RegisterAccountRequest} from "../model/api/request";
 import {AccountResponse, BalanceResponse} from "../model/api/response";
 import {ServiceNodeApiClient} from "../service-node-api";
-import {LoggerService} from "nest-logger";
 
 @Injectable()
 export class AccountsService {
@@ -15,20 +15,40 @@ export class AccountsService {
     public async registerAccount(registerAccountRequest: RegisterAccountRequest): Promise<AccountResponse> {
         try {
             this.log.info("Trying to register account");
-            await this.serviceNodeApiClient.registerAccount({
-                address: registerAccountRequest.address,
-                type: AccountType.DATA_MART
-            });
-            await this.accountsRepository.save({
-                address: registerAccountRequest.address,
-                privateKey: registerAccountRequest.privateKey,
-                type: AccountType.DATA_MART
-            });
+            const accountStatus = (await this.serviceNodeApiClient.getAccountRegistrationStatus(registerAccountRequest.address)).data;
+
+            if (accountStatus.registered) {
+                if (accountStatus.role === AccountType.DATA_MART) {
+                    await this.accountsRepository.save({
+                        address: registerAccountRequest.address,
+                        privateKey: registerAccountRequest.privateKey,
+                        type: AccountType.DATA_MART
+                    });
+                } else {
+                    throw new HttpException(
+                        `This account has already been registered with ${accountStatus.role} status`,
+                        HttpStatus.CONFLICT
+                    )
+                }
+            } else {
+                await this.serviceNodeApiClient.registerAccount({
+                    address: registerAccountRequest.address,
+                    type: AccountType.DATA_MART
+                });
+                await this.accountsRepository.save({
+                    address: registerAccountRequest.address,
+                    privateKey: registerAccountRequest.privateKey,
+                    type: AccountType.DATA_MART
+                });
+            }
+
             return {address: registerAccountRequest.address};
         } catch (error) {
-            console.log(error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
+
             this.log.error("Error occurred when tried to register account");
-            this.log.debug(error);
 
             if (error.response) {
                 throw new HttpException(
