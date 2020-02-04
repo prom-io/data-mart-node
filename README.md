@@ -14,9 +14,7 @@
     - [Environmental variables](#environmental-variables)
         - [Baсkend](#backend)
         - [Front-end](#front-end)
-- [Stages of project](#stages-of-project)
-    - [What Data Mart node can do now](#what-data-mart-node-can-do-now)
-    - [What Data mart node will do in the future](#what-data-mart-node-will-do-in-the-future)
+- [Current Stage of project](#current-stage-of-project)
 
 
 ## Description
@@ -137,14 +135,10 @@ If you want to run Data Mart node outside Docker, you will need to to the follow
 | REACT_APP_DATA_MART_NODE_API_BASE_URL | URL of backend API                                               |
 | REACT_APP_PRODUCTION_PORT             | Port which will be used by client application in production mode |
 
-## Stages of project
+## Current Stage of project
 
-### What Data Mart node can do now
+What Data Mart node can do now:
 
 - It synchronizes information about files uploaded to Promenteus network using Service Node API and saves it to Elasticsearch;
 - It allows Data Mart to search files;
-- It allows Data Mart to buy a file, and also caches purchased files locally;
-
-### What Data Mart node will do in the future
-
-
+- It allows Data Mart to buy a file, and also caches purchased files locally.
