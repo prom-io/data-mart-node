@@ -27,4 +27,19 @@ export class AccountsRepository {
             .pipe(map(searchResponse => searchResponse[0].hits.hits.map(hit => hit._source)))
             .toPromise()
     }
+
+    public findByAddress(address: string): Promise<Account[]> {
+        return this.elasticSearchService.search<Account>({
+            index: "accounts",
+            body: {
+                query: {
+                    match: {
+                        address
+                    }
+                }
+            }
+        })
+            .pipe(map(searchResponse => searchResponse[0].hits.hits.map(hit => hit._source)))
+            .toPromise();
+    }
 }

@@ -7,6 +7,7 @@ import {ElasticsearchInitializerModule} from "./elasticsearch/initializer";
 import {AccountsModule} from "./accounts";
 import {TransactionsModule} from "./transactions";
 import {DiscoveryModule} from "./discovery";
+import {Web3Module} from "./web3";
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import {DiscoveryModule} from "./discovery";
       LoggerModule,
       AccountsModule,
       TransactionsModule,
+      Web3Module
   ]
 })
 export class AppModule {}

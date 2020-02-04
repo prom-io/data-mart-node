@@ -6,6 +6,8 @@ import {FilesRepository} from "./FilesRepository";
 import {FilesSynchronizationScheduler} from "./FilesSynchronizationScheduler";
 import {ServiceNodeApiClientModule} from "../service-node-api";
 import {DiscoveryModule} from "../discovery";
+import {AccountsModule} from "../accounts";
+import {Web3Module} from "../web3";
 
 @Module({
     controllers: [
@@ -19,7 +21,9 @@ import {DiscoveryModule} from "../discovery";
     imports: [
         ScheduleModule.register(),
         ServiceNodeApiClientModule,
-        DiscoveryModule
+        DiscoveryModule,
+        AccountsModule,
+        Web3Module
     ],
     exports: [FilesService]
 })

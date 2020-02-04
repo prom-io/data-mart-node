@@ -2,14 +2,16 @@ import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
 import {LoggerService} from "nest-logger";
 import {AccountsRepository} from "./AccountsRepository";
 import {AccountType} from "../model/domain";
-import {RegisterAccountRequest} from "../model/api/request";
+import {RegisterAccountRequest, ServiceNodeRegisterAccountRequest} from "../model/api/request";
 import {AccountResponse, BalanceResponse} from "../model/api/response";
 import {ServiceNodeApiClient} from "../service-node-api";
+import {Web3Wrapper} from "../web3";
 
 @Injectable()
 export class AccountsService {
     constructor(private readonly accountsRepository: AccountsRepository,
                 private readonly serviceNodeApiClient: ServiceNodeApiClient,
+                private readonly web3Wrapper: Web3Wrapper,
                 private readonly log: LoggerService) {}
 
     public async registerAccount(registerAccountRequest: RegisterAccountRequest): Promise<AccountResponse> {
@@ -41,10 +43,16 @@ export class AccountsService {
                     )
                 }
             } else {
-                await this.serviceNodeApiClient.registerAccount({
+                const serviceNodeRegisterAccountRequest: ServiceNodeRegisterAccountRequest = {
                     address: registerAccountRequest.address,
-                    type: AccountType.DATA_MART
-                });
+                    type: AccountType.DATA_MART,
+                    signature: undefined
+                };
+                serviceNodeRegisterAccountRequest.signature = this.web3Wrapper.singData(
+                    serviceNodeRegisterAccountRequest,
+                    registerAccountRequest.privateKey
+                );
+                await this.serviceNodeApiClient.registerAccount(serviceNodeRegisterAccountRequest);
                 await this.accountsRepository.save({
                     address: registerAccountRequest.address,
                     privateKey: registerAccountRequest.privateKey,
@@ -59,6 +67,7 @@ export class AccountsService {
             }
 
             this.log.error("Error occurred when tried to register account");
+            console.log(error.response.data);
 
             if (error.response) {
                 throw new HttpException(

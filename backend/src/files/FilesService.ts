@@ -11,12 +11,16 @@ import {PaginationRequest, PurchaseFileRequest, ServiceNodePurchaseFileRequest} 
 import {FileResponse, PurchaseFileResponse} from "../model/api/response";
 import {File} from "../model/domain";
 import {config} from "../config";
+import {Web3Wrapper} from "../web3";
+import {AccountsRepository} from "../accounts/AccountsRepository";
 
 @Injectable()
 export class FilesService {
     constructor(
         private readonly filesRepository: FilesRepository,
         private readonly serviceNodeApiClient: ServiceNodeApiClient,
+        private readonly accountsRepository: AccountsRepository,
+        private readonly web3Wrapper: Web3Wrapper,
         private readonly log: LoggerService
     ) {};
 
@@ -61,13 +65,25 @@ export class FilesService {
             throw new HttpException(`Could not find file with id ${fileId}`, HttpStatus.NOT_FOUND);
         }
 
+        const accounts = (await this.accountsRepository.findAll())
+            .filter(account => account.address === purchaseFileRequest.dataMartAddress);
+
+        if (accounts.length === 0) {
+            throw new HttpException(`Could not find account with address ${purchaseFileRequest.dataMartAddress}`, HttpStatus.NOT_FOUND);
+        }
+
+        const account = accounts[0];
+
         const serviceNodePurchaseFileRequest: ServiceNodePurchaseFileRequest = {
             dataMartAddress: purchaseFileRequest.dataMartAddress,
             dataValidatorAddress: file.dataValidator,
             dataOwnerAddress: file.dataOwner,
             price: file.price,
-            fileId
+            fileId,
+            signature: undefined
         };
+
+        serviceNodePurchaseFileRequest.signature = this.web3Wrapper.singData(serviceNodePurchaseFileRequest, account.privateKey);
 
         try {
             return (await this.serviceNodeApiClient.purchaseFile(serviceNodePurchaseFileRequest)).data;

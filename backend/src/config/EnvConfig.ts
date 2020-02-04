@@ -23,5 +23,8 @@ export class EnvConfig {
     KIBANA_HOST_URL: string;
 
     @Env({required: true, type: "string"})
-    PURCHASED_FILES_DIRECTORY;
+    PURCHASED_FILES_DIRECTORY: string;
+
+    @Env({required: true, type: "string"})
+    INITIAL_ACCOUNT_PRIVATE_KEY: string
 }

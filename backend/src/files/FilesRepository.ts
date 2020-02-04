@@ -61,7 +61,6 @@ export class FilesRepository {
     }
 
     public findById(fileId: string): Promise<File | undefined> {
-        this.log.info(`File id: ${fileId}`);
         // Have to use @ts-ignore here because GetParams type requires 'type' field to be present.
         // However, this parameter has been deprecated and including it in request will lead to a wrong query.
         // @ts-ignore
