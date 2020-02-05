@@ -106,29 +106,31 @@ If you want to run Data Mart node outside Docker, you will need to to the follow
   - Install Kibana 6.4.0
   - Start Elasticsearch and Kibana
 - Backend API
-  - Go to `backend` directory and run `npm istall` command to install all dependencies for backend application
+  - Run `yarn global add @nestjs/cli` to install NestJS CLI
+  - Go to `backend` directory and run `yarn install` command to install all dependencies for backend application
   - Create `.env` file and configure it with the variables described [below](#backend)
-  - Run `npm run start` to start up backend applicationd
+  - Run `yarn run start` to start up backend application
 - Client application
-  - Go to `front-end` directory and run `npm run start` command to install all dependencies for front-end application
+  - Go to `front-end` directory and run `yarn install` command to install all dependencies for front-end application
   - Create `.env` file and configure it with the variables described [below](#front-end)
-  - Run `npm run production` to start up client application
+  - Run `yarn run production` to start up client application
+      - If you want to run application in development mode, run `yarn run start`
 
 
 ### Environmental variables
 
 #### Backend 
 
-| Variable                   | Description                                                                             |
-|----------------------------|-----------------------------------------------------------------------------------------|
-| SERVICE_NODE_API_URL       | URL of Service node API                                                                 |
-| ELASTICSERACH_HOST_URL     | URL of Elasticsearch                                                                    |
-| KIBANA_HOST_URL            | URL of Kibana                                                                           |
-| PORT                       | Port which will be used by backend API                                                  |
-| LOGGING_LEVEL              | Level of logging verbosity. Allowed values are trace, debug, info, warning, error       |
-| FILES_SYNCRHONIZATION_CRON | Cron expression which determines how often information about files will be synchronized |
-
-
+| Variable                    | Description                                                                                                                      |
+|-----------------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| SERVICE_NODE_API_URL        | URL of Service node API                                                                                                          |
+| ELASTICSERACH_HOST_URL      | URL of Elasticsearch                                                                                                             |
+| KIBANA_HOST_URL             | URL of Kibana                                                                                                                    |
+| PORT                        | Port which will be used by backend API                                                                                           |
+| LOGGING_LEVEL               | Level of logging verbosity. Allowed values are debug, info, warning, error                                                       |
+| FILES_SYNCHRONIZATION_CRON  | Cron expression which determines how often information about files will be synchronized                                          |
+| INITIAL_ACCOUNT_PRIVATE_KEY | Private key to Ethereum account which will be used for registration upon first startup                                           |
+| PURCHASED_FILES_DIRECTORY   | Directory which will be used to store purchased files. Please make sure that you the application has read and write access to it |
 
 #### Front-end
 
