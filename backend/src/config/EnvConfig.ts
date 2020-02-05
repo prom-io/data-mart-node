@@ -20,5 +20,8 @@ export class EnvConfig {
     PURCHASED_FILES_DIRECTORY: string;
 
     @Env({required: true, type: "string"})
-    INITIAL_ACCOUNT_PRIVATE_KEY: string
+    INITIAL_ACCOUNT_PRIVATE_KEY: string;
+
+    @Env({required: true, type: "string"})
+    ENCRYPTOR_SERVICE_URL: string;
 }
