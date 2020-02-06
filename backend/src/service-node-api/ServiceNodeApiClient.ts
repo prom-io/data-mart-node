@@ -54,6 +54,10 @@ export class ServiceNodeApiClient {
         return this.axiosInstance.get(`${this.getUrl()}/api/v1/accounts/${address}/is-registered`);
     }
 
+    public getLoadBalancer(): RoundRobinLoadBalancerClient {
+        return this.loadBalancerClient;
+    }
+
     private getUrl(): string {
         const serviceNodeInstance = this.loadBalancerClient.getServiceNodeInstance();
         this.log.debug(`Selected service node IP is ${serviceNodeInstance.ipAddress}`)

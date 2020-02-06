@@ -3,11 +3,13 @@ import {ScheduleModule} from "nest-schedule";
 import {FilesController} from "./FilesController";
 import {FilesService} from "./FilesService";
 import {FilesRepository} from "./FilesRepository";
+import {FileKeysRepository} from "./FileKeysRepository";
 import {FilesSynchronizationScheduler} from "./FilesSynchronizationScheduler";
 import {ServiceNodeApiClientModule} from "../service-node-api";
 import {DiscoveryModule} from "../discovery";
 import {AccountsModule} from "../accounts";
 import {Web3Module} from "../web3";
+import {EncryptorServiceModule} from "../encryptor";
 
 @Module({
     controllers: [
@@ -16,6 +18,7 @@ import {Web3Module} from "../web3";
     providers: [
         FilesService,
         FilesRepository,
+        FileKeysRepository,
         FilesSynchronizationScheduler
     ],
     imports: [
@@ -23,7 +26,8 @@ import {Web3Module} from "../web3";
         ServiceNodeApiClientModule,
         DiscoveryModule,
         AccountsModule,
-        Web3Module
+        Web3Module,
+        EncryptorServiceModule
     ],
     exports: [FilesService]
 })

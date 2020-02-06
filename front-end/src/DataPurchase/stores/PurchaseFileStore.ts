@@ -43,7 +43,7 @@ export class PurchaseFileStore {
             this.error = undefined;
             this.response = undefined;
             this.filePurchaseStatus = undefined;
-
+            
             this.filePurchaseStatus = (await DataPurchaseService.checkFilePurchaseStatus(this.dataMartAddress, file.id)).data;
 
             if (this.filePurchaseStatus.purchased) {

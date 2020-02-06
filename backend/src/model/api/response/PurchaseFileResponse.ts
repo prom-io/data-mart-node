@@ -1,3 +1,5 @@
+import {FileKey} from "../../FileKey";
+
 export interface PurchaseFileResponse {
-    success: boolean
+    fileKey: FileKey
 }

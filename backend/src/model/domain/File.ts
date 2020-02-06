@@ -1,4 +1,5 @@
 import {FileMetadata} from "./FileMetadata";
+import {FileKey} from "../FileKey";
 
 export interface File {
     id: string,
@@ -12,5 +13,6 @@ export interface File {
     mimeType: string,
     size: number,
     price: number,
-    name: string
+    name: string,
+    key?: FileKey
 }

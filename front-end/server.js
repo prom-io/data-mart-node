@@ -11,6 +11,6 @@ app.get('/*', (request, response) => {
 
 console.log('starting express app');
 
-const port = Number(process.env.REACT_APP_PRODUCTION_PORT) || 3008;
+const port = Number(process.env.REACT_APP_PRODUCTION_PORT) || 3007;
 
 app.listen(port);
