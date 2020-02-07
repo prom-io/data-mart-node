@@ -33,4 +33,10 @@ export class FileKeysRepository {
             .pipe(map(searchResponse => searchResponse[0].hits.hits.map(hit => hit._source)))
             .toPromise();
     }
+
+    public refreshIndex(): Promise<void> {
+        return this.elasticSearchService.getClient().indices.refresh({
+            index: "file_keys"
+        })
+    }
 }

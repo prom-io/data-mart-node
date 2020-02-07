@@ -1,10 +1,9 @@
 import {action, computed, observable} from "mobx";
 import {AxiosError} from "axios";
+import downloadFile from "js-file-download";
 import {ApiError, createErrorFromResponse, DataPurchaseService} from "../../api";
 import {FileInfoResponse, FilePurchaseStatusResponse, PurchaseFileResponse} from "../../models";
 import {SettingsStore} from "../../Settings";
-
-const downloadFile = require("js-file-download");
 
 export class PurchaseFileStore {
     private readonly settingsStore: SettingsStore;
@@ -43,7 +42,7 @@ export class PurchaseFileStore {
             this.error = undefined;
             this.response = undefined;
             this.filePurchaseStatus = undefined;
-            
+
             this.filePurchaseStatus = (await DataPurchaseService.checkFilePurchaseStatus(this.dataMartAddress, file.id)).data;
 
             if (this.filePurchaseStatus.purchased) {

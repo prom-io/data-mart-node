@@ -17,7 +17,6 @@ import {Web3Wrapper} from "../web3";
 import {EncryptorServiceClient} from "../encryptor";
 import {AccountsRepository} from "../accounts/AccountsRepository";
 import {AesDecryptRequest} from "../encryptor/types/request";
-import {FileKey} from "../model";
 
 @Injectable()
 export class FilesService {
@@ -103,6 +102,7 @@ export class FilesService {
             };
 
             await this.fileKeysRepository.saveAll([savedFileKey]);
+            await this.fileKeysRepository.refreshIndex();
 
             return purchaseResponse;
         } catch (error) {

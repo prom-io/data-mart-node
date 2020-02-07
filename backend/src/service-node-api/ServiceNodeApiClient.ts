@@ -60,7 +60,7 @@ export class ServiceNodeApiClient {
 
     private getUrl(): string {
         const serviceNodeInstance = this.loadBalancerClient.getServiceNodeInstance();
-        this.log.debug(`Selected service node IP is ${serviceNodeInstance.ipAddress}`)
+        // this.log.debug(`Selected service node IP is ${serviceNodeInstance.ipAddress}`)
         return `http://${serviceNodeInstance.ipAddress}:${serviceNodeInstance.port}`;
     }
 }
