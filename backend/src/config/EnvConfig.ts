@@ -5,7 +5,7 @@ export class EnvConfig {
     ELASTICSEARCH_HOST_URL: string;
 
     @Env({required: true, type: "number"})
-    PORT: number;
+    DATA_MART_API_PORT: number;
 
     @Env({required: true, type: "string"})
     LOGGING_LEVEL: string;

@@ -2,24 +2,30 @@ version: '3.5'
 services:
   backend:
     build:
-      context: .
-      dockerfile: backend.docker
+      context: ./backend
+      dockerfile: ./Dockerfile
     volumes:
       - ./backend:/usr/src/app
     ports:
-      - 3005:3005
+      - ${DATA_VALIDATOR_API_PORT}:${DATA_VALIDATOR_API_PORT}
+    env_file:
+      - .env
     depends_on:
       - elasticsearch
+    network_mode: host
   frontend:
     build:
-      context: .
-      dockerfile: frontend.docker
+      context: ./front-end
+      dockerfile: ./Dockerfile
     volumes:
       - ./front-end:/usr/src/app
     ports:
-      - 3008:3008
+      - ${REACT_APP_PRODUCTION_PORT}:${REACT_APP_PRODUCTION_PORT}
+    env_file:
+      - .env
     depends_on:
       - backend
+    network_mode: host
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.4.0
     environment:
@@ -33,11 +39,17 @@ services:
     volumes:
       - esdata:/usr/share/elasticsearch/data
     tty: true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200"]
+      interval: 1s
+      timeout: 10s
+      retries: 30
+    network_mode: host
   kibana:
     image: docker.elastic.co/kibana/kibana:6.4.0
     restart: always
     environment:
-      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_URL=http://localhost:9200
 #                volumes:
 #                        - ${KIBANA_CONF_YML_FILE}:/usr/share/kibana/config/kibana.yml
     ports:
@@ -45,6 +57,7 @@ services:
     depends_on:
       - elasticsearch
     tty: true
+    network_mode: host
   # encryptor:
   #   build:
   #     context: .
