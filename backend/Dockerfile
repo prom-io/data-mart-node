@@ -8,6 +8,6 @@ RUN yarn global add @nestjs/cli
 RUN yarn install
 RUN yarn build
 
-EXPOSE ${DATA_VALIDATOR_API_PORT}
+EXPOSE ${DATA_MART_API_PORT}
 
 CMD ["node", "dist/main.js"]
