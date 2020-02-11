@@ -2,24 +2,30 @@ version: '3.5'
 services:
   backend:
     build:
-      context: .
-      dockerfile: backend.docker
+      context: ./backend
+      dockerfile: ./Dockerfile
+    working_dir: /var/www/api
     volumes:
-      - ./backend:/usr/src/app
-    ports:
-      - 3005:3005
+      - ./backend:/var/www/api
+      - ${PURCHASED_FILES_DIRECTORY}
+    env_file:
+      - .env
     depends_on:
       - elasticsearch
+    ports:
+      - ${DATA_MART_API_PORT}:${DATA_MART_API_PORT}
+    network_mode: host
   frontend:
     build:
-      context: .
-      dockerfile: frontend.docker
+      context: ./front-end
+      dockerfile: ./Dockerfile
     volumes:
-      - ./front-end:/usr/src/app
-    ports:
-      - 3008:3008
+      - ./front-end:/front-end
+    env_file:
+      - .env
     depends_on:
       - backend
+    network_mode: host
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.4.0
     environment:
@@ -28,23 +34,25 @@ services:
     expose:
       - 9200
       - 9300
-    ports:
-      - 9200:9200
     volumes:
       - esdata:/usr/share/elasticsearch/data
     tty: true
+    network_mode: host
   kibana:
     image: docker.elastic.co/kibana/kibana:6.4.0
     restart: always
     environment:
-      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_URL=http://localhost:9200
 #                volumes:
 #                        - ${KIBANA_CONF_YML_FILE}:/usr/share/kibana/config/kibana.yml
-    ports:
-      - 5601:5601
     depends_on:
       - elasticsearch
     tty: true
+    network_mode: host
+    expose:
+      - 5601
+    ports:
+    - "5601:5601"
   # encryptor:
   #   build:
   #     context: .

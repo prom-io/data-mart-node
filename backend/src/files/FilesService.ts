@@ -1,27 +1,33 @@
 import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
 import {LoggerService} from "nest-logger";
+import uuid4 from "uuid/v4";
 import fileSystem from "fs";
 import {Response} from "express";
 import path from "path";
 import {AxiosError} from "axios";
+import {FileKeysRepository} from "./FileKeysRepository";
 import {FilesRepository} from "./FilesRepository";
 import {fileToFileResponse} from "./file-mappers";
 import {ServiceNodeApiClient} from "../service-node-api";
 import {PaginationRequest, PurchaseFileRequest, ServiceNodePurchaseFileRequest} from "../model/api/request";
 import {FileResponse, PurchaseFileResponse} from "../model/api/response";
-import {File} from "../model/domain";
+import {File, SavedFileKey} from "../model/domain";
 import {config} from "../config";
 import {Web3Wrapper} from "../web3";
+import {EncryptorServiceClient} from "../encryptor";
 import {AccountsRepository} from "../accounts/AccountsRepository";
+import {AesDecryptRequest} from "../encryptor/types/request";
 
 @Injectable()
 export class FilesService {
     constructor(
         private readonly filesRepository: FilesRepository,
+        private readonly fileKeysRepository: FileKeysRepository,
         private readonly serviceNodeApiClient: ServiceNodeApiClient,
         private readonly accountsRepository: AccountsRepository,
         private readonly web3Wrapper: Web3Wrapper,
-        private readonly log: LoggerService
+        private readonly log: LoggerService,
+        private readonly encryptorServiceClient: EncryptorServiceClient
     ) {};
 
     public searchFiles(query: string, paginationRequest: PaginationRequest): Promise<FileResponse[]> {
@@ -86,9 +92,22 @@ export class FilesService {
         serviceNodePurchaseFileRequest.signature = this.web3Wrapper.singData(serviceNodePurchaseFileRequest, account.privateKey);
 
         try {
-            return (await this.serviceNodeApiClient.purchaseFile(serviceNodePurchaseFileRequest)).data;
+            const purchaseResponse: PurchaseFileResponse = (await this.serviceNodeApiClient.purchaseFile(serviceNodePurchaseFileRequest)).data;
+
+            const savedFileKey: SavedFileKey = {
+                fileId,
+                id: uuid4(),
+                iv: purchaseResponse.fileKey.iv,
+                key: purchaseResponse.fileKey.key
+            };
+
+            await this.fileKeysRepository.saveAll([savedFileKey]);
+            await this.fileKeysRepository.refreshIndex();
+
+            return purchaseResponse;
         } catch (error) {
             if (error.response && error.response.status) {
+                console.log(error);
                 if (error.response.status === 404) {
                     throw new HttpException(
                         `Could not find file with id ${serviceNodePurchaseFileRequest.fileId}`,
@@ -119,7 +138,12 @@ export class FilesService {
         }
 
         if (fileSystem.existsSync(path.join(config.PURCHASED_FILES_DIRECTORY, `${fileId}.${file.extension}`))) {
-            response.download(path.join(config.PURCHASED_FILES_DIRECTORY, `${fileId}.${file.extension}`));
+            const fileKeys: SavedFileKey[] = await this.fileKeysRepository.findByFileId(file.id);
+            if (fileKeys.length !== 0) {
+                await this.decryptAndSendFile(file, fileKeys[0], response);
+            } else {
+                response.download(path.join(config.PURCHASED_FILES_DIRECTORY, `${fileId}.${file.extension}`));
+            }
             return;
         }
 
@@ -129,9 +153,15 @@ export class FilesService {
                     this.log.info(`Retrieved file ${fileId} from service node`);
                     const fileStream = fileSystem.createWriteStream(`${config.PURCHASED_FILES_DIRECTORY}/${fileId}.${file.extension}`);
                     data.pipe(fileStream);
-                    fileStream.on("finish", () => {
-                        response.download(path.join(config.PURCHASED_FILES_DIRECTORY, `${fileId}.${file.extension}`));
-                        resolve();
+                    fileStream.on("finish", async () => {
+                        const fileKeys = await this.fileKeysRepository.findByFileId(file.id);
+                        if (fileKeys.length !== 0) {
+                            await this.decryptAndSendFile(file, fileKeys[0], response);
+                            resolve();
+                        } else {
+                            response.download(path.join(config.PURCHASED_FILES_DIRECTORY, `${fileId}.${file.extension}`));
+                            resolve();
+                        }
                     })
                 })
                 .catch((error: AxiosError) => {
@@ -146,5 +176,23 @@ export class FilesService {
                     reject(error);
                 })
         })
+    }
+
+    private async decryptAndSendFile(file: File, fileKey: SavedFileKey, response: Response): Promise<void> {
+        this.log.debug(`Decrypting file with id ${file.id}`);
+        const physicalFile: Buffer = fileSystem.readFileSync(path.join(config.PURCHASED_FILES_DIRECTORY, `${file.id}.${file.extension}`));
+        const base64String = physicalFile.toString("base64");
+        const aesDecryptRequest: AesDecryptRequest = {
+            content: base64String,
+            iv: fileKey.iv,
+            key: fileKey.key
+        };
+        const decrypted = (await this.encryptorServiceClient.decryptWithAes(aesDecryptRequest)).data.result.content;
+        fileSystem.writeFileSync(
+            path.join(config.PURCHASED_FILES_DIRECTORY, `${file.id}.${file.extension}.decrypted`),
+            decrypted,
+            {encoding: "base64"}
+        );
+        response.download(path.join(config.PURCHASED_FILES_DIRECTORY, `${file.id}.${file.extension}.decrypted`));
     }
 }

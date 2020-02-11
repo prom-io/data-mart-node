@@ -73,6 +73,26 @@ In order to run Data Mart node, you have to install:
 - Latest NodeJS version, which can be found on the [official website](https://nodejs.org/en/download/current/)
 - Docker. You can find installation instructions on [official website](https://docs.docker.com/install/)
 - Docker-compose, which can be found [here](https://docs.docker.com/compose/install/)
+- Create and configure `bootstrap-nodes.json` file if you don't want to use default bootstrap nodes. This file contains 
+  information about bootstrap nodes which help to discover other nodes in network. Below is the content of default `bootstrap-nodes.json` file:
+ ```
+  {
+    "bootstrapNodes": [
+      {
+        "ipAddress": "188.166.37.102",
+        "port": 2000,
+        "libp2pAddress": "/ip4/188.166.37.102/tcp/12345/p2p/QmekndSMXKCGLFXp4peHpf9ynLWno6QFbo1uqMq8HBPqtz"
+      },
+      {
+        "ipAddress": "134.209.95.239",
+        "port": 2000,
+        "libp2pAddress": "/ip4/134.209.95.239/tcp/12346/p2p/QmaF43H5yth1nGWBF4xYEkqaL7X4uUsGNr3vhFbsAWnje6"
+      }
+    ]
+  }
+ ```
+
+
 
 ### Build and run process
 
@@ -90,6 +110,9 @@ After repository is cloned, you need to initialize submodules with the following
 
 In order to run Data Mart node inside Docker container, you need to do the following:
 
+- Create`.env` file in project's **root** directory and configure environmental variables. It is required to configure environmental 
+variables for both backend and front-end applications
+    - You can find description of environmental variables for [backend](#backend) and [front-end](#front-end) below
 - While in project directory, run the following command:
 
 ```docker-compose up --build``` or ```docker-compose up --build -d``` if you want to run the application in detached mode.
@@ -119,23 +142,21 @@ If you want to run Data Mart node outside Docker, you will need to to the follow
 
 #### Backend 
 
-| Variable                    | Description                                                                                                                      |
-|-----------------------------|----------------------------------------------------------------------------------------------------------------------------------|
-| SERVICE_NODE_API_URL        | URL of Service node API                                                                                                          |
-| ELASTICSERACH_HOST_URL      | URL of Elasticsearch                                                                                                             |
-| KIBANA_HOST_URL             | URL of Kibana                                                                                                                    |
-| PORT                        | Port which will be used by backend API                                                                                           |
-| LOGGING_LEVEL               | Level of logging verbosity. Allowed values are debug, info, warning, error                                                       |
-| FILES_SYNCHRONIZATION_CRON  | Cron expression which determines how often information about files will be synchronized                                          |
-| INITIAL_ACCOUNT_PRIVATE_KEY | Private key to Ethereum account which will be used for registration upon first startup                                           |
-| PURCHASED_FILES_DIRECTORY   | Directory which will be used to store purchased files. Please make sure that you the application has read and write access to it |
+| Variable                                    | Description                                                                                                                      |
+|---------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| `ELASTICSERACH_HOST_URL`                    | URL of Elasticsearch                                                                                                             |
+| `DATA_MART_API_PORT`                        | Port which will be used by backend API                                                                                           |
+| `LOGGING_LEVEL`                             | Level of logging verbosity. Allowed values are debug, info, warning, error                                                       |
+| `FILES_SYNCHRONIZATION_CRON`                | Cron expression which determines how often information about files will be synchronized                                          |
+| `INITIAL_ACCOUNT_PRIVATE_KEY`               | Private key to Ethereum account which will be used for registration upon first startup                                           |
+| `PURCHASED_FILES_DIRECTORY`                 | Directory which will be used to store purchased files. Please make sure that you the application has read and write access to it |
 
 #### Front-end
 
-| Variable                              | Description                                                      |
-|---------------------------------------|------------------------------------------------------------------|
-| REACT_APP_DATA_MART_NODE_API_BASE_URL | URL of backend API                                               |
-| REACT_APP_PRODUCTION_PORT             | Port which will be used by client application in production mode |
+| Variable                                | Description                                                      |
+|-----------------------------------------|------------------------------------------------------------------|
+| `REACT_APP_DATA_MART_NODE_API_BASE_URL` | URL of backend API                                               |
+| `REACT_APP_PRODUCTION_PORT`             | Port which will be used by client application in production mode |
 
 ## Current Stage of project
 

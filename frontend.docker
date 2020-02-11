@@ -1,9 +1,0 @@
-FROM node:10
-
-WORKDIR /usr/src/app
-
-COPY ./front-end .
-RUN yarn install
-
-EXPOSE 3008
-CMD ["yarn", "run", "production"]

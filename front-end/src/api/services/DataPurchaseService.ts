@@ -25,7 +25,7 @@ export class DataPurchaseService {
         return axiosInstance.get(`/${FILES_V2}/${fileId}/${INFO}`);
     }
 
-    public static downloadFile(fileId: string): AxiosPromise<void> {
+    public static downloadFile(fileId: string): AxiosPromise<Blob> {
         return axiosInstance.get(`/${FILES_V2}/${fileId}`, {responseType: "blob"});
     }
 

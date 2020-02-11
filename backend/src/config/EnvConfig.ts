@@ -5,7 +5,7 @@ export class EnvConfig {
     ELASTICSEARCH_HOST_URL: string;
 
     @Env({required: true, type: "number"})
-    PORT: number;
+    DATA_MART_API_PORT: number;
 
     @Env({required: true, type: "string"})
     LOGGING_LEVEL: string;
@@ -20,5 +20,8 @@ export class EnvConfig {
     PURCHASED_FILES_DIRECTORY: string;
 
     @Env({required: true, type: "string"})
-    INITIAL_ACCOUNT_PRIVATE_KEY: string
+    INITIAL_ACCOUNT_PRIVATE_KEY: string;
+
+    @Env({required: true, type: "string"})
+    ENCRYPTOR_SERVICE_URL: string;
 }

@@ -2,21 +2,30 @@ import {Injectable, OnApplicationBootstrap} from "@nestjs/common";
 import {ElasticsearchService} from "@nestjs/elasticsearch";
 import {LoggerService} from "nest-logger";
 import {KibanaInitializer} from "./KibanaInitializer";
-import {filesSchema, accountsSchema} from "../schema";
+import {filesSchema, accountsSchema, fileKeysSchema} from "../schema";
 
 @Injectable()
 export class ElasticsearchInitializer implements OnApplicationBootstrap {
+    private indexesInitialized = false;
+
     constructor(private readonly elasticSearchService: ElasticsearchService,
                 private readonly kibanaInitializer: KibanaInitializer,
                 private readonly log: LoggerService
     ) {}
 
+    public areIndexesInitialized(): boolean {
+        return this.indexesInitialized;
+    }
+
     public onApplicationBootstrap(): any {
         this.log.info("Initializing elasticsearch indices");
         Promise.all([
             this.initializeFilesIndex(),
-            this.initializeAccountsIndex()
-        ]).then(() => this.kibanaInitializer.initializeKibana());
+            this.initializeAccountsIndex(),
+            this.initializeFileKeysIndex()
+        ])
+            .then(() => this.indexesInitialized = true)
+            .then(() => this.kibanaInitializer.initializeKibana())
     }
 
     private initializeFilesIndex(): Promise<void> {
@@ -25,6 +34,10 @@ export class ElasticsearchInitializer implements OnApplicationBootstrap {
 
     private initializeAccountsIndex(): Promise<void> {
         return this.initializeIndex(accountsSchema, "accounts");
+    }
+
+    private initializeFileKeysIndex(): Promise<void> {
+        return this.initializeIndex(fileKeysSchema, "file_keys");
     }
 
     private initializeIndex(schema: any, indexName: string): Promise<void> {
