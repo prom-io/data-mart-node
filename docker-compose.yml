@@ -49,6 +49,10 @@ services:
       - elasticsearch
     tty: true
     network_mode: host
+    expose:
+      - 5601
+    ports:
+    - "5601:5601"
   # encryptor:
   #   build:
   #     context: .
