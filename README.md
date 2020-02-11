@@ -77,7 +77,7 @@ In order to run Data Mart node, you have to install:
 - Docker-compose, which can be found [here](https://docs.docker.com/compose/install/)
 - Create and configure `bootstrap-nodes.json` file if you don't want to use default bootstrap nodes. This file contains 
   information about bootstrap nodes which help to discover other nodes in network. Below is the content of default `bootstrap-nodes.json` file:
-  ```
+ ```
   {
     "bootstrapNodes": [
       {
