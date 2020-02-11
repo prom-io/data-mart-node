@@ -30,10 +30,10 @@ export class InitialAccountRegistrationHandler implements OnApplicationBootstrap
                 );
                 await this.accountService.registerAccount(registerAccountRequest);
                 this.loggerService.info(`Registered initial account with ${account.address} address`);
-                clearInterval(this.initialAccountRegistrationIntervalId);
             } else {
-                this.loggerService.info("This not has registered accounts, skipping initial account creation");
+                this.loggerService.info("This node has registered accounts, skipping initial account creation");
             }
+            clearInterval(this.initialAccountRegistrationIntervalId);
         } else {
             this.loggerService.info("Elasticsearch indexes have not been initialized yet, retrying initial account registration in 3 seconds");
             this.initialAccountRegistrationIntervalId = setInterval(() => this.onApplicationBootstrap(), 3000);
