@@ -6,10 +6,16 @@ import {filesSchema, accountsSchema, fileKeysSchema} from "../schema";
 
 @Injectable()
 export class ElasticsearchInitializer implements OnApplicationBootstrap {
+    private indexesInitialized = false;
+
     constructor(private readonly elasticSearchService: ElasticsearchService,
                 private readonly kibanaInitializer: KibanaInitializer,
                 private readonly log: LoggerService
     ) {}
+
+    public areIndexesInitialized(): boolean {
+        return this.indexesInitialized;
+    }
 
     public onApplicationBootstrap(): any {
         this.log.info("Initializing elasticsearch indices");
@@ -17,7 +23,9 @@ export class ElasticsearchInitializer implements OnApplicationBootstrap {
             this.initializeFilesIndex(),
             this.initializeAccountsIndex(),
             this.initializeFileKeysIndex()
-        ]).then(() => this.kibanaInitializer.initializeKibana());
+        ])
+            .then(() => this.indexesInitialized = true)
+            .then(() => this.kibanaInitializer.initializeKibana())
     }
 
     private initializeFilesIndex(): Promise<void> {

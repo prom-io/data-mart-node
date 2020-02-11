@@ -11,7 +11,6 @@ async function bootstrap() {
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(Number(envConfig.DATA_MART_API_PORT));
-
 }
 
 bootstrap();
