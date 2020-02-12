@@ -7,7 +7,7 @@ import {ApiError} from "../../api";
 import {IAppState} from "../../store";
 import {TransactionResponse} from "../../models";
 
-interface TransactionsCardMobxProps {
+interface DataPurchasesTransactionsCardMobxProps {
     selectedAccount?: string,
     accounts: string[],
     pending: boolean,
@@ -17,39 +17,50 @@ interface TransactionsCardMobxProps {
     fetchTransactions: () => void
 }
 
+interface DataPurchasesTransactionsCardOwnProps {
+    titlePrefix?: "Data Purchases" | "Transactions",
+    hideAccountSelect?: boolean
+}
+
+type DataPurchasesTransactionsCardProps = DataPurchasesTransactionsCardMobxProps & DataPurchasesTransactionsCardOwnProps;
+
 const useStyles = makeStyles(() => createStyles({
     transactionsCard: {
         overflowX: "auto"
     }
 }));
 
-const _TransactionsCard: FunctionComponent<TransactionsCardMobxProps> = ({
+const _DataPurchasesTransactionsCard: FunctionComponent<DataPurchasesTransactionsCardProps> = ({
     accounts,
     selectedAccount,
     pending,
     error,
     setDefaultAccount,
     transactions,
-    fetchTransactions
+    fetchTransactions,
+    titlePrefix = "Data Purchases",
+    hideAccountSelect = false
 }) => {
     const classes = useStyles();
 
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <DataMartAccountSelect accounts={accounts}
-                                       onSelect={setDefaultAccount}
-                                       selectedAccount={selectedAccount}
-                />
+                {!hideAccountSelect && (
+                    <DataMartAccountSelect accounts={accounts}
+                                           onSelect={setDefaultAccount}
+                                           selectedAccount={selectedAccount}
+                    />
+                )}
             </Grid>
             <Grid item xs={12}>
                 {transactions.length === 0 && error && (
-                    <Typography variant="h4">
+                    <Typography variant="body1">
                         Error occurred when tried to fetch transactions
                     </Typography>
                 )}
                 <Card className={classes.transactionsCard}>
-                    <CardHeader title="Data Purchases"/>
+                    <CardHeader title={`${titlePrefix} of ${selectedAccount}`}/>
                     <CardContent>
                         <TransactionsTable transactions={transactions}
                                            pending={pending}
@@ -62,7 +73,7 @@ const _TransactionsCard: FunctionComponent<TransactionsCardMobxProps> = ({
     )
 };
 
-const mapMobxToProps = (state: IAppState): TransactionsCardMobxProps => ({
+const mapMobxToProps = (state: IAppState): DataPurchasesTransactionsCardMobxProps => ({
     accounts: state.transactions.accounts,
     transactions: state.transactions.transactions,
     pending: state.transactions.pending,
@@ -72,5 +83,5 @@ const mapMobxToProps = (state: IAppState): TransactionsCardMobxProps => ({
     setDefaultAccount: state.settings.selectDataMartAccount
 });
 
-export const DataPurchasesTransactionsCard = inject(mapMobxToProps)(observer(_TransactionsCard) as FunctionComponent<{}>);
+export const DataPurchasesTransactionsCard = inject(mapMobxToProps)(observer(_DataPurchasesTransactionsCard as FunctionComponent<DataPurchasesTransactionsCardOwnProps>));
 
