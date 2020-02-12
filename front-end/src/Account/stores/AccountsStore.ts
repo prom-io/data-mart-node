@@ -15,7 +15,10 @@ export class AccountsStore {
 
     @action
     addAccount = (account: AccountResponse): void => {
-        this.accounts.push(account);
+        this.accounts = [
+            ...this.accounts,
+            account
+        ];
     };
 
     @action
