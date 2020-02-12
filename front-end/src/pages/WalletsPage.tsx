@@ -10,6 +10,7 @@ import {
     OpenAccountRegistrationDialogButton,
     SelectedDataMartBalance
 } from "../Account";
+import {DataPurchasesTransactionsCard} from "../Transaction";
 
 export const WalletsPage: FunctionComponent = () => (
     <Grid container>
@@ -29,6 +30,11 @@ export const WalletsPage: FunctionComponent = () => (
                    </Grid>
                    <Grid item xs={12}>
                        <AccountsTable/>
+                   </Grid>
+                   <Grid item xs={12}>
+                       <DataPurchasesTransactionsCard hideAccountSelect
+                                                      titlePrefix="Transactions"
+                       />
                    </Grid>
                    <AccountRegistrationDialog/>
                </Grid>

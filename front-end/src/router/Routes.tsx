@@ -36,6 +36,13 @@ export const Routes = {
     }),
     wallets: new Route({
         path: "/wallets",
-        component: <WalletsPage/>
+        component: <WalletsPage/>,
+        beforeEnter: () => {
+            store.transactions.fetchTransactions();
+            store.transactions.setRefreshOnDefaultAccountChange(true);
+        },
+        onExit: () => {
+            store.transactions.setRefreshOnDefaultAccountChange(false);
+        }
     })
 };
