@@ -32,8 +32,7 @@ and then makes another request to download purchased file.
 
 ## How to test
 
-[Here](http://178.62.207.53:3008/) is an instance of app, which is alreay deployed at the stage environent for the demo purposes. 
-So you can test all the essence features of the application using UI: 
+Run the node (see below) and test all the essence features of the application using UI: 
 - explore Data Owners' files with their metadata;
 - select / purchase any of them;
 - get the decrypted file after purchase;
