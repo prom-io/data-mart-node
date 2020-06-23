@@ -51,7 +51,7 @@ export const filesSchema = {
                 index: false
             },
             savedAt: {
-                type: "number"
+                type: "long"
             }
         }
     }
