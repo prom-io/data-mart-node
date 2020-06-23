@@ -20,7 +20,8 @@
 ## Description
 
 Data Mart node is an application which is used for purchasing data and proceeding it to 
-the buyer (end user: some brand or agency outside the System). 
+the buyer (end user: some brand or agency outside the System) in Stoa: 
+Data Exchange Platform within Prometeus ecosystem.
 It allows to browse metadata (via special UI) and purchase any Data Owners’ data 
 within the System using API of Service Node. Besides that, Data Validator Node makes final decryption of the data.
  
@@ -32,8 +33,7 @@ and then makes another request to download purchased file.
 
 ## How to test
 
-[Here](http://178.62.207.53:3008/) is an instance of app, which is alreay deployed at the stage environent for the demo purposes. 
-So you can test all the essence features of the application using UI: 
+Run the node (see below) and test all the essence features of the application using UI: 
 - explore Data Owners' files with their metadata;
 - select / purchase any of them;
 - get the decrypted file after purchase;
