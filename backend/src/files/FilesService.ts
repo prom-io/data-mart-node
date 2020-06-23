@@ -106,6 +106,7 @@ export class FilesService {
 
             return purchaseResponse;
         } catch (error) {
+            console.log(error);
             if (error.response && error.response.status) {
                 console.log(error);
                 if (error.response.status === 404) {
@@ -139,6 +140,7 @@ export class FilesService {
 
         if (fileSystem.existsSync(path.join(config.PURCHASED_FILES_DIRECTORY, `${fileId}.${file.extension}`))) {
             const fileKeys: SavedFileKey[] = await this.fileKeysRepository.findByFileId(file.id);
+            console.log(fileKeys);
             if (fileKeys.length !== 0) {
                 await this.decryptAndSendFile(file, fileKeys[0], response);
             } else {
@@ -155,6 +157,7 @@ export class FilesService {
                     data.pipe(fileStream);
                     fileStream.on("finish", async () => {
                         const fileKeys = await this.fileKeysRepository.findByFileId(file.id);
+                        console.log(fileKeys);
                         if (fileKeys.length !== 0) {
                             await this.decryptAndSendFile(file, fileKeys[0], response);
                             resolve();
@@ -165,6 +168,7 @@ export class FilesService {
                     })
                 })
                 .catch((error: AxiosError) => {
+                    console.log(error);
                     this.log.error("Error occurred when tried to download file");
                     this.log.debug(error.stack);
 
@@ -179,20 +183,25 @@ export class FilesService {
     }
 
     private async decryptAndSendFile(file: File, fileKey: SavedFileKey, response: Response): Promise<void> {
-        this.log.debug(`Decrypting file with id ${file.id}`);
-        const physicalFile: Buffer = fileSystem.readFileSync(path.join(config.PURCHASED_FILES_DIRECTORY, `${file.id}.${file.extension}`));
-        const base64String = physicalFile.toString("base64");
-        const aesDecryptRequest: AesDecryptRequest = {
-            content: base64String,
-            iv: fileKey.iv,
-            key: fileKey.key
-        };
-        const decrypted = (await this.encryptorServiceClient.decryptWithAes(aesDecryptRequest)).data.result.content;
-        fileSystem.writeFileSync(
-            path.join(config.PURCHASED_FILES_DIRECTORY, `${file.id}.${file.extension}.decrypted`),
-            decrypted,
-            {encoding: "base64"}
-        );
-        response.download(path.join(config.PURCHASED_FILES_DIRECTORY, `${file.id}.${file.extension}.decrypted`));
+        try {
+            this.log.debug(`Decrypting file with id ${file.id}`);
+            const physicalFile: Buffer = fileSystem.readFileSync(path.join(config.PURCHASED_FILES_DIRECTORY, `${file.id}.${file.extension}`));
+            const base64String = physicalFile.toString("base64");
+            const aesDecryptRequest: AesDecryptRequest = {
+                content: base64String,
+                iv: fileKey.iv,
+                key: fileKey.key
+            };
+            const decrypted = (await this.encryptorServiceClient.decryptWithAes(aesDecryptRequest)).data.result.content;
+            fileSystem.writeFileSync(
+                path.join(config.PURCHASED_FILES_DIRECTORY, `${file.id}.${file.extension}.decrypted`),
+                decrypted,
+                {encoding: "base64"}
+            );
+            response.download(path.join(config.PURCHASED_FILES_DIRECTORY, `${file.id}.${file.extension}.decrypted`));
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
     }
 }

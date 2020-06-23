@@ -37,7 +37,6 @@ export class FilesSynchronizationScheduler extends NestSchedule {
         while (!done) {
             try {
                 const files = (await this.serviceNodeApiClient.getFiles({page: this.currentPage, size: this.pageSize})).data;
-                this.log.debug(`Retrieved files: ${JSON.stringify(files)}`);
 
                 if (files.length !== 0) {
                     this.log.info("Saving files");

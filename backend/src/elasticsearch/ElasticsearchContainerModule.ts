@@ -7,7 +7,7 @@ import {config} from "../config";
     imports: [
         ElasticsearchModule.register({
             host: config.ELASTICSEARCH_HOST_URL,
-            log: config.LOGGING_LEVEL
+            log: "info"
         })
     ],
     exports: [ElasticsearchModule]

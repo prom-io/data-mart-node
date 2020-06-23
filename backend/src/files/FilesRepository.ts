@@ -28,7 +28,8 @@ export class FilesRepository {
         return this.elasticSearchService.bulk({
             // have to use @ts-ignore because for some reason Intellij IDEA can't see that arrays actually have flatMap method
             // @ts-ignore
-            body: files.flatMap(file => [{index: {_index: "files", _id: file.id}}, file]),
+            body: files.map(file => [{index: {_index: "files", _id: file.id}}, file])
+                .reduce((left, right) => left.concat(right)),
             index: "files",
             type: "_doc"
         })

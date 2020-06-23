@@ -1,4 +1,5 @@
 import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
+import {LoggerService} from "nest-logger";
 import {FilesService} from "../files";
 import {ServiceNodeApiClient} from "../service-node-api";
 import {
@@ -8,7 +9,6 @@ import {
     TransactionsCountResponse,
     TransactionWithFileResponse
 } from "../model/api/response";
-import {LoggerService} from "nest-logger";
 
 @Injectable()
 export class TransactionsService {
