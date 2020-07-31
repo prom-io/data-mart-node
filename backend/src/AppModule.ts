@@ -9,6 +9,8 @@ import {TransactionsModule} from "./transactions";
 import {DiscoveryModule} from "./discovery";
 import {Web3Module} from "./web3";
 import {EncryptorServiceModule} from "./encryptor";
+import {BCryptModule} from "./bcrypt";
+import {WalletGeneratorModule} from "./wallet-generator";
 
 @Module({
   imports: [
@@ -21,7 +23,9 @@ import {EncryptorServiceModule} from "./encryptor";
       AccountsModule,
       TransactionsModule,
       Web3Module,
-      EncryptorServiceModule
+      EncryptorServiceModule,
+      BCryptModule,
+      WalletGeneratorModule
   ]
 })
 export class AppModule {}

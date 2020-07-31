@@ -2,7 +2,7 @@ import {Injectable, OnApplicationBootstrap} from "@nestjs/common";
 import {ElasticsearchService} from "@nestjs/elasticsearch";
 import {LoggerService} from "nest-logger";
 import {KibanaInitializer} from "./KibanaInitializer";
-import {filesSchema, accountsSchema, fileKeysSchema} from "../schema";
+import {filesSchema, accountsSchema, fileKeysSchema, usersSchema} from "../schema";
 
 @Injectable()
 export class ElasticsearchInitializer implements OnApplicationBootstrap {
@@ -22,7 +22,8 @@ export class ElasticsearchInitializer implements OnApplicationBootstrap {
         Promise.all([
             this.initializeFilesIndex(),
             this.initializeAccountsIndex(),
-            this.initializeFileKeysIndex()
+            this.initializeFileKeysIndex(),
+            this.initializeUsersIndex()
         ])
             .then(() => this.indexesInitialized = true)
             .then(() => this.kibanaInitializer.initializeKibana())
@@ -38,6 +39,10 @@ export class ElasticsearchInitializer implements OnApplicationBootstrap {
 
     private initializeFileKeysIndex(): Promise<void> {
         return this.initializeIndex(fileKeysSchema, "file_keys");
+    }
+
+    private initializeUsersIndex(): Promise<void> {
+        return this.initializeIndex(usersSchema, "users");
     }
 
     private initializeIndex(schema: any, indexName: string): Promise<void> {

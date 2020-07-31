@@ -11,8 +11,9 @@ export class AccountsRepository {
 
     public save(account: Account): Promise<CreateDocumentResponse> {
         return this.elasticSearchService.bulk({
-            // @ts-ignore
-            body: [account].flatMap(savedAccount => [{index: {_index: "accounts", _id: uuid4()}}, savedAccount]),
+            body: [account]
+                .map(savedAccount => [{index: {_index: "accounts", _id: uuid4()}}, savedAccount])
+                .reduce((left, right) => left.concat(right)),
             index: "accounts",
             type: "_doc"
         })
@@ -41,5 +42,20 @@ export class AccountsRepository {
         })
             .pipe(map(searchResponse => searchResponse[0].hits.hits.map(hit => hit._source)))
             .toPromise();
+    }
+
+    public findByUser(userId: string): Promise<Account[]> {
+        return this.elasticSearchService.search<Account>({
+            index: "accounts",
+            body: {
+                query: {
+                    match: {
+                        userId
+                    }
+                }
+            }
+        })
+            .pipe(map(searchResponse => searchResponse[0].hits.hits.map(hit => hit._source)))
+            .toPromise()
     }
 }

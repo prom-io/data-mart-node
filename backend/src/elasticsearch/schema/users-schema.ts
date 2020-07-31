@@ -1,15 +1,20 @@
-export const accountsSchema = {
+export const usersSchema = {
     _doc: {
         properties: {
-            address: {
+            id: {
+                type: "text",
+                fields: {
+                    keyword: {
+                        type: "keyword",
+                        ignore_above: 256
+                    }
+                }
+            },
+            passwordHash: {
                 type: "text",
                 index: false
             },
-            type: {
-                type: "text",
-                index: false
-            },
-            userId: {
+            lambdaWallet: {
                 type: "text",
                 fields: {
                     keyword: {

@@ -1,22 +1,56 @@
 import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
 import {LoggerService} from "nest-logger";
+import uuid from "uuid";
 import {AccountsRepository} from "./AccountsRepository";
-import {AccountType} from "../model/domain";
+import {AccountType, User} from "../model/domain";
 import {RegisterAccountRequest, ServiceNodeRegisterAccountRequest} from "../model/api/request";
 import {AccountResponse, BalanceResponse} from "../model/api/response";
 import {ServiceNodeApiClient} from "../service-node-api";
 import {Web3Wrapper} from "../web3";
+import {UsersRepository} from "./UsersRepository";
+import {BCryptPasswordEncoder} from "../bcrypt";
+import {WalletGeneratorApiClient} from "../wallet-generator/WalletGeneratorApiClient";
 
 @Injectable()
 export class AccountsService {
     constructor(private readonly accountsRepository: AccountsRepository,
                 private readonly serviceNodeApiClient: ServiceNodeApiClient,
+                private readonly walletGeneratorApiClient: WalletGeneratorApiClient,
                 private readonly web3Wrapper: Web3Wrapper,
+                private readonly usersRepository: UsersRepository,
+                private readonly passwordEncoder: BCryptPasswordEncoder,
                 private readonly log: LoggerService) {}
 
     public async registerAccount(registerAccountRequest: RegisterAccountRequest): Promise<AccountResponse> {
         try {
             this.log.info("Trying to register account");
+
+            let userId: string | undefined;
+
+            if (!registerAccountRequest.lambdaWallet && !registerAccountRequest.address) {
+                throw new HttpException(
+                    "Ether lambdaWallet or address fields must be specified",
+                    HttpStatus.BAD_REQUEST
+                );
+            }
+
+            if (registerAccountRequest.lambdaWallet) {
+                let user = await this.usersRepository.findByLambdaWallet(registerAccountRequest.lambdaWallet);
+
+                if (user) {
+                    throw new HttpException(
+                        `Lambda wallet address ${registerAccountRequest.lambdaWallet} is already in use`,
+                        HttpStatus.CONFLICT
+                    );
+                } else {
+                    user = await this.createUser(registerAccountRequest);
+                    await this.usersRepository.save(user);
+                    userId = user.id;
+                    const wallet = await this.walletGeneratorApiClient.generateWallet();
+                    registerAccountRequest.address = wallet.address;
+                    registerAccountRequest.privateKey = wallet.privateKey;
+                }
+            }
 
             const existingAccounts = await this.accountsRepository.findAll();
 
@@ -34,7 +68,8 @@ export class AccountsService {
                     await this.accountsRepository.save({
                         address: registerAccountRequest.address,
                         privateKey: registerAccountRequest.privateKey,
-                        type: AccountType.DATA_MART
+                        type: AccountType.DATA_MART,
+                        userId
                     });
                 } else {
                     throw new HttpException(
@@ -46,6 +81,7 @@ export class AccountsService {
                 const serviceNodeRegisterAccountRequest: ServiceNodeRegisterAccountRequest = {
                     address: registerAccountRequest.address,
                     type: AccountType.DATA_MART,
+                    lambdaWallet: registerAccountRequest.lambdaWallet,
                     signature: undefined
                 };
                 serviceNodeRegisterAccountRequest.signature = this.web3Wrapper.singData(
@@ -56,6 +92,7 @@ export class AccountsService {
                 await this.accountsRepository.save({
                     address: registerAccountRequest.address,
                     privateKey: registerAccountRequest.privateKey,
+                    userId,
                     type: AccountType.DATA_MART
                 });
             }
@@ -67,7 +104,7 @@ export class AccountsService {
             }
 
             this.log.error("Error occurred when tried to register account");
-            console.log(error.response.data);
+            console.log(error);
 
             if (error.response) {
                 throw new HttpException(
@@ -79,6 +116,17 @@ export class AccountsService {
             }
         }
     }
+
+    private async createUser(registerAccountRequest: RegisterAccountRequest): Promise<User> {
+        const user: User = {
+            id: uuid(),
+            passwordHash: await this.passwordEncoder.encode(registerAccountRequest.password),
+            lambdaWallet: registerAccountRequest.lambdaWallet
+        };
+        await this.usersRepository.save(user);
+        return user;
+    }
+
 
     public async getAllAccounts(): Promise<AccountResponse[]> {
         return (await this.accountsRepository.findAll())

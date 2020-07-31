@@ -24,4 +24,16 @@ export class EnvConfig {
 
     @Env({required: true, type: "string"})
     ENCRYPTOR_SERVICE_URL: string;
+
+    @Env({required: true, type: "string"})
+    JWT_SECRET: string;
+
+    @Env({required: true, type: "string"})
+    PROMETEUS_WALLET_GENERATOR_API_BASE_URL: string;
+
+    @Env({required: true, type: "string"})
+    PROMETEUS_WALLET_GENERATOR_API_USERNAME: string;
+
+    @Env({required: true, type: "string"})
+    PROMETEUS_WALLET_GENERATOR_API_PASSWORD: string;
 }

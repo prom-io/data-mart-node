@@ -8,3 +8,5 @@ export * from "./TransactionWithFileResponse";
 export * from "./TransactionResponse";
 export * from "./FilePurchaseStatusResponse";
 export * from "./AccountRegistrationStatusResponse";
+export * from "./UserResponse";
+export * from "./AccessTokenResponse";
