@@ -11,6 +11,7 @@ import {Web3Module} from "./web3";
 import {EncryptorServiceModule} from "./encryptor";
 import {BCryptModule} from "./bcrypt";
 import {WalletGeneratorModule} from "./wallet-generator";
+import {AuthModule} from "./jwt-auth";
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import {WalletGeneratorModule} from "./wallet-generator";
       Web3Module,
       EncryptorServiceModule,
       BCryptModule,
-      WalletGeneratorModule
+      WalletGeneratorModule,
+      AuthModule
   ]
 })
 export class AppModule {}

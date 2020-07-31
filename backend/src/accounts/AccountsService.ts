@@ -2,7 +2,7 @@ import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
 import {LoggerService} from "nest-logger";
 import uuid from "uuid";
 import {AccountsRepository} from "./AccountsRepository";
-import {AccountType, User} from "../model/domain";
+import {Account, AccountType, User} from "../model/domain";
 import {RegisterAccountRequest, ServiceNodeRegisterAccountRequest} from "../model/api/request";
 import {AccountResponse, BalanceResponse} from "../model/api/response";
 import {ServiceNodeApiClient} from "../service-node-api";
@@ -135,8 +135,16 @@ export class AccountsService {
         return (await this.serviceNodeApiClient.getBalanceOfAccount(address)).data;
     }
 
-    public getBalanceOfAllAccounts(): Promise<{[address: string]: number}> {
-        return this.accountsRepository.findAll().then(accounts => {
+    public getBalanceOfAllAccounts(user?: User): Promise<{[address: string]: number}> {
+        let accountsPromise: Promise<Account[]>;
+
+        if (user) {
+            accountsPromise = this.accountsRepository.findByUser(user.id);
+        } else {
+            accountsPromise = this.accountsRepository.findAll();
+        }
+
+        return accountsPromise.then(accounts => {
             const result: {[address: string]: number} = {};
             return Promise.all(accounts.map(async account => ({
                 address: account.address,
