@@ -26,6 +26,7 @@ export class AccountsService {
             this.log.info("Trying to register account");
 
             let userId: string | undefined;
+            let user: User | undefined;
 
             if (!registerAccountRequest.lambdaWallet && !registerAccountRequest.address) {
                 throw new HttpException(
@@ -35,7 +36,7 @@ export class AccountsService {
             }
 
             if (registerAccountRequest.lambdaWallet) {
-                let user = await this.usersRepository.findByLambdaWallet(registerAccountRequest.lambdaWallet);
+                user = await this.usersRepository.findByLambdaWallet(registerAccountRequest.lambdaWallet);
 
                 if (user) {
                     throw new HttpException(
@@ -43,8 +44,11 @@ export class AccountsService {
                         HttpStatus.CONFLICT
                     );
                 } else {
-                    user = await this.createUser(registerAccountRequest);
-                    await this.usersRepository.save(user);
+                    user = {
+                        id: uuid(),
+                        lambdaWallet: registerAccountRequest.lambdaWallet,
+                        passwordHash: await this.passwordEncoder.encode(registerAccountRequest.password!)
+                    };
                     userId = user.id;
                     const wallet = await this.walletGeneratorApiClient.generateWallet();
                     registerAccountRequest.address = wallet.address;
@@ -89,6 +93,11 @@ export class AccountsService {
                     registerAccountRequest.privateKey
                 );
                 await this.serviceNodeApiClient.registerAccount(serviceNodeRegisterAccountRequest);
+
+                if (user) {
+                    await this.usersRepository.save(user);
+                }
+
                 await this.accountsRepository.save({
                     address: registerAccountRequest.address,
                     privateKey: registerAccountRequest.privateKey,
@@ -116,17 +125,6 @@ export class AccountsService {
             }
         }
     }
-
-    private async createUser(registerAccountRequest: RegisterAccountRequest): Promise<User> {
-        const user: User = {
-            id: uuid(),
-            passwordHash: await this.passwordEncoder.encode(registerAccountRequest.password),
-            lambdaWallet: registerAccountRequest.lambdaWallet
-        };
-        await this.usersRepository.save(user);
-        return user;
-    }
-
 
     public async getAllAccounts(): Promise<AccountResponse[]> {
         return (await this.accountsRepository.findAll())
