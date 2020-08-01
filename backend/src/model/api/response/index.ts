@@ -10,3 +10,4 @@ export * from "./FilePurchaseStatusResponse";
 export * from "./AccountRegistrationStatusResponse";
 export * from "./UserResponse";
 export * from "./AccessTokenResponse";
+export * from "./CurrentAccountResponse";

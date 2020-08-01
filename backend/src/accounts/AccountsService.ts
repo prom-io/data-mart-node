@@ -4,7 +4,7 @@ import uuid from "uuid";
 import {AccountsRepository} from "./AccountsRepository";
 import {Account, AccountType, User} from "../model/domain";
 import {RegisterAccountRequest, ServiceNodeRegisterAccountRequest} from "../model/api/request";
-import {AccountResponse, BalanceResponse} from "../model/api/response";
+import {AccountResponse, BalanceResponse, CurrentAccountResponse} from "../model/api/response";
 import {ServiceNodeApiClient} from "../service-node-api";
 import {Web3Wrapper} from "../web3";
 import {UsersRepository} from "./UsersRepository";
@@ -155,5 +155,19 @@ export class AccountsService {
                     return result;
                 })
         })
+    }
+
+    public async getCurrentAccount(user: User): Promise<CurrentAccountResponse> {
+        const ethereumAccount = (await this.accountsRepository.findByUser(user.id))[0];
+        console.log(ethereumAccount);
+
+        return {
+            ethereumAddress: ethereumAccount.address,
+            lambdaAddress: user.lambdaWallet
+        };
+    }
+
+    public async getBalanceOfCurrentAccount(user: User): Promise<BalanceResponse> {
+        return (await this.serviceNodeApiClient.getBalanceOfLambdaWallet(user.lambdaWallet)).data;
     }
 }

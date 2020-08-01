@@ -108,7 +108,7 @@ export class FilesService {
         } catch (error) {
             console.log(error);
             if (error.response && error.response.status) {
-                console.log(error);
+                console.log(error.response);
                 if (error.response.status === 404) {
                     throw new HttpException(
                         `Could not find file with id ${serviceNodePurchaseFileRequest.fileId}`,

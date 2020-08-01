@@ -8,10 +8,11 @@ import {OptionalJwtStrategy} from "./OptionalJwtStrategy";
 import {OptionalJwtAuthGuard} from "./OptionalJwtAuthGuard";
 import {AccountsModule} from "../accounts";
 import {config} from "../config";
+import {JwtStrategy} from "./JwtStrategy";
 
 @Module({
     controllers: [AuthController],
-    providers: [AuthService, LocalStrategy, OptionalJwtStrategy, OptionalJwtAuthGuard],
+    providers: [AuthService, LocalStrategy, OptionalJwtStrategy, OptionalJwtAuthGuard, JwtStrategy],
     imports: [
         AccountsModule,
         PassportModule,

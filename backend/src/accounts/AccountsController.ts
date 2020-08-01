@@ -1,7 +1,10 @@
-import {Controller, Get, Post, Body} from "@nestjs/common";
+import {Controller, Get, Post, Body, Req, UseGuards} from "@nestjs/common";
+import {AuthGuard} from "@nestjs/passport";
+import {Request} from "express";
 import {AccountsService} from "./AccountsService";
-import {AccountResponse, BalancesResponse} from "../model/api/response";
+import {AccountResponse, BalanceResponse, BalancesResponse, CurrentAccountResponse} from "../model/api/response";
 import {RegisterAccountRequest} from "../model/api/request";
+import {User} from "../model/domain";
 
 @Controller("api/v2/accounts")
 export class AccountsController {
@@ -15,6 +18,18 @@ export class AccountsController {
     @Get()
     public getAllAccounts(): Promise<AccountResponse[]> {
         return this.accountsService.getAllAccounts();
+    }
+
+    @UseGuards(AuthGuard("jwt"))
+    @Get("current")
+    public getCurrentAccount(@Req() request: Request): Promise<CurrentAccountResponse> {
+        return this.accountsService.getCurrentAccount((request as any).user as User);
+    }
+
+    @UseGuards(AuthGuard("jwt"))
+    @Get("current/balance")
+    public getBalanceOfCurrentAccount(@Req() request: Request): Promise<BalanceResponse> {
+        return this.accountsService.getBalanceOfCurrentAccount((request as any).user as User);
     }
 
     @Get("balances")

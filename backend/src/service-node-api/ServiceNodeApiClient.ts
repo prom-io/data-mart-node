@@ -54,6 +54,10 @@ export class ServiceNodeApiClient {
         return this.axiosInstance.get(`${this.getUrl()}/api/v1/accounts/${address}/is-registered`);
     }
 
+    public getBalanceOfLambdaWallet(address: string): AxiosPromise<BalanceResponse> {
+        return this.axiosInstance.get(`${this.getUrl()}/api/v1/accounts/lambda/${address}/balance`);
+    }
+
     public getLoadBalancer(): RoundRobinLoadBalancerClient {
         return this.loadBalancerClient;
     }
