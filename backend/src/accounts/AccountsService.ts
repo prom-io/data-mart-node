@@ -4,12 +4,13 @@ import uuid from "uuid";
 import {AccountsRepository} from "./AccountsRepository";
 import {Account, AccountType, User} from "../model/domain";
 import {RegisterAccountRequest, ServiceNodeRegisterAccountRequest, WithdrawFundsRequest} from "../model/api/request";
-import {AccountResponse, BalanceResponse, CurrentAccountResponse} from "../model/api/response";
+import {AccessTokenResponse, AccountResponse, BalanceResponse, CurrentAccountResponse} from "../model/api/response";
 import {ServiceNodeApiClient} from "../service-node-api";
 import {Web3Wrapper} from "../web3";
 import {UsersRepository} from "./UsersRepository";
 import {BCryptPasswordEncoder} from "../bcrypt";
 import {WalletGeneratorApiClient} from "../wallet-generator/WalletGeneratorApiClient";
+import {AuthService} from "../jwt-auth/AuthService";
 
 @Injectable()
 export class AccountsService {
@@ -19,9 +20,10 @@ export class AccountsService {
                 private readonly web3Wrapper: Web3Wrapper,
                 private readonly usersRepository: UsersRepository,
                 private readonly passwordEncoder: BCryptPasswordEncoder,
+                private readonly authService: AuthService,
                 private readonly log: LoggerService) {}
 
-    public async registerAccount(registerAccountRequest: RegisterAccountRequest): Promise<AccountResponse> {
+    public async registerAccount(registerAccountRequest: RegisterAccountRequest): Promise<AccountResponse | (AccessTokenResponse & CurrentAccountResponse)> {
         try {
             this.log.info("Trying to register account");
 
@@ -104,6 +106,16 @@ export class AccountsService {
                     userId,
                     type: AccountType.DATA_MART
                 });
+
+                if (user) {
+                    const {accessToken} = await this.authService.login(user);
+
+                    return {
+                        ethereumAddress: registerAccountRequest.address,
+                        lambdaAddress: registerAccountRequest.lambdaWallet,
+                        accessToken
+                    };
+                }
             }
 
             return {address: registerAccountRequest.address};

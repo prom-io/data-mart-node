@@ -2,7 +2,7 @@ import {Controller, Get, Post, Body, Req, UseGuards} from "@nestjs/common";
 import {AuthGuard} from "@nestjs/passport";
 import {Request} from "express";
 import {AccountsService} from "./AccountsService";
-import {AccountResponse, BalanceResponse, BalancesResponse, CurrentAccountResponse} from "../model/api/response";
+import {AccessTokenResponse, AccountResponse, BalanceResponse, BalancesResponse, CurrentAccountResponse} from "../model/api/response";
 import {RegisterAccountRequest, WithdrawFundsRequest} from "../model/api/request";
 import {User} from "../model/domain";
 
@@ -11,7 +11,7 @@ export class AccountsController {
     constructor(private readonly accountsService: AccountsService) {}
 
     @Post()
-    public registerAccount(@Body() registerAccountRequest: RegisterAccountRequest): Promise<AccountResponse> {
+    public registerAccount(@Body() registerAccountRequest: RegisterAccountRequest): Promise<AccountResponse | (CurrentAccountResponse & AccessTokenResponse)> {
         return this.accountsService.registerAccount(registerAccountRequest);
     }
 
