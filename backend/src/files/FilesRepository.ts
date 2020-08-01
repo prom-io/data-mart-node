@@ -150,4 +150,43 @@ export class FilesRepository {
             .pipe(map(searchResponse => searchResponse[0].hits.hits.map(hit => hit._source)))
             .toPromise()
     }
+
+    public countByQuery(query: string): Promise<number> {
+        return this.elasticSearchService.count({
+            index: "files",
+            body: {
+                query: {
+                    multi_match: {
+                        query
+                    }
+                }
+            }
+        })
+            .pipe(map(countResponse => countResponse[0].count as number))
+            .toPromise()
+    }
+
+    public countByQueryAndTags(query: string, hashTags: string[]): Promise<number> {
+        return this.elasticSearchService.count({
+            index: "files",
+            body: {
+                query: {
+                    bool: {
+                        must: {
+                            multi_match: {
+                                query
+                            }
+                        },
+                        filter: {
+                            terms: {
+                                "metadata.hashTags": hashTags.map(hashTag => hashTag.toLocaleLowerCase())
+                            }
+                        }
+                    }
+                },
+            }
+        })
+            .pipe(map(countResponse => countResponse[0].count as number))
+            .toPromise()
+    }
 }

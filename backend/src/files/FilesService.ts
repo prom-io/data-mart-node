@@ -42,6 +42,18 @@ export class FilesService {
             .then(files => files.map(file => fileToFileResponse(file)));
     }
 
+    public async countFilesByQuery(query: string): Promise<{count: number}> {
+        const count = await this.filesRepository.countByQuery(query);
+        console.log(count);
+        return {count};
+    }
+
+    public async countFilesByQueryAndTags(query: string, tags: string[]): Promise<{count: number}> {
+        const count = await this.filesRepository.countByQueryAndTags(query, tags);
+        console.log(count);
+        return {count};
+    }
+
     public listAllFiles(): Promise<FileResponse[]> {
         return this.filesRepository
             .findAll()

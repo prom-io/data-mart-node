@@ -34,7 +34,7 @@ export class FilesController {
         }
     }
 
-    @Get("/search")
+    @Get("search")
     public async searchFiles(@Query("query") query?: string,
                              @Query("tags") tags?: string,
                              @Query("page") page?: number,
@@ -51,6 +51,21 @@ export class FilesController {
             return this.filesService.searchFilesByQueryAndTags(query, tagsToSearch, {page, size})
         } else {
             return this.filesService.searchFiles(query, {page, size});
+        }
+    }
+
+    @Get("search/count")
+    public async countSearchResults(@Query("query") query?: string,
+                                    @Query("tags") tags?: string): Promise<{count: number}> {
+        if (!query) {
+            query = "";
+        }
+
+        if (tags) {
+            const tagsToSearch: string[] = JSON.parse(tags);
+            return this.filesService.countFilesByQueryAndTags(query, tagsToSearch);
+        } else {
+            return this.filesService.countFilesByQuery(query);
         }
     }
 
