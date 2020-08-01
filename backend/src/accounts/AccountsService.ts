@@ -172,6 +172,14 @@ export class AccountsService {
 
     public async withdrawFunds(withdrawFundsRequest: WithdrawFundsRequest, user: User): Promise<void> {
         const ethereumAccount = (await this.accountsRepository.findByUser(user.id))[0];
+        const {balance} = (await this.serviceNodeApiClient.getBalanceOfLambdaWallet(user.lambdaWallet)).data;
+
+        if (withdrawFundsRequest.amount > balance) {
+            throw new HttpException(
+                `Request was made to withdraw ${withdrawFundsRequest.amount}, but account's balance is ${balance}`,
+                HttpStatus.PAYMENT_REQUIRED
+            );
+        }
 
         try {
             await this.serviceNodeApiClient.withdrawFunds({
