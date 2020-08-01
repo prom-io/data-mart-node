@@ -4,7 +4,7 @@ import {AxiosInstance, AxiosPromise} from "axios";
 import {
     PaginationRequest,
     ServiceNodeRegisterAccountRequest,
-    ServiceNodePurchaseFileRequest
+    ServiceNodePurchaseFileRequest, ServiceNodeWithdrawRequest
 } from "../model/api/request";
 import {
     BalanceResponse,
@@ -56,6 +56,10 @@ export class ServiceNodeApiClient {
 
     public getBalanceOfLambdaWallet(address: string): AxiosPromise<BalanceResponse> {
         return this.axiosInstance.get(`${this.getUrl()}/api/v1/accounts/lambda/${address}/balance`);
+    }
+
+    public withdrawFunds(withdrawFundsRequest: ServiceNodeWithdrawRequest): AxiosPromise<void> {
+        return this.axiosInstance.post(`${this.getUrl()}/api/v1/accounts/withdraw`, withdrawFundsRequest);
     }
 
     public getLoadBalancer(): RoundRobinLoadBalancerClient {

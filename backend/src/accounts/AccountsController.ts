@@ -3,7 +3,7 @@ import {AuthGuard} from "@nestjs/passport";
 import {Request} from "express";
 import {AccountsService} from "./AccountsService";
 import {AccountResponse, BalanceResponse, BalancesResponse, CurrentAccountResponse} from "../model/api/response";
-import {RegisterAccountRequest} from "../model/api/request";
+import {RegisterAccountRequest, WithdrawFundsRequest} from "../model/api/request";
 import {User} from "../model/domain";
 
 @Controller("api/v2/accounts")
@@ -42,5 +42,12 @@ export class AccountsController {
                     reject(error);
                 })
         })
+    }
+
+    @UseGuards(AuthGuard("jwt"))
+    @Post("withdraw")
+    public withdrawFunds(@Body() withdrawFundsRequest: WithdrawFundsRequest,
+                         @Req() request: Request): Promise<void> {
+        return this.accountsService.withdrawFunds(withdrawFundsRequest, (request as any).user as User);
     }
 }

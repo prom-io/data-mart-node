@@ -3,7 +3,7 @@ import {LoggerService} from "nest-logger";
 import uuid from "uuid";
 import {AccountsRepository} from "./AccountsRepository";
 import {Account, AccountType, User} from "../model/domain";
-import {RegisterAccountRequest, ServiceNodeRegisterAccountRequest} from "../model/api/request";
+import {RegisterAccountRequest, ServiceNodeRegisterAccountRequest, WithdrawFundsRequest} from "../model/api/request";
 import {AccountResponse, BalanceResponse, CurrentAccountResponse} from "../model/api/response";
 import {ServiceNodeApiClient} from "../service-node-api";
 import {Web3Wrapper} from "../web3";
@@ -159,7 +159,6 @@ export class AccountsService {
 
     public async getCurrentAccount(user: User): Promise<CurrentAccountResponse> {
         const ethereumAccount = (await this.accountsRepository.findByUser(user.id))[0];
-        console.log(ethereumAccount);
 
         return {
             ethereumAddress: ethereumAccount.address,
@@ -169,5 +168,32 @@ export class AccountsService {
 
     public async getBalanceOfCurrentAccount(user: User): Promise<BalanceResponse> {
         return (await this.serviceNodeApiClient.getBalanceOfLambdaWallet(user.lambdaWallet)).data;
+    }
+
+    public async withdrawFunds(withdrawFundsRequest: WithdrawFundsRequest, user: User): Promise<void> {
+        const ethereumAccount = (await this.accountsRepository.findByUser(user.id))[0];
+
+        try {
+            await this.serviceNodeApiClient.withdrawFunds({
+                ethereumAddress: ethereumAccount.address,
+                amount: withdrawFundsRequest.amount
+            });
+        } catch (error) {
+            console.log(error);
+
+            if (error.response) {
+                this.log.error(`Could not withdraw funds, Service Node responded with ${error.response.status} status`);
+                throw new HttpException(
+                    `Could not withdraw funds, Service Node responded with ${error.response.status} status`,
+                    HttpStatus.INTERNAL_SERVER_ERROR
+                );
+            } else {
+                this.log.error("Could not withdraw funds, Service Node is unreachable");
+                throw new HttpException(
+                    "Could not withdraw funds, Service Node is unreachable",
+                    HttpStatus.SERVICE_UNAVAILABLE
+                );
+            }
+        }
     }
 }
