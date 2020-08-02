@@ -3,7 +3,7 @@ export const accountsSchema = {
         properties: {
             address: {
                 type: "text",
-                index: false
+                index: true
             },
             type: {
                 type: "text",

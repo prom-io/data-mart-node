@@ -57,6 +57,8 @@ export class AccountsService {
                         await this.serviceNodeApiClient.isLambdaWalletRegistered(registerAccountRequest.lambdaWallet)
                     ).data;
 
+                    console.log(accountRegistrationStatus);
+
                     if (accountRegistrationStatus.registered) {
                         throw new HttpException(
                             `Lambda wallet address ${registerAccountRequest.lambdaWallet} is already in use`,

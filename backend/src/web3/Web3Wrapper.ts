@@ -11,6 +11,11 @@ export class Web3Wrapper {
     public singData(data: object, privateKey: string): EthereumSingature {
         const dataJson = JSON.stringify(data);
         const dataBase64 = Buffer.from(dataJson).toString("base64");
+
+        if (!privateKey.startsWith("0x")) {
+            privateKey = `0x${privateKey}`;
+        }
+
         const signature = this.web3.eth.accounts.sign(dataBase64, privateKey);
 
         return {

@@ -83,13 +83,15 @@ export class FilesService {
             throw new HttpException(`Could not find file with id ${fileId}`, HttpStatus.NOT_FOUND);
         }
 
-        const accounts = (await this.accountsRepository.findByAddress(purchaseFileRequest.dataMartAddress));
+        const accounts = (await this.accountsRepository.findAll())
+            .filter(account => account.address === purchaseFileRequest.dataMartAddress);
 
         if (accounts.length === 0) {
             throw new HttpException(`Could not find account with address ${purchaseFileRequest.dataMartAddress}`, HttpStatus.NOT_FOUND);
         }
 
         const account = accounts[0];
+
 
         const serviceNodePurchaseFileRequest: ServiceNodePurchaseFileRequest = {
             dataMartAddress: purchaseFileRequest.dataMartAddress,
