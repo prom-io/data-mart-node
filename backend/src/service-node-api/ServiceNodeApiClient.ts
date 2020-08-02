@@ -62,6 +62,10 @@ export class ServiceNodeApiClient {
         return this.axiosInstance.post(`${this.getUrl()}/api/v1/accounts/withdraw`, withdrawFundsRequest);
     }
 
+    public isLambdaWalletRegistered(lambdaWallet: string): AxiosPromise<Omit<AccountRegistrationStatusResponse, "role">> {
+        return this.axiosInstance.get(`${this.getUrl()}/api/v1/accounts/lambda/${lambdaWallet}/is-registered`);
+    }
+
     public getLoadBalancer(): RoundRobinLoadBalancerClient {
         return this.loadBalancerClient;
     }

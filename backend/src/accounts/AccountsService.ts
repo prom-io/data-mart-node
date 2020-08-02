@@ -46,6 +46,17 @@ export class AccountsService {
                         HttpStatus.CONFLICT
                     );
                 } else {
+                    const accountRegistrationStatus = (
+                        await this.serviceNodeApiClient.isLambdaWalletRegistered(registerAccountRequest.lambdaWallet)
+                    ).data;
+
+                    if (accountRegistrationStatus.registered) {
+                        throw new HttpException(
+                            `Lambda wallet address ${registerAccountRequest.lambdaWallet} is already in use`,
+                            HttpStatus.CONFLICT
+                        );
+                    }
+
                     user = {
                         id: uuid(),
                         lambdaWallet: registerAccountRequest.lambdaWallet,
