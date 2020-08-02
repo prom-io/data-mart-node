@@ -12,7 +12,8 @@
 ### File purchase process
 
 - Before making purchase request, check whether file has already been purchased 
-calling [Get file purchase status](https://github.com/Prometeus-Network/data-mart-node/blob/master/backend/docs/transactions.md#get-file-purchase-status) o
+calling [Get file purchase status](https://github.com/Prometeus-Network/data-mart-node/blob/master/backend/docs/transactions.md#get-file-purchase-status) 
+method
   - If file has been purchased before, call [Regain file](#regain-file) method
 - Make request to [Purchase file](#purchase-file)
 - [Download file](#download-file)
