@@ -1,10 +1,12 @@
-import {Body, Controller, Get, Param, Post, Query, Res} from "@nestjs/common";
+import {Body, Controller, Get, Param, Post, Put, Query, Req, Res, UseGuards} from "@nestjs/common";
 import {LoggerService} from "nest-logger";
-import {Response} from "express";
+import {Response, Request} from "express";
 import {FilesService} from "./FilesService";
 import {FileResponse, PurchaseFileResponse} from "../model/api/response";
 import {PurchaseFileRequest} from "../model/api/request";
 import {getValidPage, getValidPageSize} from "../utils/pagination";
+import {OptionalJwtAuthGuard} from "../jwt-auth/OptionalJwtAuthGuard";
+import {User} from "../model/domain";
 
 @Controller("api/v2/files")
 export class FilesController {
@@ -69,9 +71,10 @@ export class FilesController {
         }
     }
 
+    @UseGuards(OptionalJwtAuthGuard)
     @Get(":id")
-    public async getFileById(@Param("id") fileId: string, @Res() response: Response): Promise<void> {
-        return this.filesService.getFileById(fileId, response);
+    public async getFileById(@Param("id") fileId: string, @Res() response: Response, @Req() request: Request): Promise<void> {
+        return this.filesService.getFileById(fileId, response, (request as any).user as User | null);
     }
 
     @Get(":id/info")
@@ -79,14 +82,17 @@ export class FilesController {
         return this.filesService.getFileInfoById(fileId);
     }
 
+    @UseGuards(OptionalJwtAuthGuard)
     @Post(":id/purchase")
     public async purchaseFile(@Param("id") fileId: string,
-                              @Body() purchaseFileRequest: PurchaseFileRequest): Promise<PurchaseFileResponse> {
-        return this.filesService.purchaseFile(fileId, purchaseFileRequest);
+                              @Body() purchaseFileRequest: PurchaseFileRequest,
+                              @Req() request: Request): Promise<PurchaseFileResponse> {
+        return this.filesService.purchaseFile(fileId, purchaseFileRequest, (request as any).user as User | null);
     }
 
+    @UseGuards(OptionalJwtAuthGuard)
     @Get(":id/regain")
-    public async regainFile(@Param("id") fileId: string, @Res() response: Response): Promise<void> {
-        return this.filesService.getFileById(fileId, response);
+    public async regainFile(@Param("id") fileId: string, @Res() response: Response, @Req() request: Request): Promise<void> {
+        return this.filesService.getFileById(fileId, response, (request as any).user as User | null);
     }
 }

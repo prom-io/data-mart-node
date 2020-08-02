@@ -1,18 +1,15 @@
 import {Inject, Injectable} from "@nestjs/common";
 import {LoggerService} from "nest-logger";
 import {AxiosInstance, AxiosPromise} from "axios";
+import {PaginationRequest, ServiceNodePurchaseFileRequest, ServiceNodeRegisterAccountRequest, ServiceNodeWithdrawRequest} from "../model/api/request";
 import {
-    PaginationRequest,
-    ServiceNodeRegisterAccountRequest,
-    ServiceNodePurchaseFileRequest, ServiceNodeWithdrawRequest
-} from "../model/api/request";
-import {
+    AccountRegistrationStatusResponse,
     BalanceResponse,
     FileResponse,
     PurchaseFileResponse,
-    TransactionsCountResponse,
+    ServiceNodeLambdaTransactionResponse,
     TransactionResponse,
-    AccountRegistrationStatusResponse
+    TransactionsCountResponse
 } from "../model/api/response";
 import {RoundRobinLoadBalancerClient} from "../discovery";
 
@@ -64,6 +61,10 @@ export class ServiceNodeApiClient {
 
     public isLambdaWalletRegistered(lambdaWallet: string): AxiosPromise<Omit<AccountRegistrationStatusResponse, "role">> {
         return this.axiosInstance.get(`${this.getUrl()}/api/v1/accounts/lambda/${lambdaWallet}/is-registered`);
+    }
+
+    public getTransactionsOfLambdaWallet(lambdaWallet: string): AxiosPromise<ServiceNodeLambdaTransactionResponse[]> {
+        return this.axiosInstance.get(`${this.getUrl()}/api/v1/accounts/lambda/${lambdaWallet}/transactions`);
     }
 
     public getLoadBalancer(): RoundRobinLoadBalancerClient {

@@ -2,7 +2,14 @@ import {Controller, Get, Post, Body, Req, UseGuards} from "@nestjs/common";
 import {AuthGuard} from "@nestjs/passport";
 import {Request} from "express";
 import {AccountsService} from "./AccountsService";
-import {AccessTokenResponse, AccountResponse, BalanceResponse, BalancesResponse, CurrentAccountResponse} from "../model/api/response";
+import {
+    AccessTokenResponse,
+    AccountResponse,
+    BalanceResponse,
+    BalancesResponse,
+    CurrentAccountResponse,
+    LambdaTransactionResponse
+} from "../model/api/response";
 import {RegisterAccountRequest, WithdrawFundsRequest} from "../model/api/request";
 import {User} from "../model/domain";
 
@@ -30,6 +37,12 @@ export class AccountsController {
     @Get("current/balance")
     public getBalanceOfCurrentAccount(@Req() request: Request): Promise<BalanceResponse> {
         return this.accountsService.getBalanceOfCurrentAccount((request as any).user as User);
+    }
+
+    @UseGuards(AuthGuard("jwt"))
+    @Get("current/lambda-transactions")
+    public getLambdaTransactions(@Req() request: Request): Promise<LambdaTransactionResponse[]> {
+        return this.accountsService.getLambdaTransactions((request as any).user as User);
     }
 
     @Get("balances")

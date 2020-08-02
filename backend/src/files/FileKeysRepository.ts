@@ -35,6 +35,22 @@ export class FileKeysRepository {
             .toPromise();
     }
 
+    public findByFileIdAndUserId(fileId: string, userId: string): Promise<SavedFileKey[]> {
+        return this.elasticSearchService.search<SavedFileKey>({
+            index: "file_keys",
+            body: {
+                query: {
+                    match: {
+                        fileId,
+                        userId
+                    }
+                }
+            }
+        })
+            .pipe(map(searchResponse => searchResponse[0].hits.hits.map(hit => hit._source as SavedFileKey)))
+            .toPromise()
+    }
+
     public refreshIndex(): Promise<void> {
         return this.elasticSearchService.getClient().indices.refresh({
             index: "file_keys"

@@ -22,7 +22,7 @@
 
 ````
 {
-    id: string,
+     id: string,
      metadata: FileMetadata;
      dataValidator: string,
      dataOwner: string,

@@ -9,6 +9,10 @@ export const fileKeysSchema = {
                 type: "keyword",
                 index: true
             },
+            userId: {
+                type: "keyword",
+                index: true
+            },
             iv: {
                 type: "keyword",
                 index: true

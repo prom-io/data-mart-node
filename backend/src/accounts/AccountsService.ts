@@ -4,7 +4,14 @@ import uuid from "uuid";
 import {AccountsRepository} from "./AccountsRepository";
 import {Account, AccountType, User} from "../model/domain";
 import {RegisterAccountRequest, ServiceNodeRegisterAccountRequest, WithdrawFundsRequest} from "../model/api/request";
-import {AccessTokenResponse, AccountResponse, BalanceResponse, CurrentAccountResponse} from "../model/api/response";
+import {
+    AccessTokenResponse,
+    AccountResponse,
+    BalanceResponse,
+    CurrentAccountResponse,
+    LambdaTransactionResponse,
+    LambdaTransactionType
+} from "../model/api/response";
 import {ServiceNodeApiClient} from "../service-node-api";
 import {Web3Wrapper} from "../web3";
 import {UsersRepository} from "./UsersRepository";
@@ -226,5 +233,23 @@ export class AccountsService {
                 );
             }
         }
+    }
+
+    public async getLambdaTransactions(user: User): Promise<LambdaTransactionResponse[]> {
+        const lambdaTransactions = (await this.serviceNodeApiClient.getTransactionsOfLambdaWallet(user.lambdaWallet)).data;
+
+        return lambdaTransactions.map(lambdaTransaction => {
+            const transactionSender = lambdaTransaction.tx.value.msg.map(message => message.value.from_address)[0];
+            const type = transactionSender === user.lambdaWallet ? LambdaTransactionType.UNLOCK : LambdaTransactionType.LOCK;
+
+            const transactionValue = lambdaTransaction.tx.value.msg.map(message => Number(message.value.amount))[0];
+
+            return {
+                hash: lambdaTransaction.txhash,
+                timestamp: lambdaTransaction.timestamp,
+                type,
+                value: transactionValue
+            }
+        })
     }
 }

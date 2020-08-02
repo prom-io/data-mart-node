@@ -11,7 +11,7 @@ import {fileToFileResponse} from "./file-mappers";
 import {ServiceNodeApiClient} from "../service-node-api";
 import {PaginationRequest, PurchaseFileRequest, ServiceNodePurchaseFileRequest} from "../model/api/request";
 import {FileResponse, PurchaseFileResponse} from "../model/api/response";
-import {File, SavedFileKey} from "../model/domain";
+import {File, SavedFileKey, User} from "../model/domain";
 import {config} from "../config";
 import {Web3Wrapper} from "../web3";
 import {EncryptorServiceClient} from "../encryptor";
@@ -76,15 +76,14 @@ export class FilesService {
         return fileToFileResponse(file);
     }
 
-    public async purchaseFile(fileId: string, purchaseFileRequest: PurchaseFileRequest): Promise<PurchaseFileResponse> {
+    public async purchaseFile(fileId: string, purchaseFileRequest: PurchaseFileRequest, user?: User): Promise<PurchaseFileResponse> {
         const file = await this.filesRepository.findById(fileId);
 
         if (!file) {
             throw new HttpException(`Could not find file with id ${fileId}`, HttpStatus.NOT_FOUND);
         }
 
-        const accounts = (await this.accountsRepository.findAll())
-            .filter(account => account.address === purchaseFileRequest.dataMartAddress);
+        const accounts = (await this.accountsRepository.findByAddress(purchaseFileRequest.dataMartAddress));
 
         if (accounts.length === 0) {
             throw new HttpException(`Could not find account with address ${purchaseFileRequest.dataMartAddress}`, HttpStatus.NOT_FOUND);
@@ -110,7 +109,8 @@ export class FilesService {
                 fileId,
                 id: uuid4(),
                 iv: purchaseResponse.fileKey.iv,
-                key: purchaseResponse.fileKey.key
+                key: purchaseResponse.fileKey.key,
+                userId: user ? user.id : undefined
             };
 
             await this.fileKeysRepository.saveAll([savedFileKey]);
@@ -141,7 +141,7 @@ export class FilesService {
         return files.map(file => fileToFileResponse(file));
     }
 
-    public async getFileById(fileId: string, response: Response): Promise<void> {
+    public async getFileById(fileId: string, response: Response, user?: User): Promise<void> {
         this.log.debug(`Trying to fetch file with id ${fileId}`);
 
         const file: File | undefined = await this.filesRepository.findById(fileId);
@@ -151,8 +151,14 @@ export class FilesService {
         }
 
         if (fileSystem.existsSync(path.join(config.PURCHASED_FILES_DIRECTORY, `${fileId}.${file.extension}`))) {
-            const fileKeys: SavedFileKey[] = await this.fileKeysRepository.findByFileId(file.id);
-            console.log(fileKeys);
+            let fileKeys: SavedFileKey[];
+
+            if (user) {
+                fileKeys = await this.fileKeysRepository.findByFileIdAndUserId(file.id, user.id);
+            } else {
+                fileKeys = await this.fileKeysRepository.findByFileId(file.id);
+            }
+
             if (fileKeys.length !== 0) {
                 await this.decryptAndSendFile(file, fileKeys[0], response);
             } else {
@@ -168,8 +174,14 @@ export class FilesService {
                     const fileStream = fileSystem.createWriteStream(`${config.PURCHASED_FILES_DIRECTORY}/${fileId}.${file.extension}`);
                     data.pipe(fileStream);
                     fileStream.on("finish", async () => {
-                        const fileKeys = await this.fileKeysRepository.findByFileId(file.id);
-                        console.log(fileKeys);
+                        let fileKeys: SavedFileKey[];
+
+                        if (user) {
+                            fileKeys = await this.fileKeysRepository.findByFileIdAndUserId(file.id, user.id);
+                        } else {
+                            fileKeys = await this.fileKeysRepository.findByFileId(file.id);
+                        }
+
                         if (fileKeys.length !== 0) {
                             await this.decryptAndSendFile(file, fileKeys[0], response);
                             resolve();
