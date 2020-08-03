@@ -1,4 +1,3 @@
-import {parse} from "date-fns";
 import {File} from "../model/domain";
 import {FileResponse} from "../model/api/response";
 
@@ -7,7 +6,7 @@ export const fileToFileResponse = (file: File): FileResponse => ({
     dataOwner: file.dataOwner,
     dataValidator: file.dataValidator,
     extension: file.extension,
-    keepUntil: file.keepUntil && file.keepUntil.toDateString(),
+    keepUntil: file.keepUntil,
     metadata: file.metadata,
     mimeType: file.mimeType,
     price: file.price,
@@ -23,7 +22,7 @@ export const fileResponseToFile = (fileResponse: FileResponse, timestamp: number
     price: fileResponse.price,
     mimeType: fileResponse.mimeType,
     metadata: fileResponse.metadata,
-    keepUntil: parse(fileResponse.keepUntil, "yyyy-MM-dd'T'hh:mm:ss'Z'", new Date()),
+    keepUntil: new Date(fileResponse.keepUntil).toISOString(),
     extension: fileResponse.extension,
     dataValidator: fileResponse.dataValidator,
     dataOwner: fileResponse.dataOwner,

@@ -30,40 +30,34 @@ export class FilesService {
         private readonly encryptorServiceClient: EncryptorServiceClient
     ) {};
 
-    public searchFiles(query: string, paginationRequest: PaginationRequest): Promise<FileResponse[]> {
-        return this.filesRepository
-            .searchByQuery(query, paginationRequest)
-            .then(files => files.map(file => fileToFileResponse(file)));
+    public async searchFiles(query: string, paginationRequest: PaginationRequest): Promise<FileResponse[]> {
+        const files = await this.filesRepository.searchByQuery(query, paginationRequest);
+        return files.map(file => fileToFileResponse(file));
     }
 
-    public searchFilesByQueryAndTags(query: string, tags: string[], paginationRequest: PaginationRequest): Promise<FileResponse[]> {
-        return this.filesRepository
-            .searchByQueryAndTags(query, tags, paginationRequest)
-            .then(files => files.map(file => fileToFileResponse(file)));
+    public async searchFilesByQueryAndTags(query: string, tags: string[], paginationRequest: PaginationRequest): Promise<FileResponse[]> {
+        const files = await this.filesRepository.searchByQueryAndTags(query, tags, paginationRequest);
+        return files.map(file => fileToFileResponse(file));
     }
 
     public async countFilesByQuery(query: string): Promise<{count: number}> {
         const count = await this.filesRepository.countByQuery(query);
-        console.log(count);
         return {count};
     }
 
     public async countFilesByQueryAndTags(query: string, tags: string[]): Promise<{count: number}> {
         const count = await this.filesRepository.countByQueryAndTags(query, tags);
-        console.log(count);
         return {count};
     }
 
-    public listAllFiles(): Promise<FileResponse[]> {
-        return this.filesRepository
-            .findAll()
-            .then(files => files.map(file => fileToFileResponse(file)))
+    public async listAllFiles(): Promise<FileResponse[]> {
+        const files = await this.filesRepository.findAll();
+        return files.map(file => fileToFileResponse(file));
     }
 
-    public listAllFilesPaginated(paginationRequest: PaginationRequest): Promise<FileResponse[]> {
-        return this.filesRepository
-            .findAllBy(paginationRequest)
-            .then(files => files.map(file => fileToFileResponse(file)))
+    public async listAllFilesPaginated(paginationRequest: PaginationRequest): Promise<FileResponse[]> {
+        const files = await this.filesRepository.findAllBy(paginationRequest);
+        return files.map(file => fileToFileResponse(file));
     }
 
     public async getFileInfoById(fileId: string): Promise<FileResponse> {

@@ -8,7 +8,7 @@ export interface File {
     dataValidator: string,
     dataOwner: string,
     serviceNode: string,
-    keepUntil: Date,
+    keepUntil: string,
     extension: string,
     mimeType: string,
     size: number,
