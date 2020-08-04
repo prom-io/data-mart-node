@@ -40,10 +40,18 @@ export class FileKeysRepository {
             index: "file_keys",
             body: {
                 query: {
-                    match: {
-                        fileId,
-                        userId
-                    }
+                    must: [
+                        {
+                            match: {
+                                fileId
+                            },
+                        },
+                        {
+                            match: {
+                                userId
+                            }
+                        }
+                    ]
                 }
             }
         })
