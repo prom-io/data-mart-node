@@ -36,8 +36,10 @@ export class FilesController {
         }
     }
 
+    @UseGuards(OptionalJwtAuthGuard)
     @Get("search")
-    public async searchFiles(@Query("query") query?: string,
+    public async searchFiles(@Req() request: Request,
+                             @Query("query") query?: string,
                              @Query("tags") tags?: string,
                              @Query("page") page?: number,
                              @Query("size") size?: number): Promise<FileResponse[]> {
@@ -50,9 +52,9 @@ export class FilesController {
 
         if (tags) {
             const tagsToSearch: string[] = JSON.parse(tags);
-            return this.filesService.searchFilesByQueryAndTags(query, tagsToSearch, {page, size})
+            return this.filesService.searchFilesByQueryAndTags(query, tagsToSearch, {page, size}, (request as any).user as User | null)
         } else {
-            return this.filesService.searchFiles(query, {page, size});
+            return this.filesService.searchFiles(query, {page, size}, (request as any).user as User | null);
         }
     }
 

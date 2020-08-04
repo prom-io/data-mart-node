@@ -17,6 +17,7 @@ import {Web3Wrapper} from "../web3";
 import {EncryptorServiceClient} from "../encryptor";
 import {AccountsRepository} from "../accounts/AccountsRepository";
 import {AesDecryptRequest} from "../encryptor/types/request";
+import {asyncMap} from "../utils/async-map";
 
 @Injectable()
 export class FilesService {
@@ -30,14 +31,39 @@ export class FilesService {
         private readonly encryptorServiceClient: EncryptorServiceClient
     ) {};
 
-    public async searchFiles(query: string, paginationRequest: PaginationRequest): Promise<FileResponse[]> {
+    public async searchFiles(query: string, paginationRequest: PaginationRequest, user?: User): Promise<FileResponse[]> {
         const files = await this.filesRepository.searchByQuery(query, paginationRequest);
-        return files.map(file => fileToFileResponse(file));
+
+        return asyncMap(files, async file => {
+            let purchased = false;
+
+            if (user) {
+                const fileKeys = await this.fileKeysRepository.findByFileIdAndUserId(file.id, user.id);
+                purchased = fileKeys.length !== 0;
+            }
+
+            return fileToFileResponse(file, purchased);
+        })
     }
 
-    public async searchFilesByQueryAndTags(query: string, tags: string[], paginationRequest: PaginationRequest): Promise<FileResponse[]> {
+    public async searchFilesByQueryAndTags(
+        query: string,
+        tags: string[],
+        paginationRequest: PaginationRequest,
+        user?: User
+    ): Promise<FileResponse[]> {
         const files = await this.filesRepository.searchByQueryAndTags(query, tags, paginationRequest);
-        return files.map(file => fileToFileResponse(file));
+
+        return asyncMap(files, async file => {
+            let purchased = false;
+
+            if (user) {
+                const fileKeys = await this.fileKeysRepository.findByFileIdAndUserId(file.id, user.id);
+                purchased = fileKeys.length !== 0;
+            }
+
+            return fileToFileResponse(file, purchased);
+        });
     }
 
     public async countFilesByQuery(query: string): Promise<{count: number}> {

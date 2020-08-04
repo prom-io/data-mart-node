@@ -1,7 +1,7 @@
 import {File} from "../model/domain";
 import {FileResponse} from "../model/api/response";
 
-export const fileToFileResponse = (file: File): FileResponse => ({
+export const fileToFileResponse = (file: File, purchased: boolean = false): FileResponse => ({
     id: file.id,
     dataOwner: file.dataOwner,
     dataValidator: file.dataValidator,
@@ -12,7 +12,8 @@ export const fileToFileResponse = (file: File): FileResponse => ({
     price: file.price,
     serviceNode: file.serviceNode,
     size: file.size,
-    name: file.name
+    name: file.name,
+    purchased
 });
 
 export const fileResponseToFile = (fileResponse: FileResponse, timestamp: number | undefined = new Date().getTime()): File => ({

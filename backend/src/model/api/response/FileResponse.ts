@@ -11,5 +11,6 @@ export interface FileResponse {
     mimeType: string,
     size: number,
     price: number,
-    name: string
+    name: string,
+    purchased: boolean
 }
