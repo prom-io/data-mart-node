@@ -40,7 +40,6 @@ export class FilesSynchronizationScheduler extends NestSchedule {
 
                 if (files.length !== 0) {
                     this.log.info("Saving files");
-                    console.log(files);
                     const filesToSave = files
                         .filter(file => file.price !== null && file.price !== undefined)
                         .map((fileResponse, index) => fileResponseToFile(
