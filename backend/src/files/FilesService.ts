@@ -181,8 +181,11 @@ export class FilesService {
             }
 
             if (fileKeys.length !== 0) {
+                this.log.info("Found file key, the file will be decrypted");
+                console.log(fileKeys);
                 await this.decryptAndSendFile(file, fileKeys[0], response);
             } else {
+                this.log.info("File key is not found, so the file will not be decrypted");
                 response.download(path.join(config.PURCHASED_FILES_DIRECTORY, `${fileId}.${file.extension}`));
             }
             return;
