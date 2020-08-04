@@ -22,7 +22,7 @@ export const fileResponseToFile = (fileResponse: FileResponse, timestamp: number
     price: fileResponse.price,
     mimeType: fileResponse.mimeType,
     metadata: fileResponse.metadata,
-    keepUntil: new Date(fileResponse.keepUntil).toISOString(),
+    keepUntil: fileResponse.keepUntil,
     extension: fileResponse.extension,
     dataValidator: fileResponse.dataValidator,
     dataOwner: fileResponse.dataOwner,
