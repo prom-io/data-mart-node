@@ -36,4 +36,7 @@ export class EnvConfig {
 
     @Env({required: true, type: "string"})
     PROMETEUS_WALLET_GENERATOR_API_PASSWORD: string;
+
+    @Env({required: true, type: "string"})
+    SYSTEM_LAMBDA_WALLET: string;
 }
