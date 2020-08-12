@@ -8,7 +8,9 @@ import {DiscoveryModule} from "../discovery";
     providers: [
         {
             provide: "serviceNodeApiAxios",
-            useValue: Axios.create()
+            useValue: Axios.create({
+                timeout: Number.MAX_SAFE_INTEGER
+            })
         },
         ServiceNodeApiClient
     ],

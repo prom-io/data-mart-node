@@ -9,6 +9,7 @@ import {
     TransactionsCountResponse,
     TransactionWithFileResponse
 } from "../model/api/response";
+import {asyncFilter} from "../utils/async-filter";
 
 @Injectable()
 export class TransactionsService {
@@ -39,8 +40,13 @@ export class TransactionsService {
 
     public async getTransactionsByAddress(address: string, page: number, pageSize: number): Promise<TransactionWithFileResponse[]> {
         try {
-            const transactions: TransactionResponse[] = (await this.serviceNodeApiClient.getTransactionsOfAddress(address, page, pageSize)).data;
+            let transactions: TransactionResponse[] = (await this.serviceNodeApiClient.getTransactionsOfAddress(address, page, pageSize)).data;
             const transactionsWithFile: TransactionWithFileResponse[] = [];
+
+            transactions = await asyncFilter(
+                transactions,
+                transaction => this.filesService.existsById(transaction.id)
+            );
 
             for (const transaction of transactions) {
                 const file: FileResponse = await this.filesService.getFileInfoById(transaction.id);
@@ -51,6 +57,7 @@ export class TransactionsService {
             }
             return transactionsWithFile;
         } catch (error) {
+            console.log(error);
             if (error instanceof HttpException) {
                 throw error;
             }

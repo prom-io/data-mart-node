@@ -98,6 +98,25 @@ export class FilesRepository {
             .toPromise()
     }
 
+    public async exitsById(id: string): Promise<boolean> {
+        return (await this.elasticSearchService.count({
+            body: {
+                query: {
+                    bool: {
+                        must: {
+                            match: {
+                                id
+                            }
+                        }
+                    }
+                }
+            }
+        })
+            .pipe(map(countResponse => countResponse[0].count as number))
+            .toPromise())
+        !== 0;
+    }
+
     public searchByQuery(query: string, paginationRequest: PaginationRequest): Promise<File[]> {
         return this.elasticSearchService.search<File>({
             index: "files",

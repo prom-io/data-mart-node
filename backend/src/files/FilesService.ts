@@ -1,6 +1,7 @@
 import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
 import {LoggerService} from "nest-logger";
 import uuid4 from "uuid/v4";
+import {v4 as isV4UUID} from "is-uuid";
 import fileSystem from "fs";
 import {Response} from "express";
 import path from "path";
@@ -234,7 +235,7 @@ export class FilesService {
         try {
             this.log.debug(`Decrypting file with id ${file.id}`);
             const physicalFile: Buffer = fileSystem.readFileSync(path.join(config.PURCHASED_FILES_DIRECTORY, `${file.id}.${file.extension}`));
-            const base64String = physicalFile.toString("base64");
+            const base64String = isV4UUID(fileKey.fileId) ? physicalFile.toString("base64") : physicalFile.toString();
             const aesDecryptRequest: AesDecryptRequest = {
                 content: base64String,
                 iv: fileKey.iv,
@@ -251,5 +252,9 @@ export class FilesService {
             console.log(error);
             throw error;
         }
+    }
+
+    public existsById(id: string): Promise<boolean> {
+        return this.filesRepository.exitsById(id);
     }
 }
