@@ -40,7 +40,7 @@ export class ServiceNodeApiClient {
     }
 
     public getTransactionsOfAddress(address: string, page: number, pageSize: number): AxiosPromise<TransactionResponse[]> {
-        return this.axiosInstance.get(`${this.getUrl()}/api/v1/transactions/${address}?page=${page}&pageSize=${pageSize}`);
+        return this.axiosInstance.get(`${this.getUrl()}/api/v1/transactions/${address}?page=${page}&pageSize=${pageSize}&type=dataPurchase`);
     }
 
     public countTransactionsOfAddress(address: string): AxiosPromise<TransactionsCountResponse> {
