@@ -35,7 +35,7 @@
     "bcrypt": "^5.0.0",
     "bignumber.js": "^9.0.0",
     "class-transformer": "^0.2.3",
-    "class-validator": "^0.11.0",
+    "class-validator": "^0.14.0",
     "date-fns": "^2.8.0",
     "dotenv": "^8.2.0",
     "elasticsearch": "^16.5.0",
